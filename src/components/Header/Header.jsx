@@ -1,10 +1,12 @@
 import { Col, Menu, Row } from 'antd';
 import logo from '../../assets/artboard-3-copy-2-4x-1.png';
 import { Header as AntHeader } from 'antd/es/layout/layout';
+import { MenuItems } from '@/constant/menu-data';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
   // const dispatch = useDispatch();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   // const _onLogout = (e) => {
   //   e?.preventDefault();
@@ -25,17 +27,12 @@ const Header = () => {
           </Col>
           <Col>
             <Menu
-              mode="horizontal"
               theme="dark"
-              style={{ backgroundColor: '#3b7b7a' }}
-            >
-              <Menu.Item key="home">Home</Menu.Item>
-              <Menu.Item key="cv">CV Assistance</Menu.Item>
-              <Menu.Item key="interview">Simulated Interview</Menu.Item>
-              <Menu.Item key="learning">Learning</Menu.Item>
-              <Menu.Item key="pricing">Pricing</Menu.Item>
-              <Menu.Item key="contact">Contact us</Menu.Item>
-            </Menu>
+              onClick={({ key }) => navigate(key)}
+              mode="horizontal"
+              style={{ backgroundColor: '#3b7b7a', color: 'white' }}
+              items={MenuItems}
+            />
           </Col>
         </Row>
       </AntHeader>
