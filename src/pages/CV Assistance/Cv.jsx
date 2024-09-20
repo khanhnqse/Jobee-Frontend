@@ -93,31 +93,6 @@ const Cv = () => {
 
         {/* Phần CV mẫu */}
         <CvSample samples={samples} />
-        {/* <div className="px-[173px] mt-10 pb-10">
-          <p className="font-poppins font-medium text-black text-[24px] text-center mb-8">
-            CV sample for applying for popular positions
-          </p>
-          <Row gutter={[24, 24]} className="flex justify-center">
-            {['Software engineer', 'Clerk', 'English teacher', 'Intern'].map(
-              (title, index) => (
-                <Col key={index} xs={24} sm={12} md={8} lg={6}>
-                  <Card
-                    hoverable
-                    cover={
-                      <img
-                        alt={`image-${index + 18}`}
-                        src={`image-${index + 18}.png`}
-                      />
-                    }
-                    className="w-full h-[236px] rounded-[8px] shadow-lg"
-                  >
-                    <Card.Meta title={title} description="Create now" />
-                  </Card>
-                </Col>
-              )
-            )}
-          </Row>
-        </div> */}
       </div>
     </div>
   );

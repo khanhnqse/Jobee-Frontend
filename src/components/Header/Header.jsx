@@ -29,8 +29,13 @@ const Header = () => {
             theme="dark"
             onClick={handleMenuClick}
             mode="horizontal"
-            selectedKeys={[selectedKey]} // Set selected key
-            style={{ backgroundColor: '#3b7b7a', color: 'white' }}
+            selectedKeys={[selectedKey]}
+            style={{
+              backgroundColor: '#3b7b7a',
+              color: 'white',
+              width: 'auto',
+              minWidth: '680px',
+            }} // Adjust the minWidth as needed
             items={MenuItems}
           />
         </Col>

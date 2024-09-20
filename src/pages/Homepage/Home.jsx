@@ -219,7 +219,11 @@ const Home = () => {
               Turn silence into an advantage: Utilize open-ended questions to
               encourage the interviewer to elaborate.
             </Paragraph>
-            <Button type="primary" size="large">
+            <Button
+              style={{ marginRight: 16, background: '#C94C4B' }}
+              type="primary"
+              size="large"
+            >
               Watch now
             </Button>
           </Card>
@@ -244,7 +248,11 @@ const Home = () => {
               Nail your salary negotiation! Learn pro tips for a stress-free
               talk and land your dream job with the pay you deserve.
             </Paragraph>
-            <Button type="primary" size="large">
+            <Button
+              style={{ marginRight: 16, background: '#C94C4B' }}
+              type="primary"
+              size="large"
+            >
               Watch now
             </Button>
           </Card>
@@ -270,7 +278,11 @@ const Home = () => {
               clearly to transform interview jitters into confident
               communication.
             </Paragraph>
-            <Button type="primary" size="large">
+            <Button
+              style={{ marginRight: 16, background: '#C94C4B' }}
+              type="primary"
+              size="large"
+            >
               Watch now
             </Button>
           </Card>
@@ -314,7 +326,7 @@ const Home = () => {
                 className="text-white bg-red-700"
                 type="primary"
                 size="large"
-                style={{ width: '150px' }}
+                style={{ width: '160px', background: '#C94C4B' }}
               >
                 Try it now
               </Button>

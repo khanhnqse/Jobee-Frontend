@@ -17,26 +17,46 @@ export default function Footer() {
         padding: '40px 20px',
       }}
     >
-      <Row justify="space-between" align="middle" gutter={[24, 24]}>
+      <Row justify="center" align="middle" gutter={[24, 24]}>
         <Col xs={24} md={12} lg={8}>
           <img
             src={logoFooter}
             alt="Artboard copy"
-            style={{ width: '100%', maxWidth: 300, height: 'auto' }}
+            style={{
+              width: '100%',
+              maxWidth: 300,
+              height: 'auto',
+              marginLeft: '45px',
+            }}
           />
           <Paragraph
-            style={{ color: 'white', marginTop: '16px', marginLeft: '5px' }}
+            style={{ color: 'white', marginTop: '16px', marginLeft: '72px' }}
           >
             Subscribe for more deals and information
           </Paragraph>
           <Input
             placeholder="Enter your email"
-            suffix={<Button type="primary">Send</Button>}
-            style={{ width: '100%', maxWidth: 400, marginTop: 16 }}
+            suffix={
+              <Button
+                style={{
+                  backgroundColor: '#C94C4B',
+                }}
+                type="primary"
+              >
+                Send
+              </Button>
+            }
+            style={{
+              width: '100%',
+              maxWidth: 400,
+              marginTop: 16,
+              backgroundColor: '#EAE4C4',
+              PaddingRight: '5px',
+            }}
           />
         </Col>
 
-        <Col xs={24} md={12} lg={8}>
+        <Col xs={24} md={12} lg={8} style={{ paddingLeft: '250px' }}>
           <Title level={4} style={{ color: 'white' }}>
             Contact us at
           </Title>
