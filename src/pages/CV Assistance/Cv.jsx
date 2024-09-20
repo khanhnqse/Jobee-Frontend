@@ -4,18 +4,29 @@ import SearchBar from '@/components/Search bar/Search-bar';
 import ConfigAntdButton from '@/components/Button/ConfigAntdButton';
 import CvList from '@/components/CV List/CvList';
 import axios from 'axios';
+import CvSample from '@/components/CV Sample/CvSample';
 const { Option } = Select;
 
 const Cv = () => {
   const api = 'https://66ed3226380821644cdbe120.mockapi.io/cv';
+  const apiSample = 'https://66ed3226380821644cdbe120.mockapi.io/sample';
+  const [samples, setSamples] = useState([]);
   const [cv, setCv] = useState([]);
   const fetchCv = async () => {
     const response = await axios.get(api);
     console.log(response.data);
     setCv(response.data);
   };
+
+  const fetchSample = async () => {
+    const response = await axios.get(apiSample);
+    console.log(response.data);
+    setSamples(response.data);
+  };
+
   useEffect(() => {
     fetchCv();
+    fetchSample();
   }, []);
 
   return (
@@ -81,7 +92,8 @@ const Cv = () => {
         </div>
 
         {/* Phần CV mẫu */}
-        <div className="px-[173px] mt-10 pb-10">
+        <CvSample samples={samples} />
+        {/* <div className="px-[173px] mt-10 pb-10">
           <p className="font-poppins font-medium text-black text-[24px] text-center mb-8">
             CV sample for applying for popular positions
           </p>
@@ -105,7 +117,7 @@ const Cv = () => {
               )
             )}
           </Row>
-        </div>
+        </div> */}
       </div>
     </div>
   );
