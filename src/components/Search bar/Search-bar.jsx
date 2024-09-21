@@ -1,11 +1,11 @@
-import { Button, Input } from 'antd';
+import { Input } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
-export default function SearchBar() {
+export default function SearchBar({ style, placeholder }) {
   return (
-    <div className="flex justify-end mt-10 pr-44">
+    <div style={style} className="flex justify-end mt-10">
       <Input
-        placeholder="Search your CV"
+        placeholder={placeholder}
         prefix={<SearchOutlined />}
         className="w-[426px] h-[49px]"
       />

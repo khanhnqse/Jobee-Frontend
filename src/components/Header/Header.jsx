@@ -2,12 +2,18 @@ import { Col, Menu, Row } from 'antd';
 import logo from '../../assets/artboard-3-copy-2-4x-1.png';
 import { Header as AntHeader } from 'antd/es/layout/layout';
 import { MenuItems } from '@/constant/menu-data';
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom'; // Import useLocation
+import { useEffect, useState } from 'react';
 import './Header.css';
+
 const Header = () => {
   const navigate = useNavigate();
-  const [selectedKey, setSelectedKey] = useState(MenuItems[0].key); // Set default selected key
+  const location = useLocation(); // Lấy location hiện tại
+  const [selectedKey, setSelectedKey] = useState(location.pathname); // Set key dựa trên pathname
+
+  useEffect(() => {
+    setSelectedKey(location.pathname); // Cập nhật selectedKey khi pathname thay đổi
+  }, [location.pathname]);
 
   const handleMenuClick = ({ key }) => {
     setSelectedKey(key);
@@ -35,7 +41,7 @@ const Header = () => {
               color: 'white',
               width: 'auto',
               minWidth: '680px',
-            }} // Adjust the minWidth as needed
+            }}
             items={MenuItems}
           />
         </Col>

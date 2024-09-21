@@ -128,7 +128,7 @@ const ContactUs = () => {
               }}
             />
             <Checkbox style={{ marginTop: '15px', color: 'white' }}>
-              Agree with our<a href="/">policies</a>
+              Agree with our <a href="/">policies</a>
             </Checkbox>
             <br />
             <Button

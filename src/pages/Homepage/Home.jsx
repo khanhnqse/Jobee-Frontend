@@ -4,15 +4,29 @@ import heroSectionImage from '../../assets/untitled-design-5-1.png';
 import onlineImage from '../../assets/online.png';
 import videoImage from '../../assets/video.png';
 import image61 from '../../assets/untitled-design-6-1.png';
-import video1 from '../../assets/untitled-design-7-2.png';
-import video2 from '../../assets/untitled-design-8-1.png';
-import video3 from '../../assets/untitled-design-9-1.png';
 import video4 from '../../assets/untitled-design-10-1-1.png';
 import { GoogleOutlined } from '@ant-design/icons';
+
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import TopVideos from '@/components/Video List/VideoList';
+import ConfigAntdButton from '@/components/Button/ConfigAntdButton';
+import { Link } from 'react-router-dom';
 
 const { Title, Paragraph } = Typography;
 
 const Home = () => {
+  const apiVideo = 'https://66ee8e6d3ed5bb4d0bf14a30.mockapi.io/video';
+  const [videos, setVideos] = useState([]);
+  const fetchVideos = async () => {
+    const response = await axios.get(apiVideo);
+    console.log(response.data);
+    setVideos(response.data);
+  };
+
+  useEffect(() => {
+    fetchVideos();
+  }, []);
   return (
     <>
       <div
@@ -42,13 +56,11 @@ const Home = () => {
                 Unleash the power of AI to streamline your job hunting and
                 unlock better opportunities.
               </Paragraph>
-              <Button
-                type="primary"
-                size="large"
-                style={{ marginRight: 16, background: '#C94C4B' }}
-              >
-                Sign up now
-              </Button>
+              <ConfigAntdButton>
+                <Button type="primary" size="large" style={{ marginRight: 16 }}>
+                  Sign up now
+                </Button>
+              </ConfigAntdButton>
               <Button size="large" icon={<GoogleOutlined />}>
                 Sign up using Google
               </Button>
@@ -69,7 +81,12 @@ const Home = () => {
           <img
             src={resumeImage}
             alt="Resume"
-            style={{ width: 124, height: 125 }}
+            style={{
+              width: 124,
+              height: 125,
+              marginBottom: 24,
+              marginLeft: 24,
+            }}
           />
           <Title level={4}>CV Assistance</Title>
           <Paragraph>Craft a CV that reflects your unique value.</Paragraph>
@@ -86,7 +103,7 @@ const Home = () => {
           <img
             src={onlineImage}
             alt="Online"
-            style={{ width: 124, height: 125 }}
+            style={{ width: 124, height: 125, marginBottom: 24 }}
           />
           <Title level={4}>Simulated Interview</Title>
           <Paragraph>
@@ -105,7 +122,7 @@ const Home = () => {
           <img
             src={videoImage}
             alt="Video"
-            style={{ width: 124, height: 125 }}
+            style={{ width: 124, height: 125, marginBottom: 24 }}
           />
           <Title level={4}>Learning</Title>
           <Paragraph>
@@ -141,9 +158,8 @@ const Home = () => {
             justify="end"
             align="middle"
             style={{
-              height: '100vh', // Chiều cao toàn màn hình
-              // Đường dẫn đến hình ảnh của bạn
-              backgroundSize: 'cover', // Phủ kín khung hình
+              height: '100vh',
+              backgroundSize: 'cover',
               backgroundPosition: 'center',
               position: 'relative',
             }}
@@ -171,123 +187,36 @@ const Home = () => {
               </Title>
               <Paragraph className="text-white text-lg">
                 <div className="py-2">
-                  • Targeted CV Creation: AI crafts a perfect CV for each
+                  Targeted CV Creation: AI crafts a perfect CV for each
                   opportunity, highlighting your strengths.
                 </div>
                 <div className="py-2">
-                  • Smart Error Detection: Eliminate mistakes with AI scanning
-                  and get personalized suggestions for a powerful resume.
+                  Smart Error Detection: Eliminate mistakes with AI scanning and
+                  get personalized suggestions for a powerful resume.
                 </div>
                 <div className="py-2">
-                  • Network Expansion: AI connects you with ideal clients and
+                  Network Expansion: AI connects you with ideal clients and
                   companies seeking your skills.
                 </div>
               </Paragraph>
-              <Button
-                type="default"
-                size="large"
-                style={{ border: '1px solid white', color: 'black' }}
-              >
-                More information
-              </Button>
+              <ConfigAntdButton>
+                <Link to="/cv">
+                  <Button size="large">More information</Button>
+                </Link>
+              </ConfigAntdButton>
             </Col>
           </Row>
         </div>
       </div>
+
       <Row justify="center" style={{ marginTop: 64 }}>
         <Col span={12} style={{ textAlign: 'center' }}>
           <Title level={2}>Our top videos</Title>
         </Col>
       </Row>
-      <Row justify="center" gutter={[16, 16]} style={{ marginTop: 32 }}>
-        <Col span={8}>
-          <Card
-            hoverable
-            cover={
-              <img
-                src={video1}
-                alt="Video 1"
-                style={{ width: '100%', height: '320px' }}
-              />
-            }
-          >
-            <Title level={4}>
-              Take Charge of Your Interview: 5 Techniques to Get the Info You
-              Need
-            </Title>
-            <Paragraph>
-              Turn silence into an advantage: Utilize open-ended questions to
-              encourage the interviewer to elaborate.
-            </Paragraph>
-            <Button
-              style={{ marginRight: 16, background: '#C94C4B' }}
-              type="primary"
-              size="large"
-            >
-              Watch now
-            </Button>
-          </Card>
-        </Col>
 
-        <Col span={8}>
-          <Card
-            hoverable
-            cover={
-              <img
-                src={video2}
-                alt="Video 2"
-                style={{ width: '100%', height: '320px' }}
-              />
-            }
-          >
-            <Title level={4}>
-              Negotiate Salary Like a Pro: Learn proven techniques for a smooth
-              conversation.
-            </Title>
-            <Paragraph>
-              Nail your salary negotiation! Learn pro tips for a stress-free
-              talk and land your dream job with the pay you deserve.
-            </Paragraph>
-            <Button
-              style={{ marginRight: 16, background: '#C94C4B' }}
-              type="primary"
-              size="large"
-            >
-              Watch now
-            </Button>
-          </Card>
-        </Col>
-
-        <Col span={8}>
-          <Card
-            hoverable
-            cover={
-              <img
-                src={video3}
-                alt="Video 3"
-                style={{ width: '100%', height: '320px' }}
-              />
-            }
-          >
-            <Title level={4}>
-              Interview Ready in Minutes: Relax &amp; Refine Your Accent While
-              You Wait!
-            </Title>
-            <Paragraph>
-              Pre-interview anxiety holding you back? Calm nerves &amp; speak
-              clearly to transform interview jitters into confident
-              communication.
-            </Paragraph>
-            <Button
-              style={{ marginRight: 16, background: '#C94C4B' }}
-              type="primary"
-              size="large"
-            >
-              Watch now
-            </Button>
-          </Card>
-        </Col>
-      </Row>
+      {/* Top video */}
+      <TopVideos videos={videos} itemsPerPage={3} />
 
       <div
         style={{
@@ -322,14 +251,16 @@ const Home = () => {
                 Explore our groundbreaking AI technology and unlock new
                 possibilities with Simulated Interview.
               </Paragraph>
-              <Button
-                className="text-white bg-red-700"
-                type="primary"
-                size="large"
-                style={{ width: '160px', background: '#C94C4B' }}
-              >
-                Try it now
-              </Button>
+              <ConfigAntdButton>
+                <Button
+                  className="text-white bg-red-700"
+                  type="primary"
+                  size="large"
+                  style={{ width: '160px' }}
+                >
+                  Try it now
+                </Button>
+              </ConfigAntdButton>
             </Col>
           </Row>
         </div>
@@ -347,7 +278,7 @@ const Home = () => {
             Ready to get started?
           </Title>
           <Paragraph className="p-4" style={{ color: '#333333' }}>
-            Sign up now for more offer from us
+            Sign in now for more offer from us
           </Paragraph>
           <Input
             placeholder="Mail or username"
@@ -373,11 +304,12 @@ const Home = () => {
               width: '450px',
             }}
           />
-          <div style={{ textAlign: 'center', marginBottom: 20 }}>
+          {/* <div style={{ textAlign: 'center', marginBottom: 20 }}>
             <Checkbox style={{ color: '#d9886a' }}>
               Agree with our policies
             </Checkbox>
-          </div>
+          </div> */}
+          <br />
           <Button
             type="primary"
             size="large"

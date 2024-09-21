@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Row, Col, Button, Select, Card } from 'antd';
+import { Row, Col, Button, Select, Card, Spin } from 'antd';
 import SearchBar from '@/components/Search bar/Search-bar';
 import ConfigAntdButton from '@/components/Button/ConfigAntdButton';
 import CvList from '@/components/CV List/CvList';
@@ -12,16 +12,29 @@ const Cv = () => {
   const apiSample = 'https://66ed3226380821644cdbe120.mockapi.io/sample';
   const [samples, setSamples] = useState([]);
   const [cv, setCv] = useState([]);
+  const [loadingCv, setLoadingCv] = useState(true); // Loading state for CVs
+  const [loadingSamples, setLoadingSamples] = useState(true); // Loading state for Samples
+
   const fetchCv = async () => {
-    const response = await axios.get(api);
-    console.log(response.data);
-    setCv(response.data);
+    try {
+      const response = await axios.get(api);
+      setCv(response.data);
+    } catch (error) {
+      console.error('Error fetching CVs:', error);
+    } finally {
+      setLoadingCv(false); // Set loading to false once data is fetched
+    }
   };
 
   const fetchSample = async () => {
-    const response = await axios.get(apiSample);
-    console.log(response.data);
-    setSamples(response.data);
+    try {
+      const response = await axios.get(apiSample);
+      setSamples(response.data);
+    } catch (error) {
+      console.error('Error fetching samples:', error);
+    } finally {
+      setLoadingSamples(false); // Set loading to false once data is fetched
+    }
   };
 
   useEffect(() => {
@@ -32,7 +45,7 @@ const Cv = () => {
   return (
     <div className="bg-[#eae3c3] flex justify-center w-full">
       <div className="bg-[#eae3c3] w-full relative">
-        {/* Phần Header */}
+        {/* Header Section */}
         <div
           className="relative w-full h-[469px] bg-cover bg-center flex items-center"
           style={{
@@ -70,29 +83,43 @@ const Cv = () => {
               <Select defaultValue="All design" className="w-[254px] h-[47px]">
                 <Option value="All design">All design</Option>
                 <Option value="Marketing">Marketing</Option>
-                <Option value="Infomation Technology">
-                  Infomation Technology
+                <Option value="Information Technology">
+                  Information Technology
                 </Option>
               </Select>
             </div>
           </div>
         </div>
 
-        <SearchBar />
+        <SearchBar
+          style={{ paddingRight: '192px' }}
+          placeholder="Search your CV"
+        />
 
-        {/* Phần CV list */}
-        {/* Gọi component CvList và truyền dữ liệu */}
-        <CvList data={cv} />
+        {/* CV List Section */}
+        {loadingCv ? (
+          <div className="flex justify-center items-center my-10">
+            <Spin size="large" /> {/* Ant Design spinner */}
+          </div>
+        ) : (
+          <CvList data={cv} />
+        )}
 
-        {/* Phần quảng cáo */}
+        {/* Advertising Section */}
         <div className="mt-20 bg-[#0f1110cc] py-10">
           <div className="text-center text-white font-poppins font-medium text-[56px]">
             Advertising
           </div>
         </div>
 
-        {/* Phần CV mẫu */}
-        <CvSample samples={samples} />
+        {/* CV Samples Section */}
+        {loadingSamples ? (
+          <div className="flex justify-center items-center my-10">
+            <Spin size="large" />
+          </div>
+        ) : (
+          <CvSample samples={samples} />
+        )}
       </div>
     </div>
   );

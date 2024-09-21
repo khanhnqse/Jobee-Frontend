@@ -1,31 +1,30 @@
-import React, { useState } from 'react';
-import { Row, Col, Card, Button } from 'antd';
+import React from 'react';
+import { Card, Button } from 'antd';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 const CvSample = ({ samples }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const pageSize = 4; // Number of samples to display at a time
-
-  const handleNext = () => {
-    setCurrentIndex((prevIndex) =>
-      Math.min(prevIndex + pageSize, samples.length - pageSize)
-    );
+  const settings = {
+    // dots: true,
+    infinite: true,
+    speed: 800,
+    slidesToShow: 4, // Display 4 cards at a time
+    slidesToScroll: 1, // Scroll 1 card at a time
+    swipeToSlide: true, // Enable swipe gestures
+    autoplay: true, // Enable autoplay
+    autoplaySpeed: 2000, // Set the autoplay speed to 3 seconds
+    pauseOnHover: true, // Pause autoplay when hovering};
   };
-
-  const handlePrev = () => {
-    setCurrentIndex((prevIndex) => Math.max(prevIndex - pageSize, 0));
-  };
-
-  const displayedSamples = samples.slice(currentIndex, currentIndex + pageSize);
-
   return (
     <div className="px-[16px] md:px-[173px] mt-10 pb-10">
       <p className="font-poppins font-semibold text-black text-[28px] text-center mb-8">
         CV Samples for Popular Positions
       </p>
 
-      <Row gutter={[16, 24]} className="flex justify-center">
-        {displayedSamples.map((sample, index) => (
-          <Col key={index} xs={24} sm={12} md={8} lg={6}>
+      <Slider {...settings}>
+        {samples.map((sample, index) => (
+          <div key={index} className="px-2">
             <Card
               hoverable
               cover={
@@ -35,7 +34,6 @@ const CvSample = ({ samples }) => {
                   className="object-cover h-[200px] w-full rounded-t-[8px] transition-transform duration-300"
                 />
               }
-              className="rounded-[8px] shadow-lg transition-transform transform hover:scale-105"
               style={{ backgroundColor: '#ffffff' }}
             >
               <Card.Meta
@@ -51,26 +49,9 @@ const CvSample = ({ samples }) => {
                 }
               />
             </Card>
-          </Col>
+          </div>
         ))}
-      </Row>
-
-      <div className="flex justify-between mt-4">
-        <Button
-          onClick={handlePrev}
-          disabled={currentIndex === 0}
-          className="bg-[#3B7B7A] text-white transition-all duration-300 hover:bg-[#2b4f4a]"
-        >
-          Previous
-        </Button>
-        <Button
-          onClick={handleNext}
-          disabled={currentIndex + pageSize >= samples.length}
-          className="bg-[#3B7B7A] text-white transition-all duration-300 hover:bg-[#2b4f4a]"
-        >
-          Next
-        </Button>
-      </div>
+      </Slider>
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Row, Col, Button } from 'antd';
+import ConfigAntdButton from '@/components/Button/ConfigAntdButton';
 
 const Simulated = () => {
   return (
@@ -16,7 +17,7 @@ const Simulated = () => {
             position: 'relative',
             maxWidth: '1622px',
             margin: '0 auto',
-            height: '750px',
+            height: '670px',
           }}
         >
           <Col
@@ -50,6 +51,7 @@ const Simulated = () => {
           </Col>
           <Col
             style={{
+              paddingTop: '100px',
               position: 'absolute',
               width: '100%',
               top: '25%',
@@ -64,6 +66,7 @@ const Simulated = () => {
           </Col>
           <p
             style={{
+              paddingTop: '100px',
               position: 'absolute',
               width: '100%',
               top: '35%',
@@ -77,25 +80,41 @@ const Simulated = () => {
           >
             Power Up Your Interview Skills in a Flash!
           </p>
-          <Button
-            type="primary"
+          <Col
             style={{
+              paddingTop: '520px',
               position: 'absolute',
-              width: '213px',
-              height: '59px',
-              top: '45%',
-              left: '50%',
-              transform: 'translateX(-50%)', // Center the button
-              backgroundColor: '#c94c4b',
-              borderRadius: '10px',
+              width: '100%',
+              top: '25%',
+              textAlign: 'center',
+              color: 'white',
               fontFamily: "'Poppins-Medium', Helvetica",
-              fontWeight: '500',
-              fontSize: '1.25rem', // Responsive font size
-              lineHeight: '36.5px',
+              fontSize: '3rem', // Responsive font size
+              lineHeight: '1.2',
             }}
           >
-            Let’s go
-          </Button>
+            <ConfigAntdButton>
+              <Button
+                type="primary"
+                style={{
+                  position: 'absolute',
+                  width: '213px',
+                  height: '59px',
+                  top: '45%',
+                  left: '50%',
+                  transform: 'translateX(-50%)', // Center the button
+                  backgroundColor: '#c94c4b',
+                  borderRadius: '10px',
+                  fontFamily: "'Poppins-Medium', Helvetica",
+                  fontWeight: '500',
+                  fontSize: '1.25rem', // Responsive font size
+                  lineHeight: '36.5px',
+                }}
+              >
+                Let’s go
+              </Button>
+            </ConfigAntdButton>
+          </Col>
         </Row>
       </Col>
     </Row>

@@ -3,8 +3,12 @@ import {
   MailOutlined,
   PhoneOutlined,
   FacebookOutlined,
+  InstagramOutlined,
+  TwitterOutlined,
+  LinkedinOutlined,
 } from '@ant-design/icons';
 import logoFooter from '../../assets/artboard-3-copy-2-4x-2.png';
+import { Link } from 'react-router-dom';
 
 const { Paragraph, Title } = Typography;
 
@@ -14,25 +18,26 @@ export default function Footer() {
       style={{
         backgroundColor: '#3b7b7a',
         color: 'white',
-        padding: '40px 20px',
+        padding: '68px 40px',
+        textAlign: 'left',
       }}
     >
-      <Row justify="center" align="middle" gutter={[24, 24]}>
-        <Col xs={24} md={12} lg={8}>
+      <Row justify="center" align="top" gutter={[32, 32]}>
+        {/* Logo and Subscription Section */}
+        <Col xs={24} md={8} lg={6}>
           <img
             src={logoFooter}
-            alt="Artboard copy"
+            alt="Logo"
             style={{
-              width: '100%',
-              maxWidth: 300,
+              width: '200px',
               height: 'auto',
-              marginLeft: '45px',
+              marginLeft: '38px',
             }}
           />
           <Paragraph
-            style={{ color: 'white', marginTop: '16px', marginLeft: '72px' }}
+            style={{ marginTop: '16px', marginLeft: '28px', color: 'white' }}
           >
-            Subscribe for more deals and information
+            Subscribe for more deals and updates
           </Paragraph>
           <Input
             placeholder="Enter your email"
@@ -40,6 +45,7 @@ export default function Footer() {
               <Button
                 style={{
                   backgroundColor: '#C94C4B',
+                  borderColor: '#C94C4B',
                 }}
                 type="primary"
               >
@@ -47,20 +53,19 @@ export default function Footer() {
               </Button>
             }
             style={{
-              width: '100%',
-              maxWidth: 400,
-              marginTop: 16,
+              marginTop: '16px',
+              maxWidth: '300px',
               backgroundColor: '#EAE4C4',
-              PaddingRight: '5px',
             }}
           />
         </Col>
 
-        <Col xs={24} md={12} lg={8} style={{ paddingLeft: '250px' }}>
-          <Title level={4} style={{ color: 'white' }}>
-            Contact us at
+        {/* Contact Info Section */}
+        <Col xs={24} md={8} lg={6}>
+          <Title level={4} style={{ color: '#EAE4C4' }}>
+            Contact Us
           </Title>
-          <Space direction="vertical" size="middle">
+          <Typography direction="vertical" size="middle">
             <Paragraph style={{ color: 'white' }}>
               <MailOutlined /> jobee.co@gmail.com
             </Paragraph>
@@ -68,9 +73,85 @@ export default function Footer() {
               <PhoneOutlined /> (+84) 000 000 0000
             </Paragraph>
             <Paragraph style={{ color: 'white' }}>
-              <FacebookOutlined /> Jobee Co
+              <FacebookOutlined />
+              Jobee Co
             </Paragraph>
+          </Typography>
+        </Col>
+
+        {/* Quick Links Section */}
+        <Col xs={24} md={8} lg={6}>
+          <Title level={4} style={{ color: '#EAE4C4' }}>
+            Quick Links
+          </Title>
+          <Typography direction="vertical" size="middle">
+            <Paragraph style={{ color: 'white' }}>
+              <Link to="/" style={{ color: 'white' }}>
+                Home
+              </Link>
+            </Paragraph>
+            <Paragraph style={{ color: 'white' }}>
+              <Link to="/cv" style={{ color: 'white' }}>
+                CV Assistance
+              </Link>
+            </Paragraph>
+            <Paragraph style={{ color: 'white' }}>
+              <Link to="/simulated-interview" style={{ color: 'white' }}>
+                Simulated Interview
+              </Link>
+            </Paragraph>
+            <Paragraph style={{ color: 'white' }}>
+              <Link to="/pricing" style={{ color: 'white' }}>
+                Pricing
+              </Link>
+            </Paragraph>
+          </Typography>
+        </Col>
+
+        {/* Social Media Section */}
+        <Col xs={24} md={8} lg={6}>
+          <Title level={4} style={{ color: '#EAE4C4' }}>
+            Follow Us
+          </Title>
+          <Space size="large">
+            <a
+              href="https://www.facebook.com/profile.php?id=61565674033774"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FacebookOutlined style={{ fontSize: '24px', color: 'white' }} />
+            </a>
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <InstagramOutlined style={{ fontSize: '24px', color: 'white' }} />
+            </a>
+            <a
+              href="https://twitter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <TwitterOutlined style={{ fontSize: '24px', color: 'white' }} />
+            </a>
+            <a
+              href="https://linkedin.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <LinkedinOutlined style={{ fontSize: '24px', color: 'white' }} />
+            </a>
           </Space>
+        </Col>
+      </Row>
+
+      {/* Footer Bottom */}
+      <Row justify="center" style={{ marginTop: '20px', textAlign: 'center' }}>
+        <Col span={24}>
+          <Paragraph style={{ color: '#EAE4C4' }}>
+            © 2024 Jobee Co. All rights reserved.
+          </Paragraph>
         </Col>
       </Row>
     </div>
