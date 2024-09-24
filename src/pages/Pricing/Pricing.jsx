@@ -1,7 +1,9 @@
 import React from 'react';
 import { Row, Col, Card, Typography, Button, Divider } from 'antd';
 import { CheckCircleOutlined, ArrowRightOutlined } from '@ant-design/icons';
+
 const { Title, Text } = Typography;
+
 const Pricing = () => {
   return (
     <div
@@ -10,14 +12,17 @@ const Pricing = () => {
         display: 'flex',
         justifyContent: 'center',
         width: '100%',
+        padding: '20px',
       }}
     >
       <div
         style={{
           backgroundColor: '#eae3c3',
-          width: '1440px',
-          height: '1120px',
+          maxWidth: '1440px',
+          width: '100%',
+          height: 'auto',
           position: 'relative',
+          padding: '20px',
         }}
       >
         <Row justify="center" style={{ marginTop: '52px' }}>
@@ -30,21 +35,23 @@ const Pricing = () => {
                 color: '#52575d',
                 fontSize: '20px',
                 textAlign: 'center',
-                paddingLeft: '51px',
+                display: 'block',
+                margin: '10px 0',
               }}
             >
               Choose the plan that works for you.
             </Text>
           </Col>
         </Row>
-        <Row justify="center" gutter={32} style={{ marginTop: '52px' }}>
-          <Col>
+        <Row justify="center" gutter={[32, 32]} style={{ marginTop: '52px' }}>
+          <Col xs={24} sm={12} md={8}>
             <Card
               style={{
-                width: 400,
-                height: 750,
                 backgroundColor: '#3b7b7a',
                 borderRadius: '20px',
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100%', // Make card take full height
               }}
             >
               <Title level={2} style={{ color: 'white' }}>
@@ -59,9 +66,9 @@ const Pricing = () => {
               <div
                 style={{
                   position: 'relative',
-                  width: '327px',
+                  width: '100%',
                   height: '340px',
-                  marginTop: '86px',
+                  marginTop: '20px',
                 }}
               >
                 <ArrowRightOutlined
@@ -75,9 +82,10 @@ const Pricing = () => {
                 />
                 <img
                   style={{
-                    width: '327px',
-                    height: '340px',
+                    width: '100%',
+                    height: '100%',
                     objectFit: 'cover',
+                    borderRadius: '20px',
                   }}
                   alt="Animation"
                   src="./src/assets/pricing.png"
@@ -85,84 +93,44 @@ const Pricing = () => {
               </div>
             </Card>
           </Col>
-          <Col>
-            <Card style={{ width: 400, height: 750, borderRadius: '20px' }}>
+          <Col xs={24} sm={12} md={8}>
+            <Card
+              style={{
+                borderRadius: '20px',
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100%',
+              }}
+            >
               <Title level={2}>Standard</Title>
               <Text style={{ color: '#a9a9aa', fontSize: '22px' }}>
                 What You’ll Get
               </Text>
-              <div style={{ marginTop: '28px' }}>
-                <div
-                  style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
-                >
-                  <CheckCircleOutlined
-                    style={{ fontSize: '24px', color: '#34343e' }}
-                  />
-                  <Text style={{ fontSize: '18px', color: '#34343e' }}>
-                    Announcement of competitions and workshops to improve skills
-                  </Text>
-                </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    marginTop: '16px',
-                  }}
-                >
-                  <CheckCircleOutlined
-                    style={{ fontSize: '24px', color: '#34343e' }}
-                  />
-                  <Text style={{ fontSize: '18px', color: '#34343e' }}>
-                    Open additional interview features to receive JD to complete
-                    questions.
-                  </Text>
-                </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    marginTop: '16px',
-                  }}
-                >
-                  <CheckCircleOutlined
-                    style={{ fontSize: '24px', color: '#34343e' }}
-                  />
-                  <Text style={{ fontSize: '18px', color: '#34343e' }}>
-                    Full access to community features.
-                  </Text>
-                </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    marginTop: '16px',
-                  }}
-                >
-                  <CheckCircleOutlined
-                    style={{ fontSize: '24px', color: '#34343e' }}
-                  />
-                  <Text style={{ fontSize: '18px', color: '#34343e' }}>
-                    Priority customer support.
-                  </Text>
-                </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    marginTop: '16px',
-                  }}
-                >
-                  <CheckCircleOutlined
-                    style={{ fontSize: '24px', color: '#34343e' }}
-                  />
-                  <Text style={{ fontSize: '18px', color: '#34343e' }}>
-                    All CV templates
-                  </Text>
-                </div>
+              <div style={{ marginTop: '28px', flexGrow: 1 }}>
+                {[
+                  'Announcement of competitions and workshops to improve skills',
+                  'Open additional interview features to receive JD to complete questions',
+                  'Full access to community features',
+                  'Priority customer support',
+                  'All CV templates',
+                ].map((item, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      marginTop: '16px',
+                    }}
+                  >
+                    <CheckCircleOutlined
+                      style={{ fontSize: '24px', color: '#34343e' }}
+                    />
+                    <Text style={{ fontSize: '18px', color: '#34343e' }}>
+                      {item}
+                    </Text>
+                  </div>
+                ))}
               </div>
               <Divider style={{ marginTop: '28px' }} />
               <Title level={2} style={{ marginTop: '112px' }}>
@@ -172,7 +140,7 @@ const Pricing = () => {
               <Button
                 type="primary"
                 style={{
-                  width: '352px',
+                  width: '100%',
                   height: '64px',
                   borderRadius: '12px',
                   marginTop: '28px',
@@ -183,115 +151,48 @@ const Pricing = () => {
               </Button>
             </Card>
           </Col>
-          <Col>
-            <Card style={{ width: 400, height: 750, borderRadius: '20px' }}>
+          <Col xs={24} sm={12} md={8}>
+            <Card
+              style={{
+                borderRadius: '20px',
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100%',
+              }}
+            >
               <Title level={2}>Standard +</Title>
               <Text style={{ color: '#a9a9aa', fontSize: '22px' }}>
                 What You’ll Get
               </Text>
-              <div style={{ marginTop: '28px' }}>
-                <div
-                  style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
-                >
-                  <CheckCircleOutlined
-                    style={{ fontSize: '24px', color: '#34343e' }}
-                  />
-                  <Text style={{ fontSize: '18px', color: '#34343e' }}>
-                    All services in the Standard
-                  </Text>
-                </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    marginTop: '16px',
-                  }}
-                >
-                  <CheckCircleOutlined
-                    style={{ fontSize: '24px', color: '#34343e' }}
-                  />
-                  <Text style={{ fontSize: '18px', color: '#34343e' }}>
-                    1-1 career consultation with experts.
-                  </Text>
-                </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    marginTop: '16px',
-                  }}
-                >
-                  <CheckCircleOutlined
-                    style={{ fontSize: '24px', color: '#34343e' }}
-                  />
-                  <Text style={{ fontSize: '18px', color: '#34343e' }}>
-                    Message directly with recruiters.
-                  </Text>
-                </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    marginTop: '16px',
-                  }}
-                >
-                  <CheckCircleOutlined
-                    style={{ fontSize: '24px', color: '#34343e' }}
-                  />
-                  <Text style={{ fontSize: '18px', color: '#34343e' }}>
-                    Exclusive access to premium job postings.
-                  </Text>
-                </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    marginTop: '16px',
-                  }}
-                >
-                  <CheckCircleOutlined
-                    style={{ fontSize: '24px', color: '#34343e' }}
-                  />
-                  <Text style={{ fontSize: '18px', color: '#34343e' }}>
-                    Automatically notify when favorite employers post news
-                  </Text>
-                </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    marginTop: '16px',
-                  }}
-                >
-                  <CheckCircleOutlined
-                    style={{ fontSize: '24px', color: '#34343e' }}
-                  />
-                  <Text style={{ fontSize: '18px', color: '#34343e' }}>
-                    Interviews are no longer limited
-                  </Text>
-                </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    marginTop: '16px',
-                  }}
-                >
-                  <CheckCircleOutlined
-                    style={{ fontSize: '24px', color: '#34343e' }}
-                  />
-                  <Text style={{ fontSize: '18px', color: '#34343e' }}>
-                    AI scores your CV and gives advice
-                  </Text>
-                </div>
+              <div style={{ marginTop: '28px', flexGrow: 1 }}>
+                {[
+                  'All services in the Standard',
+                  '1-1 career consultation with experts',
+                  'Message directly with recruiters',
+                  'Exclusive access to premium job postings',
+                  'Automatically notify when favorite employers post news',
+                  'Interviews are no longer limited',
+                  'AI scores your CV and gives advice',
+                ].map((item, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      marginTop: '16px',
+                    }}
+                  >
+                    <CheckCircleOutlined
+                      style={{ fontSize: '24px', color: '#34343e' }}
+                    />
+                    <Text style={{ fontSize: '18px', color: '#34343e' }}>
+                      {item}
+                    </Text>
+                  </div>
+                ))}
               </div>
-              <Divider style={{ marginTop: '28px' }} />
+              <Divider style={{ marginTop: '56px' }} />
               <Title level={2} style={{ marginTop: '16px' }}>
                 299,000VND
                 <span style={{ fontSize: '18px' }}>/3 month</span>
@@ -299,7 +200,7 @@ const Pricing = () => {
               <Button
                 type="primary"
                 style={{
-                  width: '352px',
+                  width: '100%',
                   height: '64px',
                   borderRadius: '12px',
                   marginTop: '28px',
@@ -328,4 +229,5 @@ const Pricing = () => {
     </div>
   );
 };
+
 export default Pricing;

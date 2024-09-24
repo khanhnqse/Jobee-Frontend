@@ -5,6 +5,7 @@ import ConfigAntdButton from '@/components/Button/ConfigAntdButton';
 import CvList from '@/components/CV List/CvList';
 import axios from 'axios';
 import CvSample from '@/components/CV Sample/CvSample';
+import hero from '../../assets/brown-minimalist-work-planning-presentation-1-1.png';
 const { Option } = Select;
 
 const Cv = () => {
@@ -12,8 +13,8 @@ const Cv = () => {
   const apiSample = 'https://66ed3226380821644cdbe120.mockapi.io/sample';
   const [samples, setSamples] = useState([]);
   const [cv, setCv] = useState([]);
-  const [loadingCv, setLoadingCv] = useState(true); // Loading state for CVs
-  const [loadingSamples, setLoadingSamples] = useState(true); // Loading state for Samples
+  const [loadingCv, setLoadingCv] = useState(true);
+  const [loadingSamples, setLoadingSamples] = useState(true);
 
   const fetchCv = async () => {
     try {
@@ -22,7 +23,7 @@ const Cv = () => {
     } catch (error) {
       console.error('Error fetching CVs:', error);
     } finally {
-      setLoadingCv(false); // Set loading to false once data is fetched
+      setLoadingCv(false);
     }
   };
 
@@ -33,7 +34,7 @@ const Cv = () => {
     } catch (error) {
       console.error('Error fetching samples:', error);
     } finally {
-      setLoadingSamples(false); // Set loading to false once data is fetched
+      setLoadingSamples(false);
     }
   };
 
@@ -46,15 +47,14 @@ const Cv = () => {
     <div className="bg-[#eae3c3] flex justify-center w-full">
       <div className="bg-[#eae3c3] w-full relative">
         {/* Header Section */}
-        <div
-          className="relative w-full h-[469px] bg-cover bg-center flex items-center"
-          style={{
-            backgroundImage:
-              "url('./src/assets/brown-minimalist-work-planning-presentation-1-1.png')",
-          }}
-        >
+        <div className="relative w-full h-[469px] flex items-center">
+          <img
+            src={hero}
+            alt="Header Background"
+            className="absolute inset-0 object-cover w-full h-full"
+          />
           <div className="absolute inset-0 bg-[#0f1110cc]" />
-          <div className="relative flex flex-col justify-center items-start px-[216px]">
+          <div className="relative flex flex-col justify-center items-start px-[216px] z-10">
             <p className="font-poppins font-medium text-white text-[48px] leading-[83px]">
               List of job application samples
             </p>
@@ -99,7 +99,7 @@ const Cv = () => {
         {/* CV List Section */}
         {loadingCv ? (
           <div className="flex justify-center items-center my-10">
-            <Spin size="large" /> {/* Ant Design spinner */}
+            <Spin size="large" />
           </div>
         ) : (
           <CvList data={cv} />

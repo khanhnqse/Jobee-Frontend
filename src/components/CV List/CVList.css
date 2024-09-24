@@ -1,0 +1,67 @@
+.cv-list-container {
+    padding: 16px;
+    background-color: #f4f4f6; /* A light background color */
+  }
+  
+  .cv-card {
+    border-radius: 12px; /* Rounded corners for a modern look */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    transition: box-shadow 0.3s ease-in-out;
+  }
+  
+  .cv-card:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* More pronounced shadow on hover */
+  }
+  
+  .cv-img {
+    width: 100%;
+    height: 240px; /* Adjust the height for consistency */
+    object-fit: cover; /* Maintain image aspect ratio */
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+  }
+  
+  .cv-button-container {
+    text-align: center;
+    margin-top: 12px;
+  }
+  
+  .cv-button {
+    border-radius: 24px; /* Rounded button for aeternity UI feel */
+    width: 100px;
+    background-color: #1da57a; /* Aeternity UI primary color */
+    border-color: #1da57a;
+    transition: background-color 0.3s ease;
+  }
+  
+  .cv-button:hover {
+    background-color: #148f63; /* Darker green on hover */
+  }
+  
+  .pagination-container {
+    text-align: center;
+    margin-top: 16px;
+  }
+  
+  .ant-pagination-item-active {
+    border-color: #1da57a !important; /* Active pagination color */
+  }
+  
+  .ant-pagination-item-active a {
+    color: #1da57a !important;
+  }
+  
+  .ant-pagination-item a {
+    color: #666; /* Default pagination link color */
+  }
+  
+  .ant-pagination-prev .ant-pagination-item-link, 
+  .ant-pagination-next .ant-pagination-item-link {
+    border-color: #ccc; /* Pagination arrow button color */
+  }
+  
+  .ant-pagination-prev:hover .ant-pagination-item-link, 
+  .ant-pagination-next:hover .ant-pagination-item-link {
+    border-color: #1da57a; /* Hover color for pagination buttons */
+  }
+  

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Row, Col, Button } from 'antd';
 import ConfigAntdButton from '@/components/Button/ConfigAntdButton';
+import simulateImage from '../../assets/untitled-design-10-1-1.png';
 
 const Simulated = () => {
   return (
@@ -36,7 +37,7 @@ const Simulated = () => {
                 filter: 'brightness(0.7)', // Dim the background image for better text contrast
               }}
               alt="Untitled design"
-              src="./src/assets/untitled-design-10-1-1.png"
+              src={simulateImage}
             />
             <div
               style={{
