@@ -15,8 +15,8 @@ function App() {
   return (
     <Routes>
       <Route path={PATHS.HOME} element={<MainLayout />}>
-        <Route path={PATHS.LANDING.INDEX} element={<LandingPage />} />
         <Route index element={<Home />} />
+        <Route path={PATHS.LANDING.INDEX} element={<LandingPage />} />
         <Route path={PATHS.CV.INDEX} element={<Cv />} />
         <Route path={PATHS.SIMULATED_INTERVIEW.INDEX} element={<Simulated />} />
         <Route path={PATHS.CONTACT.INDEX} element={<ContactUs />} />
