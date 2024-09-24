@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col, Card, Typography, Button, Divider } from 'antd';
 import { CheckCircleOutlined, ArrowRightOutlined } from '@ant-design/icons';
-
+import pricing from '../../assets/pricing.png';
 const { Title, Text } = Typography;
 
 const Pricing = () => {
@@ -88,7 +88,7 @@ const Pricing = () => {
                     borderRadius: '20px',
                   }}
                   alt="Animation"
-                  src="./src/assets/pricing.png"
+                  src={pricing}
                 />
               </div>
             </Card>
