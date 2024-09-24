@@ -1,9 +1,10 @@
 const SIMULATED_INTERVIEW = '/simulated-interview';
-
+const HOME_PAGE = '/home';
 const CV_ASSISTANCE = '/cv';
 const LEARNING = '/learning';
 const PRICING = '/pricing';
 const CONTACT = '/contact-us';
+const LANDING = '/landing-page';
 export const PATHS = {
   HOME: '/',
   LOGIN: '/login',
@@ -26,4 +27,10 @@ export const PATHS = {
   CONTACT: {
     INDEX: CONTACT,
   },
+  LANDING:{
+    INDEX: LANDING,
+  },
+  HOME_PAGE:{
+    INDEX: HOME_PAGE,
+  }
 };

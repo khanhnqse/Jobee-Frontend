@@ -1,6 +1,8 @@
 import React from 'react';
 import { Row, Col, Input, Button, Checkbox, Typography } from 'antd';
-import { MailOutlined, LockOutlined } from '@ant-design/icons';
+
+import contact from '../../assets/contact.png';
+import { color } from 'framer-motion';
 
 const { Title, Text } = Typography;
 
@@ -87,7 +89,19 @@ const ContactUs = () => {
               way.
             </Text>
             <Title level={3} style={{ marginTop: '20px', fontSize: '24px' }}>
-              Click here
+              <a
+                href="/"
+                style={{
+                  color: '#3B7B7A', // Custom color
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                  transition: 'color 0.3s', // Smooth transition for color
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#c94c4b')} // Change color on hover
+                onMouseLeave={(e) => (e.currentTarget.style.color = '#3B7B7A')} // Revert color on leave
+              >
+                Click here
+              </a>
             </Title>
             <Text style={{ fontSize: '20px', color: '#666' }}>
               If you are admin to switch.
@@ -100,10 +114,26 @@ const ContactUs = () => {
             backgroundColor: '#0f1110cc',
             padding: '50px 0',
             borderRadius: '10px',
+            position: 'relative', // for absolute positioning of the image
             color: 'white',
-            backgroundImage: 'url("./src/assets/Frame 3 (1).png")',
           }}
         >
+          {/* Add the background image here */}
+          <img
+            src={contact}
+            alt="Background"
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              borderRadius: '10px',
+              // Ensures the image stays behind the content
+            }}
+          />
+
           <Col span={12} offset={6} style={{ textAlign: 'center' }}>
             <Title level={2} style={{ color: 'white' }}>
               Want a personal account?

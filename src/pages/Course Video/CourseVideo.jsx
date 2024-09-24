@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Card, Button, Pagination, Tag, Spin } from 'antd';
+import { Row, Col, Card, Button, Collapse, Spin } from 'antd';
 import video4 from '../../assets/untitled-design-10-1-1.png';
 import heroSection from '../../assets/Hero.png';
 import Title from 'antd/es/typography/Title';
@@ -12,7 +12,7 @@ import courseImage2 from '../../assets/image 22.png';
 import TopVideos from '@/components/Video List/VideoList';
 
 const { Meta } = Card;
-
+const { Panel } = Collapse;
 const CourseraVideo = () => {
   const apiVideo = 'https://66ee8e6d3ed5bb4d0bf14a30.mockapi.io/video';
   const [videos, setVideos] = useState([]);
@@ -80,7 +80,6 @@ const CourseraVideo = () => {
       {/* Loading spinner */}
       <div
         style={{
-          backgroundColor: '#0f1110cc',
           padding: '16px',
           paddingTop: '32px',
           marginTop: '32px',
@@ -281,61 +280,100 @@ const CourseraVideo = () => {
       </div>
 
       {/* Tip */}
-      <Row justify="center" style={{ marginTop: 69 }}>
-        <Col span={12} style={{ textAlign: 'center' }}>
+      <Row justify="center" className="mt-16">
+        <Col span={12} className="text-center">
           <Title level={2}>Tips to write a good CV</Title>
         </Col>
       </Row>
+
       <Row justify="center" className="pb-10 pt-20">
         <Col span={16}>
-          <div
-            style={{
-              backgroundColor: '#3D3D3D', // Dark background for the content
-              padding: '36px',
-              borderRadius: '8px',
-              color: 'white',
-              textAlign: 'left',
-            }}
-          >
-            <Paragraph className="text-white">
-              <b>1. Choose clear, legible fonts.</b> <br />
-              Go for one of the standard <a href="#">CV typefaces</a>: Arial,
-              Tahoma, or Helvetica if you prefer sans-serif fonts, and Times New
-              Roman or Bookman Old Style if serif fonts are your usual pick. Use
-              11 to 12 pt font size and single spacing. For your name and
-              section titles, pick a 14 to 16-pt font size.
-            </Paragraph>
+          <Collapse className="bg-white rounded-lg shadow-lg">
+            <Panel
+              header="1. Choose clear, legible fonts."
+              key="1"
+              className="text-lg"
+            >
+              <div className="bg-gray-800 p-9 rounded-lg text-white text-left">
+                <Paragraph className="text-white">
+                  Go for one of the standard{' '}
+                  <a href="#" className="text-blue-500 underline">
+                    CV typefaces
+                  </a>
+                  : Arial, Tahoma, or Helvetica if you prefer sans-serif fonts,
+                  and Times New Roman or Bookman Old Style if serif fonts are
+                  your usual pick. Use 11 to 12 pt font size and single spacing.
+                  For your name and section titles, pick a 14 to 16-pt font
+                  size.
+                </Paragraph>
+              </div>
+            </Panel>
 
-            <Paragraph className="text-white">
-              <b>2. Be consistent with your CV layout.</b> <br />
-              Set one-inch margins for all four sides. Make sure your CV
-              headings are uniform—make them larger and bold, but go easy on
-              italics and underlining. Stick to a single date format on your CV:
-              11-2017 or November 2017.
-            </Paragraph>
+            <Panel
+              header="2. Be consistent with your CV layout."
+              key="2"
+              className="text-lg"
+            >
+              <div className="bg-gray-800 p-9 rounded-lg text-white text-left">
+                <Paragraph className="text-white">
+                  Set one-inch margins for all four sides. Make sure your CV
+                  headings are uniform—make them larger and bold, but go easy on
+                  italics and underlining. Stick to a single date format on your
+                  CV: 11-2017 or November 2017.
+                </Paragraph>
+              </div>
+            </Panel>
 
-            <Paragraph className="text-white">
-              <b>3. Don’t cram your CV with gimmicky graphics.</b> <br />
-              Less is more. <a href="#">White space</a> is your
-              friend—recruiters need some breathing room! Plus, most of the
-              time, after you send out your CV, it will be printed in black ink
-              on white paper. Too many graphics might make it illegible.
-            </Paragraph>
+            <Panel
+              header="3. Don’t cram your CV with gimmicky graphics."
+              key="3"
+              className="text-lg"
+            >
+              <div className="bg-gray-800 p-9 rounded-lg text-white text-left">
+                <Paragraph className="text-white">
+                  Less is more.{' '}
+                  <a href="#" className="text-blue-500 underline">
+                    White space
+                  </a>{' '}
+                  is your friend—recruiters need some breathing room! Plus, most
+                  of the time, after you send out your CV, it will be printed in
+                  black ink on white paper. Too many graphics might make it
+                  illegible.
+                </Paragraph>
+              </div>
+            </Panel>
 
-            <Paragraph className="text-white">
-              <b>4. Get photos off of your CV.</b> <br />
-              Unless you're explicitly asked to{' '}
-              <a href="#">include your photograph</a> in the job ad, use a
-              professional-looking picture, but not as official as an ID photo.
-            </Paragraph>
+            <Panel
+              header="4. Get photos off of your CV."
+              key="4"
+              className="text-lg"
+            >
+              <div className="bg-gray-800 p-9 rounded-lg text-white text-left">
+                <Paragraph className="text-white">
+                  Unless you're explicitly asked to{' '}
+                  <a href="#" className="text-blue-500 underline">
+                    include your photograph
+                  </a>{' '}
+                  in the job ad, use a professional-looking picture, but not as
+                  official as an ID photo.
+                </Paragraph>
+              </div>
+            </Panel>
 
-            <Paragraph className="text-white">
-              <b>5. Make your CV brief and relevant.</b> <br />
-              Don’t include every single detail of your work experience and
-              education. Stick only to the facts that are relevant to potential
-              employers.
-            </Paragraph>
-          </div>
+            <Panel
+              header="5. Make your CV brief and relevant."
+              key="5"
+              className="text-lg"
+            >
+              <div className="bg-gray-800 p-9 rounded-lg text-white text-left">
+                <Paragraph className="text-white">
+                  Don’t include every single detail of your work experience and
+                  education. Stick only to the facts that are relevant to
+                  potential employers.
+                </Paragraph>
+              </div>
+            </Panel>
+          </Collapse>
         </Col>
       </Row>
     </>
