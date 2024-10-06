@@ -1,7 +1,8 @@
 import React from 'react';
-import { Row, Col, Card, Typography, Button, Pagination, Tag } from 'antd';
+import { Row, Col, Card, Typography, Button, Tag, Pagination } from 'antd';
 import { HeartOutlined } from '@ant-design/icons';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import ConfigAntdButton from '../Button/ConfigAntdButton';
 
 const { Title, Paragraph } = Typography;
@@ -12,8 +13,15 @@ const VideoList = ({
   currentPage = 1,
   onPageChange,
 }) => {
+  const navigate = useNavigate(); // Hook for navigation
+
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedVideos = videos.slice(startIndex, startIndex + itemsPerPage);
+
+  // Function to handle navigation
+  const handleVideoClick = (video) => {
+    navigate('/video-player', { state: { video } });
+  };
 
   return (
     <div style={{ padding: '0 16px' }}>
@@ -27,6 +35,7 @@ const VideoList = ({
             <motion.div
               whileHover={{ scale: 1.05 }}
               transition={{ type: 'tween', stiffness: 300 }}
+              onClick={() => handleVideoClick(video)} // Navigate on click
             >
               <Card
                 hoverable
@@ -41,7 +50,7 @@ const VideoList = ({
                 }}
                 cover={
                   <img
-                    src={video.img}
+                    src={video.thumbnail}
                     alt={`Video ${index + 1}`}
                     style={{
                       width: '100%',

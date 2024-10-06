@@ -4,7 +4,7 @@ import Slider from 'react-slick/lib/slider';
 
 const RecommendedSection = ({ videos, onSelectVideo }) => {
   const sliderSettings = {
-    dots: true, // Show navigation dots
+    dots: false, // Show navigation dots
     infinite: true, // Infinite looping
     speed: 500,
     slidesToShow: 3, // Show 3 videos at a time

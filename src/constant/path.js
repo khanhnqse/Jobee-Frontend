@@ -6,6 +6,7 @@ const PRICING = '/pricing';
 const CONTACT = '/contact-us';
 const LANDING = '/landing-page';
 const VIDEO_PLAYER = '/video-player';
+const POLICY = '/policy';
 export const PATHS = {
   HOME: '/',
   LOGIN: '/login',
@@ -37,4 +38,8 @@ export const PATHS = {
   VIDEO_PLAYER: {
     INDEX: VIDEO_PLAYER,
   },
+  POLICY:{
+    INDEX: POLICY,
+  }
+
 };

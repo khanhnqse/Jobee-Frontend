@@ -11,6 +11,7 @@ import Pricing from './pages/Pricing/Pricing';
 import CourseraVideo from './pages/Course Video/CourseVideo';
 import LandingPage from './pages/Landing Page/LandingPage';
 import VideoPlayerPage from './pages/PlayerVideo/PlayerVideo';
+import PolicyPage from './pages/Policy Page/Policy';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path={PATHS.PRICING.INDEX} element={<Pricing />} />
         <Route path={PATHS.LEARNING.INDEX} element={<CourseraVideo />} />
         <Route path={PATHS.VIDEO_PLAYER.INDEX} element={<VideoPlayerPage />} />
+        <Route path={PATHS.POLICY.INDEX} element={<PolicyPage />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>
