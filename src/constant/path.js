@@ -5,6 +5,7 @@ const LEARNING = '/learning';
 const PRICING = '/pricing';
 const CONTACT = '/contact-us';
 const LANDING = '/landing-page';
+const VIDEO_PLAYER = '/video-player';
 export const PATHS = {
   HOME: '/',
   LOGIN: '/login',
@@ -32,5 +33,8 @@ export const PATHS = {
   },
   HOME_PAGE:{
     INDEX: HOME_PAGE,
-  }
+  },
+  VIDEO_PLAYER: {
+    INDEX: VIDEO_PLAYER,
+  },
 };

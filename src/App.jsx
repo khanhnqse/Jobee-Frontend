@@ -10,6 +10,7 @@ import ContactUs from './pages/Contact Us/ContactUs';
 import Pricing from './pages/Pricing/Pricing';
 import CourseraVideo from './pages/Course Video/CourseVideo';
 import LandingPage from './pages/Landing Page/LandingPage';
+import VideoPlayerPage from './pages/PlayerVideo/PlayerVideo';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path={PATHS.CONTACT.INDEX} element={<ContactUs />} />
         <Route path={PATHS.PRICING.INDEX} element={<Pricing />} />
         <Route path={PATHS.LEARNING.INDEX} element={<CourseraVideo />} />
+        <Route path={PATHS.VIDEO_PLAYER.INDEX} element={<VideoPlayerPage />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>
