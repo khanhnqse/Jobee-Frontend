@@ -3,6 +3,7 @@ import { Row, Col, Input, Button, Checkbox, Typography } from 'antd';
 
 import contact from '../../assets/contact.png';
 import { color } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 const { Title, Text } = Typography;
 
@@ -70,7 +71,7 @@ const ContactUs = () => {
             </Button>
             <br />
             <Checkbox style={{ marginTop: '15px' }}>
-              Agree with our policies
+              Agree with our <Link to="/policy">policies</Link>
             </Checkbox>
           </Col>
           <Col span={8} offset={2}>
@@ -158,7 +159,7 @@ const ContactUs = () => {
               }}
             />
             <Checkbox style={{ marginTop: '15px', color: 'white' }}>
-              Agree with our <a href="/">policies</a>
+              Agree with our <Link to="/policy">policies</Link>
             </Checkbox>
             <br />
             <Button

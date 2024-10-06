@@ -6,10 +6,12 @@ import {
   InstagramOutlined,
   TwitterOutlined,
   LinkedinOutlined,
+  TikTokOutlined,
 } from '@ant-design/icons';
 import logoFooter from '../../assets/artboard-3-copy-2-4x-2.png';
 import { Link } from 'react-router-dom';
 import './Footer.css'; // Import the CSS file
+import { MdOutlinePolicy } from 'react-icons/md';
 
 const { Paragraph, Title } = Typography;
 
@@ -78,6 +80,11 @@ export default function Footer() {
                 Pricing
               </Link>
             </Paragraph>
+            <Paragraph className="footer-paragraph">
+              <Link to="/policy" className="footer-link">
+                Our policy
+              </Link>
+            </Paragraph>
           </Typography>
         </Col>
 
@@ -96,12 +103,12 @@ export default function Footer() {
               <FacebookOutlined />
             </a>
             <a
-              href="https://instagram.com"
+              href="https://www.tiktok.com/@jobeeofficial?_t=8qJfhHxjGkr&_r=1"
               target="_blank"
               rel="noopener noreferrer"
               className="social-icon"
             >
-              <InstagramOutlined />
+              <TikTokOutlined />
             </a>
             <a
               href="https://twitter.com"
