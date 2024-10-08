@@ -7,6 +7,7 @@ const CONTACT = '/contact-us';
 const LANDING = '/landing-page';
 const VIDEO_PLAYER = '/video-player';
 const POLICY = '/policy';
+const CV_MAKER = '/cv-maker';
 export const PATHS = {
   HOME: '/',
   LOGIN: '/login',
@@ -40,6 +41,9 @@ export const PATHS = {
   },
   POLICY:{
     INDEX: POLICY,
+  },
+  CV_MAKER:{
+    INDEX: CV_MAKER,
   }
 
 };
