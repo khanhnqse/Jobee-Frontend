@@ -1,7 +1,6 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import MainLayout from './layout/MainLayout/MainLayout';
 import { PATHS } from './constant/path';
-
 import PageNotFound from './pages/PageNotFound/PageNotFound';
 import Home from './pages/Homepage/Home';
 import Cv from './pages/CV Assistance/Cv';
@@ -15,24 +14,78 @@ import PolicyPage from './pages/Policy Page/Policy';
 import CVMaker from './pages/CV Maker Page/CvMaker';
 import LoginPage from './pages/LoginPage/LoginPage';
 
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+import { AuthProvider } from './context/AuthContext';
+
 function App() {
   return (
-    <Routes>
-      <Route path={PATHS.HOME} element={<MainLayout />}>
-        <Route index element={<Home />} />
-        <Route path={PATHS.LANDING.INDEX} element={<LandingPage />} />
-        <Route path={PATHS.CV.INDEX} element={<Cv />} />
-        <Route path={PATHS.SIMULATED_INTERVIEW.INDEX} element={<Simulated />} />
-        <Route path={PATHS.CONTACT.INDEX} element={<ContactUs />} />
-        <Route path={PATHS.PRICING.INDEX} element={<Pricing />} />
-        <Route path={PATHS.LEARNING.INDEX} element={<CourseraVideo />} />
-        <Route path={PATHS.VIDEO_PLAYER.INDEX} element={<VideoPlayerPage />} />
-        <Route path={PATHS.POLICY.INDEX} element={<PolicyPage />} />
-        <Route path={PATHS.CV_MAKER.INDEX} element={<CVMaker />} />
-        <Route path={PATHS.LOGIN} element={<LoginPage />} />
-      </Route>
-      <Route path="*" element={<PageNotFound />} />
-    </Routes>
+    <AuthProvider>
+      <Routes>
+        <Route path={PATHS.HOME} element={<MainLayout />}>
+          <Route index element={<Home />} />
+          <Route path={PATHS.LANDING.INDEX} element={<LandingPage />} />
+          <Route
+            path={PATHS.CV.INDEX}
+            element={
+              <PrivateRoute>
+                <Cv />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={PATHS.SIMULATED_INTERVIEW.INDEX}
+            element={
+              <PrivateRoute>
+                <Simulated />
+              </PrivateRoute>
+            }
+          />
+          <Route path={PATHS.CONTACT.INDEX} element={<ContactUs />} />
+          <Route
+            path={PATHS.PRICING.INDEX}
+            element={
+              <PrivateRoute>
+                <Pricing />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={PATHS.LEARNING.INDEX}
+            element={
+              <PrivateRoute>
+                <CourseraVideo />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={PATHS.VIDEO_PLAYER.INDEX}
+            element={
+              <PrivateRoute>
+                <VideoPlayerPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={PATHS.POLICY.INDEX}
+            element={
+              <PrivateRoute>
+                <PolicyPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={PATHS.CV_MAKER.INDEX}
+            element={
+              <PrivateRoute>
+                <CVMaker />
+              </PrivateRoute>
+            }
+          />
+          <Route path={PATHS.LOGIN} element={<LoginPage />} />
+        </Route>
+        <Route path="*" element={<PageNotFound />} />
+      </Routes>
+    </AuthProvider>
   );
 }
 

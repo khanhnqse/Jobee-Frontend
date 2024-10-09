@@ -1,15 +1,18 @@
-import { Col, Menu, Row } from 'antd';
+import { Col, Menu, Row, Button, Dropdown, message } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 import logo from '../../assets/artboard-3-copy-2-4x-1.png';
 import { Header as AntHeader } from 'antd/es/layout/layout';
 import { MenuItems } from '@/constant/menu-data';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useAuth } from '@/context/AuthContext';
 import './Header.css';
 
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedKey, setSelectedKey] = useState(location.pathname);
+  const { isAuthenticated, logout } = useAuth();
 
   useEffect(() => {
     setSelectedKey(location.pathname);
@@ -19,6 +22,27 @@ const Header = () => {
     setSelectedKey(key);
     navigate(key);
   };
+
+  const handleLoginClick = () => {
+    navigate('/login');
+  };
+
+  const handleLogoutClick = () => {
+    logout();
+    message.success('You have successfully logged out.');
+    navigate('/login');
+  };
+
+  const profileMenu = (
+    <Menu>
+      <Menu.Item key="profile" onClick={() => navigate('/profile')}>
+        Profile
+      </Menu.Item>
+      <Menu.Item key="logout" onClick={handleLogoutClick}>
+        Logout
+      </Menu.Item>
+    </Menu>
+  );
 
   return (
     <AntHeader style={{ backgroundColor: '#3b7b7a' }}>
@@ -39,13 +63,36 @@ const Header = () => {
             mode="horizontal"
             selectedKeys={[selectedKey]}
             style={{
-              backgroundColor: '#3b7b7a ',
+              backgroundColor: '#3b7b7a',
               color: 'white',
               width: '100%',
               justifyContent: 'space-around', // Center menu items on small screens
             }}
             items={MenuItems}
           />
+        </Col>
+        <Col>
+          {isAuthenticated ? (
+            <Dropdown overlay={profileMenu} trigger={['click']}>
+              <Button
+                style={{
+                  backgroundColor: '#3b7b7a',
+                  color: 'white',
+                }}
+                type="primary"
+                shape="circle"
+                icon={<UserOutlined />}
+              />
+            </Dropdown>
+          ) : (
+            <Button
+              className="login-button"
+              type="primary"
+              onClick={handleLoginClick}
+            >
+              Login now
+            </Button>
+          )}
         </Col>
       </Row>
     </AntHeader>
