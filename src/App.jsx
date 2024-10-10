@@ -16,6 +16,7 @@ import LoginPage from './pages/LoginPage/LoginPage';
 
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import { AuthProvider } from './context/AuthContext';
+import RegisterPage from './pages/RegisterPage/RegisterPage';
 
 function App() {
   return (
@@ -82,6 +83,7 @@ function App() {
             }
           />
           <Route path={PATHS.LOGIN} element={<LoginPage />} />
+          <Route path={PATHS.REGISTER} element={<RegisterPage />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>
