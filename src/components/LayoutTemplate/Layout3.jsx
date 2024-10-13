@@ -19,7 +19,7 @@ const Layout3 = ({ resumeData }) => (
   >
     <Row gutter={16}>
       {/* Left column */}
-      <Col span={8} style={{ backgroundColor: '#f5f5f5', padding: '20px' }}>
+      <Col span={8} style={{ backgroundColor: '#013a85', padding: '20px' }}>
         {/* Profile Picture */}
         <div style={{ textAlign: 'center' }}>
           <img
@@ -36,43 +36,47 @@ const Layout3 = ({ resumeData }) => (
         </div>
         {/* Contact Info */}
         <div style={{ marginTop: '20px' }}>
-          <Text strong>
+          <Text strong className="text-white">
             <UserOutlined /> Contact
           </Text>
-          <Divider />
-          <Text>
+          <Divider className="bg-white" />
+          <Text className="text-white">
             <MailOutlined /> {resumeData.email || 'Email'}
           </Text>
           <br />
-          <Text>
+          <Text className="text-white">
             <PhoneOutlined /> {resumeData.phoneNumber || 'Phone Number'}
           </Text>
           <br />
-          <Text>
+          <Text className="text-white">
             <HomeOutlined /> {resumeData.address || 'Address'}
           </Text>
         </div>
-        <Divider />
+        <Divider className="bg-white" />
         {/* Skills Section */}
-        <Text strong>
+        <Text strong className="text-white">
           <GlobalOutlined /> Skills
         </Text>
-        <ul style={{ paddingLeft: '20px' }}>
+        <ul className="text-white" style={{ paddingLeft: '20px' }}>
           {resumeData.skills?.map((skill, idx) => (
             <li key={idx}>
-              <Text>{skill?.skill || 'No skill provided'}</Text>
+              <Text className="text-white">
+                {skill?.skill || 'No skill provided'}
+              </Text>
             </li>
           ))}
         </ul>
-        <Divider />
+        <Divider className="bg-white" />
         {/* Languages Section */}
-        <Text strong>
+        <Text className="text-white" strong>
           <GlobalOutlined /> Languages
         </Text>
         <ul style={{ paddingLeft: '20px' }}>
           {resumeData.languages?.map((language, idx) => (
             <li key={idx}>
-              <Text>{language?.language || 'No language provided'}</Text>
+              <Text className="text-white">
+                {language?.language || 'No language provided'}
+              </Text>
             </li>
           ))}
         </ul>

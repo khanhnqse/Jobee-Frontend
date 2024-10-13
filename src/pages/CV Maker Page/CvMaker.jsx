@@ -79,20 +79,23 @@ const CvMaker = () => {
   }, [resumeData, form]);
 
   const onFinish = (values) => {
-    const profilePicture = values.profilePicture?.[0]?.originFileObj;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      setResumeData({ ...values, profilePicture: e.target.result });
-    };
+    console.log('Form values on finish:', values); // Log form values
+    const profilePicture = values.profilePicture;
+    console.log('Profile picture data URL:', profilePicture); // Log the profile picture data URL
+
     if (profilePicture) {
-      reader.readAsDataURL(profilePicture);
+      setResumeData((prevData) => ({
+        ...prevData,
+        profilePicture,
+      }));
     } else {
-      setResumeData(values);
+      setResumeData((prevData) => ({ ...prevData, ...values }));
     }
   };
 
   const handleFormChange = () => {
     const values = form.getFieldsValue();
+    console.log('Form values on change:', values); // Log form values on change
     setResumeData((prevData) => ({ ...prevData, ...values })); // Update resumeData only for changed fields
   };
 
@@ -145,7 +148,7 @@ const CvMaker = () => {
   const steps = [
     {
       title: 'Personal Info',
-      content: <PersonalInfoForm form={form} />, // Pass form to child components
+      content: <PersonalInfoForm form={form} setResumeData={setResumeData} />, // Pass form and setResumeData to child components
     },
     {
       title: 'Education',
@@ -182,69 +185,87 @@ const CvMaker = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
-      <Title level={2} className="text-center">
-        Resume Maker
-      </Title>
-      <Row gutter={16}>
-        {/* Form Section (1/3 of the width) */}
-        <Col span={8}>
-          <Form
-            form={form}
-            onFinish={onFinish}
-            onValuesChange={handleFormChange}
-            layout="vertical"
-            className="bg-white p-6 rounded-lg shadow-md"
-          >
-            <Steps current={currentStep}>
-              {steps.map((item) => (
-                <Step key={item.title} title={item.title} />
-              ))}
-            </Steps>
-            <div className="steps-content">{steps[currentStep].content}</div>
-            <div className="steps-action">
-              {currentStep < steps.length - 1 && (
-                <Button type="primary" onClick={() => next()} block>
-                  Next
-                </Button>
-              )}
-              {currentStep === steps.length - 1 && (
-                <Form.Item>
-                  <Button type="primary" htmlType="submit" block>
-                    Generate Resume
-                  </Button>
-                </Form.Item>
-              )}
-              {currentStep > 0 && (
-                <Button style={{ marginTop: 8 }} onClick={() => prev()} block>
-                  Previous
-                </Button>
-              )}
-            </div>
-          </Form>
-        </Col>
+    <>
+      <div className="min-h-screen bg-[#eae3c3] p-4">
+        <Title level={2} className="text-center">
+          Resume Maker
+        </Title>
 
-        {/* Resume Preview Section (2/3 of the width) */}
-        <Col span={16}>
-          <div>
-            <Select
-              defaultValue="layout1"
-              style={{ width: '100%', marginBottom: '16px' }}
-              onChange={handleLayoutChange}
+        <Row gutter={16}>
+          {/* Form Section (1/3 of the width) */}
+          <Col span={8}>
+            <Form
+              form={form}
+              onFinish={onFinish}
+              onValuesChange={handleFormChange}
+              layout="vertical"
+              className="bg-white py-2 px-6 mt-[73px] rounded-lg shadow-md"
             >
-              <Option value="layout1">Layout 1</Option>
-              <Option value="layout2">Layout 2</Option>
-              <Option value="layout3">Layout 3</Option>
-              <Option value="layout4">Layout 4</Option>
-            </Select>
-            {renderResumePreview()}
-            <Button type="primary" onClick={saveResumeAsPDF} block>
-              Save as PDF
-            </Button>
-          </div>
-        </Col>
-      </Row>
-    </div>
+              <Steps current={currentStep}>
+                {steps.map((item) => (
+                  <Step key={item.title} title={item.title} />
+                ))}
+              </Steps>
+              <div className="steps-content">{steps[currentStep].content}</div>
+              <div className="steps-action">
+                {currentStep < steps.length - 1 && (
+                  <Button type="primary" onClick={() => next()} block>
+                    Next
+                  </Button>
+                )}
+                {currentStep === steps.length - 1 && (
+                  <Form.Item>
+                    <Button type="primary" htmlType="submit" block>
+                      Generate Resume
+                    </Button>
+                  </Form.Item>
+                )}
+                {currentStep > 0 && (
+                  <Button style={{ marginTop: 8 }} onClick={() => prev()} block>
+                    Previous
+                  </Button>
+                )}
+              </div>
+            </Form>
+          </Col>
+
+          {/* Resume Preview Section (2/3 of the width) */}
+          <Col span={12}>
+            <div>
+              <Select
+                defaultValue="layout1"
+                style={{ width: '100%', marginBottom: '16px' }}
+                onChange={handleLayoutChange}
+              >
+                <Option value="layout1">Layout 1</Option>
+                <Option value="layout2">Layout 2</Option>
+                <Option value="layout3">Layout 3</Option>
+                <Option value="layout4">Layout 4</Option>
+              </Select>
+              {renderResumePreview()}
+            </div>
+          </Col>
+          <Button
+            type="primary"
+            onClick={saveResumeAsPDF}
+            block
+            style={{
+              backgroundColor: '#4CAF50',
+              borderColor: '#4CAF50',
+              color: '#fff',
+              fontWeight: 'bold',
+              width: '250px',
+              height: '50px',
+              marginTop: '20px',
+
+              marginLeft: '510px',
+            }}
+          >
+            Save as PDF
+          </Button>
+        </Row>
+      </div>
+    </>
   );
 };
 

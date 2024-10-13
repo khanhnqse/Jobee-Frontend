@@ -1,128 +1,254 @@
-import { useEffect, useState } from 'react';
-import { Row, Col, Button, Select, Card, Spin } from 'antd';
-import SearchBar from '@/components/Search bar/Search-bar';
-import ConfigAntdButton from '@/components/Button/ConfigAntdButton';
-import CvList from '@/components/CV List/CvList';
-import axios from 'axios';
-import CvSample from '@/components/CV Sample/CvSample';
-import hero from '../../assets/brown-minimalist-work-planning-presentation-1-1.png';
+import React, { useState, useEffect } from 'react';
+import {
+  Form,
+  Typography,
+  Divider,
+  Button,
+  Row,
+  Col,
+  Select,
+  Steps,
+} from 'antd';
+import PersonalInfoForm from '@/components/CV Component/PersonalInfoForm';
+import EducationForm from '@/components/CV Component/EducationForm';
+import ExperienceForm from '@/components/CV Component/ExperienceForm';
+import SkillsForm from '@/components/CV Component/SkillsForm';
+import ProjectsForm from '@/components/CV Component/ProjectsForm';
+import CertificationsForm from '@/components/CV Component/CertificationsForm';
+import LanguagesForm from '@/components/CV Component/LanguagesForm'; // Import LanguagesForm
+import Layout1 from '@/components/LayoutTemplate/Layout1';
+import Layout2 from '@/components/LayoutTemplate/Layout2';
+import Layout3 from '@/components/LayoutTemplate/Layout3';
+import Layout4 from '@/components/LayoutTemplate/Layout4';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+
+const { Title } = Typography;
 const { Option } = Select;
+const { Step } = Steps;
 
-const Cv = () => {
-  const api = 'https://66ed3226380821644cdbe120.mockapi.io/cv';
-  const apiSample = 'https://66ed3226380821644cdbe120.mockapi.io/sample';
-  const [samples, setSamples] = useState([]);
-  const [cv, setCv] = useState([]);
-  const [loadingCv, setLoadingCv] = useState(true);
-  const [loadingSamples, setLoadingSamples] = useState(true);
+const defaultData = {
+  profilePicture: 'https://via.placeholder.com/100',
+  fullName: 'John Doe',
+  professionalTitle: 'Software Engineer',
+  address: '123 Main St, Anytown, USA',
+  email: 'example@example.com',
+  phoneNumber: '(123) 456-7890',
+  summary:
+    'Experienced software engineer with a strong background in developing scalable web applications and working with modern technologies.',
+  skills: [{ skill: 'JavaScript' }, { skill: 'React' }, { skill: 'Node.js' }],
+  languages: [
+    { language: 'English', proficiency: 'Fluent' },
+    { language: 'Spanish', proficiency: 'Intermediate' },
+  ],
+  education: [
+    {
+      degree: 'B.Sc. in Computer Science',
+      institution: 'University of Example',
+    },
+  ],
+  experience: [
+    {
+      position: 'Software Engineer',
+      company: 'Tech Company',
+    },
+  ],
+  projects: [
+    {
+      projectName: 'Example Project',
+      description:
+        'Developed a full-stack web application using React and Node.js.',
+    },
+  ],
+  certifications: [
+    {
+      certificationName: 'Certified JavaScript Developer',
+      issuer: 'Example Institute',
+    },
+  ],
+};
 
-  const fetchCv = async () => {
-    try {
-      const response = await axios.get(api);
-      setCv(response.data);
-    } catch (error) {
-      console.error('Error fetching CVs:', error);
-    } finally {
-      setLoadingCv(false);
-    }
-  };
-
-  const fetchSample = async () => {
-    try {
-      const response = await axios.get(apiSample);
-      setSamples(response.data);
-    } catch (error) {
-      console.error('Error fetching samples:', error);
-    } finally {
-      setLoadingSamples(false);
-    }
-  };
+const CvMaker = () => {
+  const [form] = Form.useForm();
+  const [resumeData, setResumeData] = useState(defaultData);
+  const [selectedLayout, setSelectedLayout] = useState('layout1');
+  const [currentStep, setCurrentStep] = useState(0);
 
   useEffect(() => {
-    fetchCv();
-    fetchSample();
-  }, []);
+    form.setFieldsValue(resumeData); // Set form values when resumeData changes
+  }, [resumeData, form]);
+
+  const onFinish = (values) => {
+    const profilePicture = values.profilePicture?.[0]?.originFileObj;
+    if (profilePicture) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setResumeData((prevData) => ({
+          ...prevData,
+          profilePicture: e.target.result,
+        }));
+      };
+      reader.readAsDataURL(profilePicture);
+    } else {
+      setResumeData((prevData) => ({ ...prevData, ...values }));
+    }
+  };
+
+  const handleFormChange = () => {
+    const values = form.getFieldsValue();
+    setResumeData((prevData) => ({ ...prevData, ...values })); // Update resumeData only for changed fields
+  };
+
+  const saveResumeAsPDF = () => {
+    const input = document.getElementById('resume-preview');
+
+    html2canvas(input, { scale: 2, useCORS: true }).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'letter');
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth(); // Letter width (215.9 mm)
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width; // Maintain aspect ratio
+      const scaleFactor = 1;
+      const scaledWidth = pdfWidth * scaleFactor;
+      const scaledHeight = pdfHeight * scaleFactor;
+
+      if (scaledHeight > pdf.internal.pageSize.getHeight()) {
+        const scaleToFitFactor =
+          pdf.internal.pageSize.getHeight() / scaledHeight;
+        const finalWidth = scaledWidth * scaleToFitFactor;
+        const finalHeight = scaledHeight * scaleToFitFactor;
+        pdf.addImage(imgData, 'PNG', 0, 0, finalWidth, finalHeight);
+      } else {
+        pdf.addImage(imgData, 'PNG', 0, 0, scaledWidth, scaledHeight);
+      }
+
+      pdf.save('resume.pdf');
+    });
+  };
+
+  const handleLayoutChange = (value) => {
+    setSelectedLayout(value);
+  };
+
+  const renderResumePreview = () => {
+    switch (selectedLayout) {
+      case 'layout1':
+        return <Layout1 resumeData={resumeData} />;
+      case 'layout2':
+        return <Layout2 resumeData={resumeData} />;
+      case 'layout3':
+        return <Layout3 resumeData={resumeData} />;
+      case 'layout4':
+        return <Layout4 resumeData={resumeData} />;
+      default:
+        return <Layout1 resumeData={resumeData} />;
+    }
+  };
+
+  const steps = [
+    {
+      title: 'Personal Info',
+      content: <PersonalInfoForm form={form} setResumeData={setResumeData} />, // Pass form and setResumeData to child components
+    },
+    {
+      title: 'Education',
+      content: <EducationForm form={form} />,
+    },
+    {
+      title: 'Experience',
+      content: <ExperienceForm form={form} />,
+    },
+    {
+      title: 'Skills',
+      content: <SkillsForm form={form} />,
+    },
+    {
+      title: 'Projects',
+      content: <ProjectsForm form={form} />,
+    },
+    {
+      title: 'Certifications',
+      content: <CertificationsForm form={form} />,
+    },
+    {
+      title: 'Languages',
+      content: <LanguagesForm form={form} />,
+    },
+  ];
+
+  const next = () => {
+    setCurrentStep(currentStep + 1);
+  };
+
+  const prev = () => {
+    setCurrentStep(currentStep - 1);
+  };
 
   return (
-    <div className="bg-[#eae3c3] flex justify-center w-full">
-      <div className="bg-[#eae3c3] w-full relative">
-        {/* Header Section */}
-        <div className="relative w-full h-[469px] flex items-center">
-          <img
-            src={hero}
-            alt="Header Background"
-            className="absolute inset-0 object-cover w-full h-full"
-          />
-          <div className="absolute inset-0 bg-[#0f1110cc]" />
-          <div className="relative flex flex-col justify-center items-start px-[216px] z-10">
-            <p className="font-poppins font-medium text-white text-[48px] leading-[83px]">
-              List of job application samples
-            </p>
-            <p className="mt-4 font-poppins font-light text-white text-[20px] leading-[29.2px]">
-              Increase your chances of finding a job and create your CV with one
-              of our professionally designed CV templates. Curious to find out
-              how these templates can work for you? Scroll down and check out
-              the different CV examples we've made to inspire you.
-            </p>
-            <div className="flex space-x-4 mt-6">
-              <ConfigAntdButton>
-                <Button
-                  type="primary"
-                  className="w-[245px] h-[72px] rounded-[12px]"
-                >
-                  <span className="font-poppins font-medium text-[25px] leading-[36.5px] text-white">
-                    Create your CV
-                  </span>
+    <div className="min-h-screen bg-[#eae3c3] p-4">
+      <Title level={2} className="text-center">
+        Resume Maker
+      </Title>
+      <Row gutter={16}>
+        {/* Form Section (1/3 of the width) */}
+        <Col span={8}>
+          <Form
+            form={form}
+            onFinish={onFinish}
+            onValuesChange={handleFormChange}
+            layout="vertical"
+            className="bg-white p-6 rounded-lg shadow-md"
+          >
+            <Steps current={currentStep}>
+              {steps.map((item) => (
+                <Step key={item.title} title={item.title} />
+              ))}
+            </Steps>
+            <div className="steps-content">{steps[currentStep].content}</div>
+            <div className="steps-action">
+              {currentStep < steps.length - 1 && (
+                <Button type="primary" onClick={() => next()} block>
+                  Next
                 </Button>
-              </ConfigAntdButton>
-              <Select defaultValue="Language" className="w-[246px] h-[47px]">
-                <Option value="Language">Language</Option>
-                <Option value="English">English</Option>
-                <Option value="Vietnamese">Vietnamese</Option>
-              </Select>
-              <Select defaultValue="All design" className="w-[254px] h-[47px]">
-                <Option value="All design">All design</Option>
-                <Option value="Marketing">Marketing</Option>
-                <Option value="Information Technology">
-                  Information Technology
-                </Option>
-              </Select>
+              )}
+              {currentStep === steps.length - 1 && (
+                <Form.Item>
+                  <Button type="primary" htmlType="submit" block>
+                    Generate Resume
+                  </Button>
+                </Form.Item>
+              )}
+              {currentStep > 0 && (
+                <Button style={{ marginTop: 8 }} onClick={() => prev()} block>
+                  Previous
+                </Button>
+              )}
             </div>
-          </div>
-        </div>
+          </Form>
+        </Col>
 
-        <SearchBar
-          style={{ paddingRight: '192px' }}
-          placeholder="Search your CV"
-        />
-
-        {/* CV List Section */}
-        {loadingCv ? (
-          <div className="flex justify-center items-center my-10">
-            <Spin size="large" />
+        {/* Resume Preview Section (2/3 of the width) */}
+        <Col span={16}>
+          <div>
+            <Select
+              defaultValue="layout1"
+              style={{ width: '100%', marginBottom: '16px' }}
+              onChange={handleLayoutChange}
+            >
+              <Option value="layout1">Layout 1</Option>
+              <Option value="layout2">Layout 2</Option>
+              <Option value="layout3">Layout 3</Option>
+              <Option value="layout4">Layout 4</Option>
+            </Select>
+            {renderResumePreview()}
+            <Button type="primary" onClick={saveResumeAsPDF} block>
+              Save as PDF
+            </Button>
           </div>
-        ) : (
-          <CvList data={cv} />
-        )}
-
-        {/* Advertising Section */}
-        <div className="mt-20 bg-[#0f1110cc] py-10">
-          <div className="text-center text-white font-poppins font-medium text-[56px]">
-            Advertising
-          </div>
-        </div>
-
-        {/* CV Samples Section */}
-        {loadingSamples ? (
-          <div className="flex justify-center items-center my-10">
-            <Spin size="large" />
-          </div>
-        ) : (
-          <CvSample samples={samples} />
-        )}
-      </div>
+        </Col>
+      </Row>
     </div>
   );
 };
 
-export default Cv;
+export default CvMaker;

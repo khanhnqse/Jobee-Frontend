@@ -1,10 +1,19 @@
 import React from 'react';
-import { Form, Input, Button, Space } from 'antd';
+import { Form, Input, Button, Space, Select, Typography } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { Typography } from 'antd';
+
+const { Title } = Typography;
+const { Option } = Select;
+
+const proficiencyLevels = [
+  'Beginner',
+  'Intermediate',
+  'Advanced',
+  'Fluent',
+  'Native',
+];
 
 const LanguagesForm = () => {
-  const { Title } = Typography;
   return (
     <>
       <Title level={4}>Languages</Title>
@@ -23,7 +32,7 @@ const LanguagesForm = () => {
                   fieldKey={[fieldKey, 'language']}
                   rules={[{ required: true, message: 'Missing language' }]}
                 >
-                  <Input placeholder="Language" />
+                  <Input placeholder="Language" style={{ width: 200 }} />
                 </Form.Item>
                 <Form.Item
                   {...restField}
@@ -31,7 +40,16 @@ const LanguagesForm = () => {
                   fieldKey={[fieldKey, 'proficiency']}
                   rules={[{ required: true, message: 'Missing proficiency' }]}
                 >
-                  <Input placeholder="Proficiency" />
+                  <Select
+                    placeholder="Select proficiency"
+                    style={{ width: 200 }}
+                  >
+                    {proficiencyLevels.map((level) => (
+                      <Option key={level} value={level}>
+                        {level}
+                      </Option>
+                    ))}
+                  </Select>
                 </Form.Item>
                 <MinusCircleOutlined onClick={() => remove(name)} />
               </Space>

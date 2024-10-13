@@ -1,21 +1,32 @@
-import React from 'react';
-import { Form, Input, Typography, Upload, Button } from 'antd';
+import React, { useState } from 'react';
+import { Form, Input, Typography, Button } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 
 const { Title } = Typography;
 
 const PersonalInfoForm = ({ form, setResumeData }) => {
-  const handleProfilePictureChange = (info) => {
-    if (info.file.status === 'done') {
+  const [fileList, setFileList] = useState([]);
+
+  const handleProfilePictureChange = (event) => {
+    const file = event.target.files[0];
+    console.log('Selected file:', file); // Log the selected file
+
+    if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
+        console.log('Image loaded:', e.target.result); // Log the image data URL
         form.setFieldsValue({ profilePicture: e.target.result });
         setResumeData((prevData) => ({
           ...prevData,
           profilePicture: e.target.result,
         }));
       };
-      reader.readAsDataURL(info.file.originFileObj);
+      reader.onerror = (error) => {
+        console.error('Error reading file:', error); // Log any errors
+      };
+      reader.readAsDataURL(file);
+    } else {
+      console.error('No file selected');
     }
   };
 
@@ -67,14 +78,13 @@ const PersonalInfoForm = ({ form, setResumeData }) => {
         <Input />
       </Form.Item>
       <Form.Item name="profilePicture" label="Profile Picture">
-        <Upload
-          name="profilePicture"
-          listType="picture"
-          maxCount={1}
-          onChange={handleProfilePictureChange}
-        >
-          <Button icon={<UploadOutlined />}>Upload Profile Picture</Button>
-        </Upload>
+        <Button icon={<UploadOutlined />}>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleProfilePictureChange}
+          />
+        </Button>
       </Form.Item>
     </>
   );
