@@ -74,14 +74,7 @@ function App() {
               </PrivateRoute>
             }
           />
-          <Route
-            path={PATHS.CV_MAKER.INDEX}
-            element={
-              <PrivateRoute>
-                <CVMaker />
-              </PrivateRoute>
-            }
-          />
+          <Route path={PATHS.CV_MAKER.INDEX} element={<CVMaker />} />
           <Route path={PATHS.LOGIN} element={<LoginPage />} />
           <Route path={PATHS.REGISTER} element={<RegisterPage />} />
         </Route>

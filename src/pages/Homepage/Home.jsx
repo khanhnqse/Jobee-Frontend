@@ -57,9 +57,15 @@ const Home = () => {
                 unlock better opportunities.
               </Paragraph>
               <ConfigAntdButton>
-                <Button type="primary" size="large" style={{ marginRight: 16 }}>
-                  Sign up now
-                </Button>
+                <Link to="/register">
+                  <Button
+                    type="primary"
+                    size="large"
+                    style={{ marginRight: 16 }}
+                  >
+                    Sign up now
+                  </Button>
+                </Link>
               </ConfigAntdButton>
               <Button size="large" icon={<GoogleOutlined />}>
                 Sign up using Google

@@ -28,6 +28,8 @@ const LoginPage = () => {
       console.log(response.data);
       // Handle successful login
       message.success('Login successful!');
+      // Store user ID in localStorage
+      localStorage.setItem('userId', response.data.userId);
       // Call the login function from AuthContext
       login();
       // Redirect to landing page or any other page
