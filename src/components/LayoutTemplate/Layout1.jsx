@@ -10,7 +10,10 @@ import {
   TrophyOutlined,
   UserOutlined,
   GlobalOutlined,
+  CalendarFilled,
+  CalendarOutlined,
 } from '@ant-design/icons';
+import { MdDateRange } from 'react-icons/md';
 
 const { Title, Text } = Typography;
 
@@ -33,9 +36,18 @@ const Layout1 = ({ resumeData }) => (
             }}
           />
           <Text strong>
-            <UserOutlined /> Contact
+            <UserOutlined /> Information
           </Text>
           <Divider />
+          {resumeData.dateOfBirth && (
+            <>
+              <Text>
+                <CalendarOutlined /> {resumeData.dateOfBirth}
+              </Text>
+              <br />
+            </>
+          )}
+
           {resumeData.address && (
             <>
               <Text>

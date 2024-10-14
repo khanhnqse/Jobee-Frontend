@@ -77,6 +77,13 @@ const PersonalInfoForm = ({ form, setResumeData }) => {
       >
         <Input />
       </Form.Item>
+      <Form.Item
+        name="dateOfBirth"
+        label="Date of Birth"
+        rules={[{ required: true, message: 'Please enter your Date of Birth' }]}
+      >
+        <Input />
+      </Form.Item>
       <Form.Item name="profilePicture" label="Profile Picture">
         <Button icon={<UploadOutlined />}>
           <input

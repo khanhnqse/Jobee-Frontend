@@ -52,6 +52,10 @@ const defaultData = {
       position: 'Software Engineer',
       company: 'Tech Company',
     },
+    {
+      position: 'Web Developer',
+      company: 'Web Development Inc.',
+    },
   ],
   projects: [
     {
@@ -59,11 +63,19 @@ const defaultData = {
       description:
         'Developed a full-stack web application using React and Node.js.',
     },
+    {
+      projectName: 'Another Project',
+      description: 'Implemented new features for an existing web application.',
+    },
   ],
   certifications: [
     {
       certificationName: 'Certified JavaScript Developer',
       issuer: 'Example Institute',
+    },
+    {
+      certificationName: 'React Certification',
+      issuer: 'React Training',
     },
   ],
 };
@@ -236,11 +248,68 @@ const CvMaker = () => {
                 defaultValue="layout1"
                 style={{ width: '100%', marginBottom: '16px' }}
                 onChange={handleLayoutChange}
+                dropdownStyle={{ maxHeight: '300px' }} // Optional to control dropdown height
               >
-                <Option value="layout1">Layout 1</Option>
-                <Option value="layout2">Layout 2</Option>
-                <Option value="layout3">Layout 3</Option>
-                <Option value="layout4">Layout 4</Option>
+                <Option value="layout1">
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <img
+                      src="https://marketplace.canva.com/EAFRuCp3DcY/1/0/1131w/canva-black-white-minimalist-cv-resume-f5JNR-K5jjw.jpg"
+                      alt="Basic"
+                      style={{
+                        width: '40px',
+                        height: 'auto',
+                        marginRight: '10px',
+                        objectFit: 'cover',
+                      }} // Adjusted width
+                    />
+                    <span>Basic</span>
+                  </div>
+                </Option>
+                <Option value="layout2">
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <img
+                      src="/path/to/layout2.png"
+                      alt="Simple"
+                      style={{
+                        width: '40px',
+                        height: 'auto',
+                        marginRight: '10px',
+                        objectFit: 'cover',
+                      }} // Adjusted width
+                    />
+                    <span>Simple</span>
+                  </div>
+                </Option>
+                <Option value="layout3">
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <img
+                      src="/path/to/layout3.png"
+                      alt="Modern"
+                      style={{
+                        width: '40px',
+                        height: 'auto',
+                        marginRight: '10px',
+                        objectFit: 'cover',
+                      }} // Adjusted width
+                    />
+                    <span>Modern</span>
+                  </div>
+                </Option>
+                <Option value="layout4">
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <img
+                      src="/path/to/layout4.png"
+                      alt="Classic"
+                      style={{
+                        width: '40px',
+                        height: 'auto',
+                        marginRight: '10px',
+                        objectFit: 'cover',
+                      }} // Adjusted width
+                    />
+                    <span>Classic</span>
+                  </div>
+                </Option>
               </Select>
               {renderResumePreview()}
             </div>
