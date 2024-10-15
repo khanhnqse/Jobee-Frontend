@@ -8,6 +8,7 @@ import {
   TrophyOutlined,
   UserOutlined,
   GlobalOutlined,
+  CalendarOutlined,
 } from '@ant-design/icons';
 
 const { Title, Text } = Typography;
@@ -28,7 +29,6 @@ const Layout4 = ({ resumeData }) => (
           src={resumeData.profilePicture || 'https://via.placeholder.com/100'}
           alt="Profile"
           style={{
-            borderRadius: '50%',
             width: '100px',
             height: '100px',
             objectFit: 'cover',
@@ -43,6 +43,10 @@ const Layout4 = ({ resumeData }) => (
           {resumeData.professionalTitle || 'Professional Title'}
         </Title>
         <div style={{ marginTop: '10px' }}>
+          <Text style={{ color: 'white' }}>
+            <CalendarOutlined /> {resumeData.dateOfBirth || 'Date of Birth'}
+          </Text>
+          <br />
           <Text style={{ color: 'white' }}>
             <PhoneOutlined /> {resumeData.phoneNumber || 'Phone Number'}
           </Text>

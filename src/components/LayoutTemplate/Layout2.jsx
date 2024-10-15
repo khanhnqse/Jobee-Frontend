@@ -26,6 +26,8 @@ const Layout2 = ({ resumeData }) => (
             <Text>{resumeData.email || 'Email'}</Text>
             <br />
             <Text>{resumeData.phoneNumber || 'Phone Number'}</Text>
+            <br />
+            <Text>{resumeData.dateOfBirth || 'Date of Birth'}</Text>
           </Col>
           <Col span={12}>
             <Text strong>Education</Text>

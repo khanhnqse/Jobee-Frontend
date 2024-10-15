@@ -23,7 +23,7 @@ const Layout1 = ({ resumeData }) => (
     className="w-full max-w-4xl bg-white p-6 mt-6 rounded-lg shadow-md"
   >
     <Row gutter={16}>
-      <Col span={8} style={{ backgroundColor: '#f5f5f5', padding: '20px' }}>
+      <Col span={8} style={{ backgroundColor: '#87b3fa', padding: '20px' }}>
         <div>
           <img
             src={resumeData.profilePicture || 'https://via.placeholder.com/100'}

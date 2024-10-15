@@ -6,8 +6,9 @@ import {
   Button,
   Row,
   Col,
-  Select,
+  Card,
   Steps,
+  Pagination,
 } from 'antd';
 import PersonalInfoForm from '@/components/CV Component/PersonalInfoForm';
 import EducationForm from '@/components/CV Component/EducationForm';
@@ -24,7 +25,6 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
 const { Title } = Typography;
-const { Option } = Select;
 const { Step } = Steps;
 
 const defaultData = {
@@ -32,6 +32,7 @@ const defaultData = {
   fullName: 'John Doe',
   professionalTitle: 'Software Engineer',
   address: '123 Main St, Anytown, USA',
+  dateOfBirth: '01/01/2003',
   email: 'example@example.com',
   phoneNumber: '(123) 456-7890',
   summary:
@@ -80,20 +81,49 @@ const defaultData = {
   ],
 };
 
+const cvTemplates = [
+  {
+    id: 'layout1',
+    title: 'Basic',
+    imageUrl:
+      'https://www.shutterstock.com/create/assets/asset-gateway/template/previews/25533-0.png?width=500&format=webp',
+  },
+  {
+    id: 'layout2',
+    title: 'Simple',
+    imageUrl:
+      'https://static.jobscan.co/blog/uploads/Student-resume-with-no-experience.png',
+  },
+  {
+    id: 'layout3',
+    title: 'Modern',
+    imageUrl:
+      'https://www.cvresumebuild.com/wp-content/uploads/2024/03/TEACHER-OF-ENGLISH-LANGUAGE_Page1-600x850.png',
+  },
+  {
+    id: 'layout4',
+    title: 'Classic',
+    imageUrl:
+      'https://www.my-resume-templates.com/wp-content/uploads/2023/05/functional-resume-template-350x495.jpg',
+  },
+];
+
 const CvMaker = () => {
   const [form] = Form.useForm();
   const [resumeData, setResumeData] = useState(defaultData);
   const [selectedLayout, setSelectedLayout] = useState('layout1');
   const [currentStep, setCurrentStep] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const templatesPerPage = 2;
 
   useEffect(() => {
-    form.setFieldsValue(resumeData); // Set form values when resumeData changes
+    form.setFieldsValue(resumeData);
   }, [resumeData, form]);
 
   const onFinish = (values) => {
-    console.log('Form values on finish:', values); // Log form values
+    console.log('Form values on finish:', values);
     const profilePicture = values.profilePicture;
-    console.log('Profile picture data URL:', profilePicture); // Log the profile picture data URL
+    console.log('Profile picture data URL:', profilePicture);
 
     if (profilePicture) {
       setResumeData((prevData) => ({
@@ -107,8 +137,8 @@ const CvMaker = () => {
 
   const handleFormChange = () => {
     const values = form.getFieldsValue();
-    console.log('Form values on change:', values); // Log form values on change
-    setResumeData((prevData) => ({ ...prevData, ...values })); // Update resumeData only for changed fields
+    console.log('Form values on change:', values);
+    setResumeData((prevData) => ({ ...prevData, ...values }));
   };
 
   const saveResumeAsPDF = () => {
@@ -138,8 +168,8 @@ const CvMaker = () => {
     });
   };
 
-  const handleLayoutChange = (value) => {
-    setSelectedLayout(value);
+  const handleLayoutChange = (templateId) => {
+    setSelectedLayout(templateId);
   };
 
   const renderResumePreview = () => {
@@ -196,6 +226,18 @@ const CvMaker = () => {
     setCurrentStep(currentStep - 1);
   };
 
+  // Pagination
+  const indexOfLastTemplate = currentPage * templatesPerPage;
+  const indexOfFirstTemplate = indexOfLastTemplate - templatesPerPage;
+  const currentTemplates = cvTemplates.slice(
+    indexOfFirstTemplate,
+    indexOfLastTemplate
+  );
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
   return (
     <>
       <div className="min-h-screen bg-[#eae3c3] p-4">
@@ -211,7 +253,7 @@ const CvMaker = () => {
               onFinish={onFinish}
               onValuesChange={handleFormChange}
               layout="vertical"
-              className="bg-white py-2 px-6 mt-[73px] rounded-lg shadow-md"
+              className="bg-white py-2 px-6 mt-[25px] rounded-lg shadow-md"
             >
               <Steps current={currentStep}>
                 {steps.map((item) => (
@@ -221,13 +263,31 @@ const CvMaker = () => {
               <div className="steps-content">{steps[currentStep].content}</div>
               <div className="steps-action">
                 {currentStep < steps.length - 1 && (
-                  <Button type="primary" onClick={() => next()} block>
+                  <Button
+                    style={{
+                      backgroundColor: '#3b7b7a',
+                      borderColor: '#3b7b7a',
+                      color: '#fff',
+                    }}
+                    type="primary"
+                    onClick={() => next()}
+                    block
+                  >
                     Next
                   </Button>
                 )}
                 {currentStep === steps.length - 1 && (
                   <Form.Item>
-                    <Button type="primary" htmlType="submit" block>
+                    <Button
+                      style={{
+                        backgroundColor: '#3b7b7a',
+                        borderColor: '#3b7b7a',
+                        color: '#fff',
+                      }}
+                      type="primary"
+                      htmlType="submit"
+                      block
+                    >
                       Generate Resume
                     </Button>
                   </Form.Item>
@@ -241,98 +301,81 @@ const CvMaker = () => {
             </Form>
           </Col>
 
-          {/* Resume Preview Section (2/3 of the width) */}
-          <Col span={12}>
-            <div>
-              <Select
-                defaultValue="layout1"
-                style={{ width: '100%', marginBottom: '16px' }}
-                onChange={handleLayoutChange}
-                dropdownStyle={{ maxHeight: '300px' }} // Optional to control dropdown height
-              >
-                <Option value="layout1">
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <img
-                      src="https://marketplace.canva.com/EAFRuCp3DcY/1/0/1131w/canva-black-white-minimalist-cv-resume-f5JNR-K5jjw.jpg"
-                      alt="Basic"
-                      style={{
-                        width: '40px',
-                        height: 'auto',
-                        marginRight: '10px',
-                        objectFit: 'cover',
-                      }} // Adjusted width
-                    />
-                    <span>Basic</span>
-                  </div>
-                </Option>
-                <Option value="layout2">
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <img
-                      src="/path/to/layout2.png"
-                      alt="Simple"
-                      style={{
-                        width: '40px',
-                        height: 'auto',
-                        marginRight: '10px',
-                        objectFit: 'cover',
-                      }} // Adjusted width
-                    />
-                    <span>Simple</span>
-                  </div>
-                </Option>
-                <Option value="layout3">
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <img
-                      src="/path/to/layout3.png"
-                      alt="Modern"
-                      style={{
-                        width: '40px',
-                        height: 'auto',
-                        marginRight: '10px',
-                        objectFit: 'cover',
-                      }} // Adjusted width
-                    />
-                    <span>Modern</span>
-                  </div>
-                </Option>
-                <Option value="layout4">
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <img
-                      src="/path/to/layout4.png"
-                      alt="Classic"
-                      style={{
-                        width: '40px',
-                        height: 'auto',
-                        marginRight: '10px',
-                        objectFit: 'cover',
-                      }} // Adjusted width
-                    />
-                    <span>Classic</span>
-                  </div>
-                </Option>
-              </Select>
-              {renderResumePreview()}
-            </div>
+          {/* Resume Preview and Template Selection Section (2/3 of the width) */}
+          <Col span={16}>
+            <Row gutter={16}>
+              <Col span={19}>
+                <div id="resume-preview" style={{ marginTop: '16px' }}>
+                  {renderResumePreview()}
+                </div>
+              </Col>
+              <Col span={5}>
+                <Typography.Title level={4}>
+                  Change CV Template
+                </Typography.Title>
+                <Row gutter={[16, 16]}>
+                  {currentTemplates.map((template) => (
+                    <Col span={24} key={template.id}>
+                      <Card
+                        hoverable
+                        onClick={() => handleLayoutChange(template.id)}
+                        cover={
+                          <img
+                            alt={template.title}
+                            src={template.imageUrl}
+                            style={{
+                              height: '250px',
+                              objectFit: 'cover',
+                              marginBottom: '-19px',
+                            }}
+                          />
+                        }
+                        className={
+                          selectedLayout === template.id ? 'selected' : ''
+                        }
+                        style={{
+                          width: '100%',
+                          height: '280px',
+                          border:
+                            selectedLayout === template.id
+                              ? '2px solid #1890ff'
+                              : 'none',
+                          borderRadius: '8px',
+                        }}
+                      >
+                        <Card.Meta title={template.title} />
+                      </Card>
+                    </Col>
+                  ))}
+                </Row>
+                <Pagination
+                  current={currentPage}
+                  pageSize={templatesPerPage}
+                  total={cvTemplates.length}
+                  onChange={handlePageChange}
+                  style={{ marginTop: '16px', textAlign: 'center' }}
+                />
+              </Col>
+            </Row>
           </Col>
-          <Button
-            type="primary"
-            onClick={saveResumeAsPDF}
-            block
-            style={{
-              backgroundColor: '#4CAF50',
-              borderColor: '#4CAF50',
-              color: '#fff',
-              fontWeight: 'bold',
-              width: '250px',
-              height: '50px',
-              marginTop: '20px',
-
-              marginLeft: '510px',
-            }}
-          >
-            Save as PDF
-          </Button>
         </Row>
+        <Button
+          type="primary"
+          onClick={saveResumeAsPDF}
+          block
+          style={{
+            backgroundColor: '#3b7b7a',
+            borderColor: '#3b7b7a',
+            color: '#fff',
+            fontWeight: 'bold',
+            width: '250px',
+            height: '50px',
+            marginTop: '20px',
+            marginLeft: '510px',
+          }}
+        >
+          Save as PDF
+        </Button>
       </div>
     </>
   );

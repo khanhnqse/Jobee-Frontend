@@ -8,6 +8,8 @@ import {
   TrophyOutlined,
   UserOutlined,
   GlobalOutlined,
+  CalendarFilled,
+  CalendarOutlined,
 } from '@ant-design/icons';
 
 const { Title, Text } = Typography;
@@ -40,6 +42,10 @@ const Layout3 = ({ resumeData }) => (
             <UserOutlined /> Contact
           </Text>
           <Divider className="bg-white" />
+          <Text className="text-white">
+            <CalendarOutlined /> {resumeData.dateOfBirth || 'Date of Birth'}
+          </Text>
+          <br />
           <Text className="text-white">
             <MailOutlined /> {resumeData.email || 'Email'}
           </Text>
