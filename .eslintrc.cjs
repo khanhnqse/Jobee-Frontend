@@ -15,9 +15,9 @@ module.exports = {
     "react/jsx-no-target-blank": "off",
     "react/prop-types": "off",
     "react/no-unescaped-entities": "off",
-    "no-undef": "off",
+    "no-undef": "on",
     "no-useless-escape": "off",
-    "no-unused-vars": "off",
+    "no-unused-vars": "on",
     "react-refresh/only-export-components": [
       "warn",
       { allowConstantExport: true },

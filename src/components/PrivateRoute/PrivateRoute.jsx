@@ -6,6 +6,7 @@ const PrivateRoute = ({ children }) => {
   const { isAuthenticated } = useAuth();
 
   const renderContent = useMemo(() => {
+    console.log('Is Authenticated:', isAuthenticated);
     return isAuthenticated ? children : <Navigate to="/login" />;
   }, [isAuthenticated, children]);
 

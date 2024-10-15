@@ -19,6 +19,9 @@ import { AuthProvider } from './context/AuthContext';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
 import Checkout from './components/Checkout/Checkout';
 import Profile from './pages/Profile/Profile';
+import GradeResume from './pages/GradeResume/GradeResume';
+import Dashboard from './pages/Admin/Dashboard/Dashboard';
+import UserManagement from './pages/Admin/User Management/UserManagement';
 
 function App() {
   return (
@@ -68,12 +71,54 @@ function App() {
               </PrivateRoute>
             }
           />
-          <Route path={PATHS.CHECKOUT.INDEX} element={<Checkout />} />
+          <Route
+            path={PATHS.CHECKOUT.INDEX}
+            element={
+              <PrivateRoute>
+                <Checkout />
+              </PrivateRoute>
+            }
+          />
           <Route path={PATHS.POLICY.INDEX} element={<PolicyPage />} />
-          <Route path={PATHS.CV_MAKER.INDEX} element={<CVMaker />} />
+          <Route
+            path={PATHS.CV_MAKER.INDEX}
+            element={
+              <PrivateRoute>
+                <CVMaker />
+              </PrivateRoute>
+            }
+          />
           <Route path={PATHS.LOGIN} element={<LoginPage />} />
           <Route path={PATHS.REGISTER} element={<RegisterPage />} />
-          <Route path={PATHS.PROFILE} element={<Profile />} />
+          <Route
+            path={PATHS.PROFILE}
+            element={
+              <PrivateRoute>
+                <Profile />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={PATHS.GRADE_RESUME}
+            element={
+              <PrivateRoute>
+                <GradeResume />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={PATHS.DASHBOARD.INDEX}
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          >
+            <Route
+              path={PATHS.DASHBOARD.CHILDREN.USER}
+              element={<UserManagement />}
+            />
+          </Route>
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>

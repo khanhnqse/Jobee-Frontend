@@ -23,6 +23,7 @@ import Layout3 from '@/components/LayoutTemplate/Layout3';
 import Layout4 from '@/components/LayoutTemplate/Layout4';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { Link } from 'react-router-dom';
 
 const { Title } = Typography;
 const { Step } = Steps;
@@ -359,23 +360,39 @@ const CvMaker = () => {
             </Row>
           </Col>
         </Row>
-        <Button
-          type="primary"
-          onClick={saveResumeAsPDF}
-          block
-          style={{
-            backgroundColor: '#3b7b7a',
-            borderColor: '#3b7b7a',
-            color: '#fff',
-            fontWeight: 'bold',
-            width: '250px',
-            height: '50px',
-            marginTop: '20px',
-            marginLeft: '510px',
-          }}
-        >
-          Save as PDF
-        </Button>
+        <Row justify="center" style={{ marginTop: '20px' }}>
+          <Col>
+            <Button
+              type="primary"
+              onClick={saveResumeAsPDF}
+              style={{
+                backgroundColor: '#3b7b7a',
+                borderColor: '#3b7b7a',
+                color: '#fff',
+                fontWeight: 'bold',
+                width: '250px',
+                height: '50px',
+                marginRight: '10px',
+              }}
+            >
+              Save as PDF
+            </Button>
+          </Col>
+          <Col>
+            <Link to="/grade-resume">
+              <Button
+                type="default"
+                style={{
+                  fontWeight: 'bold',
+                  width: '250px',
+                  height: '50px',
+                }}
+              >
+                Grade your resume now
+              </Button>
+            </Link>
+          </Col>
+        </Row>
       </div>
     </>
   );

@@ -17,6 +17,14 @@ export const PATHS = {
   VERIFY_OTP: '/verify-otp',
   RESET_PASSWORD: '/reset-password',
   PROFILE: '/profile',
+  GRADE_RESUME: '/grade-resume',
+  DASHBOARD: {
+    INDEX: '/dashboard',
+    CHILDREN: {
+      USER: '/dashboard/user',
+     
+    },
+  },
   CV: {
     INDEX: CV_ASSISTANCE,
   },

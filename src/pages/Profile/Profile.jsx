@@ -1,29 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Form, Input, Button, Typography, message, Row, Col, Spin } from 'antd';
+import axios from 'axios';
+import { useAuth } from '../../context/AuthContext';
 import {
-  Row,
-  Col,
-  Card,
-  Typography,
-  Button,
-  Form,
-  Input,
-  Divider,
-  Avatar,
-} from 'antd';
-import {
-  EditOutlined,
+  UserOutlined,
   MailOutlined,
   PhoneOutlined,
   HomeOutlined,
-  UserOutlined,
   IdcardOutlined,
   FileTextOutlined,
-  SaveOutlined,
-  CloseOutlined,
-  CalendarOutlined,
 } from '@ant-design/icons';
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 const Profile = () => {
   const [form] = Form.useForm();
@@ -31,30 +19,57 @@ const Profile = () => {
   const [profilePicture, setProfilePicture] = useState(
     'https://via.placeholder.com/180x180'
   );
+  const [user, setUser] = useState(null);
+  const { userId, jwtToken } = useAuth();
 
-  const user = {
-    fullName: 'John Doe',
-    email: 'john.doe@example.com',
-    phoneNumber: '123-456-7890',
-    address: '123 Main St, Anytown, USA',
-    age: '30/03/2003',
-    description: 'Standard user account',
-    jobTitle: 'Software Engineer',
-  };
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(
+          `https://jobeewepappapi20241008011108.azurewebsites.net/api/Account/user?id=${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${jwtToken}`,
+            },
+          }
+        );
+        setUser(response.data);
+      } catch (error) {
+        message.error('Failed to fetch user data.');
+      }
+    };
+
+    if (userId && jwtToken) {
+      fetchUserData();
+    }
+  }, [userId, jwtToken]);
 
   const handleEdit = () => {
     setIsEditing(true);
-    form.setFieldsValue(user);
   };
 
   const handleCancel = () => {
     setIsEditing(false);
+    form.resetFields();
   };
 
-  const handleFormSubmit = (values) => {
-    console.log('Updated values:', values);
-    setIsEditing(false);
-    // Update user information here
+  const handleFormSubmit = async (values) => {
+    try {
+      await axios.put(
+        `https://jobeewepappapi20241008011108.azurewebsites.net/api/Account/${userId}`,
+        values,
+        {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+      message.success('Profile updated successfully!');
+      setIsEditing(false);
+      setUser(values);
+    } catch (error) {
+      message.error('Failed to update profile.');
+    }
   };
 
   const handleProfilePictureChange = (e) => {
@@ -68,274 +83,138 @@ const Profile = () => {
     }
   };
 
+  if (!user) {
+    return (
+      <div className="flex justify-center items-center my-96">
+        <Spin size="large" />
+      </div>
+    );
+  }
+
   return (
     <div
       style={{
-        backgroundColor: '#f4f5f9',
-        display: 'flex',
-        justifyContent: 'center',
-        width: '100%',
-        padding: '40px 20px',
+        padding: '20px',
+        maxWidth: '800px',
+        margin: '0 auto',
+        backgroundColor: '#f0f2f5',
+        borderRadius: '8px',
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
       }}
     >
-      <div
-        style={{
-          backgroundColor: '#fff',
-          maxWidth: '900px',
-          width: '100%',
-          padding: '40px',
-          borderRadius: '12px',
-          boxShadow: '0 8px 16px rgba(0, 0, 0, 0.1)',
-          textAlign: 'center',
-        }}
-      >
-        <Title level={2} style={{ color: '#333' }}>
-          User Profile
-        </Title>
-        <Divider style={{ margin: '20px 0' }} />
-        <Card
-          style={{
-            borderRadius: '12px',
-            backgroundColor: '#f9f9f9',
-            padding: '20px',
-            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-          }}
-        >
-          <Row gutter={24} justify="center">
-            <Col span={24} sm={8}>
-              <div style={{ textAlign: 'center' }}>
-                <img
-                  src={profilePicture}
-                  alt="Profile"
-                  style={{
-                    borderRadius: '50%',
-                    width: '180px',
-                    height: '180px',
-                    border: '4px solid #3b7b7a',
-                    objectFit: 'cover',
-                  }}
-                />
-                {!isEditing && (
-                  <input
-                    type="file"
-                    accept="image/*"
-                    style={{ marginTop: '10px' }}
-                    onChange={handleProfilePictureChange}
-                  />
-                )}
-              </div>
-            </Col>
+      <Title level={2} style={{ textAlign: 'center' }}>
+        Profile
+      </Title>
+      <Row justify="center" style={{ marginBottom: '20px' }}>
+        <Col>
+          <img
+            src={profilePicture}
+            alt="Profile"
+            style={{
+              width: '180px',
+              height: '180px',
+              borderRadius: '50%',
+              border: '4px solid #3B7B7A',
+              objectFit: 'cover',
+              display: 'block',
+              margin: '0 auto',
+            }}
+          />
+          <div style={{ marginTop: '10px', textAlign: 'center' }}>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleProfilePictureChange}
+              style={{ border: 'none' }}
+            />
+          </div>
+        </Col>
+      </Row>
 
-            <Col span={24} sm={16}>
-              {!isEditing ? (
-                <>
-                  <Row gutter={16}>
-                    <Col span={12}>
-                      <Title level={4} style={{ color: '#3b7b7a' }}>
-                        <UserOutlined /> Full Name
-                      </Title>
-                      <Text style={{ fontSize: '16px' }}>{user.fullName}</Text>
-                    </Col>
-                    <Col span={12}>
-                      <Title level={4} style={{ color: '#3b7b7a' }}>
-                        <MailOutlined /> Email
-                      </Title>
-                      <Text style={{ fontSize: '16px' }}>{user.email}</Text>
-                    </Col>
-                  </Row>
-                  <Row gutter={16} style={{ marginTop: '20px' }}>
-                    <Col span={12}>
-                      <Title level={4} style={{ color: '#3b7b7a' }}>
-                        <PhoneOutlined /> Phone Number
-                      </Title>
-                      <Text style={{ fontSize: '16px' }}>
-                        {user.phoneNumber}
-                      </Text>
-                    </Col>
-                    <Col span={12}>
-                      <Title level={4} style={{ color: '#3b7b7a' }}>
-                        <CalendarOutlined /> Age
-                      </Title>
-                      <Text style={{ fontSize: '16px' }}>{user.age}</Text>
-                    </Col>
-                  </Row>
-                  <Row gutter={16} style={{ marginTop: '20px' }}>
-                    <Col span={12}>
-                      <Title level={4} style={{ color: '#3b7b7a' }}>
-                        <IdcardOutlined /> Job Title
-                      </Title>
-                      <Text style={{ fontSize: '16px' }}>{user.jobTitle}</Text>
-                    </Col>
-                    <Col span={12}>
-                      <Title level={4} style={{ color: '#3b7b7a' }}>
-                        <HomeOutlined /> Address
-                      </Title>
-                      <Text style={{ fontSize: '16px' }}>{user.address}</Text>
-                    </Col>
-                  </Row>
-                  <Row style={{ marginTop: '20px' }}>
-                    <Col span={24}>
-                      <Title level={4} style={{ color: '#3b7b7a' }}>
-                        <FileTextOutlined /> Description
-                      </Title>
-                      <Text style={{ fontSize: '16px' }}>
-                        {user.description}
-                      </Text>
-                    </Col>
-                  </Row>
-                  <div style={{ marginTop: '20px' }}>
-                    <Button
-                      type="primary"
-                      onClick={handleEdit}
-                      style={{
-                        backgroundColor: '#3b7b7a',
-                        borderColor: '#3b7b7a',
-                        color: '#fff',
-                      }}
-                    >
-                      <EditOutlined /> Edit Profile
-                    </Button>
-                  </div>
-                </>
-              ) : (
-                <Form form={form} layout="vertical" onFinish={handleFormSubmit}>
-                  <Form.Item name="profilePicture" label="Profile Picture">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleProfilePictureChange}
-                    />
-                  </Form.Item>
-                  <Form.Item
-                    name="fullName"
-                    label={
-                      <span>
-                        <UserOutlined /> Full Name
-                      </span>
-                    }
-                    rules={[
-                      {
-                        required: true,
-                        message: 'Please enter your full name',
-                      },
-                    ]}
-                  >
-                    <Input />
-                  </Form.Item>
-                  <Form.Item
-                    name="email"
-                    label={
-                      <span>
-                        <MailOutlined /> Email
-                      </span>
-                    }
-                    rules={[
-                      { required: true, message: 'Please enter your email' },
-                    ]}
-                  >
-                    <Input />
-                  </Form.Item>
-                  <Form.Item
-                    name="phoneNumber"
-                    label={
-                      <span>
-                        <PhoneOutlined /> Phone Number
-                      </span>
-                    }
-                    rules={[
-                      {
-                        required: true,
-                        message: 'Please enter your phone number',
-                      },
-                    ]}
-                  >
-                    <Input />
-                  </Form.Item>
-                  <Form.Item
-                    name="address"
-                    label={
-                      <span>
-                        <HomeOutlined /> Address
-                      </span>
-                    }
-                    rules={[
-                      { required: true, message: 'Please enter your address' },
-                    ]}
-                  >
-                    <Input />
-                  </Form.Item>
-                  <Form.Item
-                    name="age"
-                    label={
-                      <span>
-                        <CalendarOutlined /> Age
-                      </span>
-                    }
-                    rules={[
-                      { required: true, message: 'Please enter your age' },
-                    ]}
-                  >
-                    <Input type="number" />
-                  </Form.Item>
-                  <Form.Item
-                    name="jobTitle"
-                    label={
-                      <span>
-                        <IdcardOutlined /> Job Title
-                      </span>
-                    }
-                    rules={[
-                      {
-                        required: true,
-                        message: 'Please enter your job title',
-                      },
-                    ]}
-                  >
-                    <Input />
-                  </Form.Item>
-                  <Form.Item
-                    name="description"
-                    label={
-                      <span>
-                        <FileTextOutlined /> Description
-                      </span>
-                    }
-                    rules={[
-                      { required: true, message: 'Please enter a description' },
-                    ]}
-                  >
-                    <Input.TextArea rows={4} />
-                  </Form.Item>
-                  <div style={{ marginTop: '20px', textAlign: 'center' }}>
-                    <Button
-                      type="primary"
-                      htmlType="submit"
-                      style={{
-                        backgroundColor: '#3b7b7a',
-                        borderColor: '#3b7b7a',
-                        color: '#fff',
-                        marginRight: '10px',
-                      }}
-                    >
-                      <SaveOutlined /> Save Changes
-                    </Button>
-                    <Button
-                      onClick={handleCancel}
-                      style={{
-                        backgroundColor: '#fff',
-                        borderColor: '#ddd',
-                        color: '#333',
-                      }}
-                    >
-                      <CloseOutlined /> Cancel
-                    </Button>
-                  </div>
-                </Form>
-              )}
-            </Col>
-          </Row>
-        </Card>
-      </div>
+      <Form
+        form={form}
+        initialValues={{
+          fullName: user.fullName || 'Quang Khanh',
+          email: user.email || 'N/A',
+          phoneNumber: user.phoneNumber || '0334363339',
+          address: user.address || 'Ho Chi Minh City, Vietnam',
+          age: user.age || '30/03/2003',
+          jobTitle: user.jobTitle || 'Software Engineer',
+          description: user.description || 'N/A',
+        }}
+        onFinish={handleFormSubmit}
+        layout="vertical"
+        style={{ marginTop: '20px' }}
+      >
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item name="fullName" label="Full Name">
+              <Input prefix={<UserOutlined />} disabled={!isEditing} />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item name="email" label="Email">
+              <Input prefix={<MailOutlined />} disabled={!isEditing} />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item name="phoneNumber" label="Phone Number">
+              <Input prefix={<PhoneOutlined />} disabled={!isEditing} />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item name="address" label="Address">
+              <Input prefix={<HomeOutlined />} disabled={!isEditing} />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item name="age" label="Age">
+              <Input prefix={<IdcardOutlined />} disabled={!isEditing} />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item name="jobTitle" label="Job Title">
+              <Input prefix={<IdcardOutlined />} disabled={!isEditing} />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Form.Item name="description" label="Description">
+          <Input.TextArea
+            prefix={<FileTextOutlined />}
+            disabled={!isEditing}
+            rows={4}
+          />
+        </Form.Item>
+
+        <div style={{ textAlign: 'center' }}>
+          {isEditing ? (
+            <>
+              <Button
+                type="primary"
+                htmlType="submit"
+                style={{ marginRight: '8px' }}
+              >
+                Save
+              </Button>
+              <Button onClick={handleCancel}>Cancel</Button>
+            </>
+          ) : (
+            <Button
+              onClick={handleEdit}
+              style={{ backgroundColor: '#3B7B7A', color: 'white' }}
+            >
+              Edit Profile
+            </Button>
+          )}
+        </div>
+      </Form>
     </div>
   );
 };
