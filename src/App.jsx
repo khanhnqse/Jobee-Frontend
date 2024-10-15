@@ -17,6 +17,8 @@ import LoginPage from './pages/LoginPage/LoginPage';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import { AuthProvider } from './context/AuthContext';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
+import Checkout from './components/Checkout/Checkout';
+import Profile from './pages/Profile/Profile';
 
 function App() {
   return (
@@ -66,17 +68,12 @@ function App() {
               </PrivateRoute>
             }
           />
-          <Route
-            path={PATHS.POLICY.INDEX}
-            element={
-              <PrivateRoute>
-                <PolicyPage />
-              </PrivateRoute>
-            }
-          />
+          <Route path={PATHS.CHECKOUT.INDEX} element={<Checkout />} />
+          <Route path={PATHS.POLICY.INDEX} element={<PolicyPage />} />
           <Route path={PATHS.CV_MAKER.INDEX} element={<CVMaker />} />
           <Route path={PATHS.LOGIN} element={<LoginPage />} />
           <Route path={PATHS.REGISTER} element={<RegisterPage />} />
+          <Route path={PATHS.PROFILE} element={<Profile />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>

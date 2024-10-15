@@ -8,6 +8,7 @@ const LANDING = '/landing-page';
 const VIDEO_PLAYER = '/video-player';
 const POLICY = '/policy';
 const CV_MAKER = '/cv-maker';
+const CHECKOUT = '/checkout';
 export const PATHS = {
   HOME: '/',
   LOGIN: '/login',
@@ -15,6 +16,7 @@ export const PATHS = {
   FORGOT_PASSWORD: '/forgot-password',
   VERIFY_OTP: '/verify-otp',
   RESET_PASSWORD: '/reset-password',
+  PROFILE: '/profile',
   CV: {
     INDEX: CV_ASSISTANCE,
   },
@@ -44,6 +46,9 @@ export const PATHS = {
   },
   CV_MAKER:{
     INDEX: CV_MAKER,
+  },
+  CHECKOUT:{
+    INDEX: CHECKOUT,
   }
 
 };

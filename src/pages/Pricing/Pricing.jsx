@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { Row, Col, Card, Typography, Button, Divider } from 'antd';
 import { CheckCircleOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 
 const { Title, Text } = Typography;
 
 const Pricing = () => {
-  // Initial pricing plans
+  const navigate = useNavigate();
+  const [isProfessionalPlans, setIsProfessionalPlans] = useState(false);
+
   const initialPlans = [
     {
       id: 1,
@@ -37,7 +40,6 @@ const Pricing = () => {
     },
   ];
 
-  // Professional plans (shown after clicking "More")
   const professionalPlans = [
     {
       id: 1,
@@ -70,14 +72,14 @@ const Pricing = () => {
     },
   ];
 
-  const [isProfessionalPlans, setIsProfessionalPlans] = useState(false);
-
-  // Toggle between plans
   const handleTogglePlans = () => {
     setIsProfessionalPlans(!isProfessionalPlans);
   };
 
-  // Current plans based on state
+  const handleSelectPlan = (plan) => {
+    navigate('/checkout', { state: { selectedPlan: plan } });
+  };
+
   const plansToDisplay = isProfessionalPlans ? professionalPlans : initialPlans;
 
   return (
@@ -119,7 +121,6 @@ const Pricing = () => {
           </Col>
         </Row>
 
-        {/* Render Pricing Cards */}
         <Row justify="center" gutter={[32, 32]} style={{ marginTop: '52px' }}>
           {plansToDisplay.map((plan) => (
             <Col key={plan.id} xs={24} sm={12} md={8}>
@@ -166,11 +167,12 @@ const Pricing = () => {
                   type="primary"
                   style={{
                     width: '100%',
-                    height: '64px', // Set a fixed height to ensure consistency
+                    height: '64px',
                     borderRadius: '12px',
-                    marginTop: 'auto', // Push button to the bottom
+                    marginTop: 'auto',
                     backgroundColor: '#3B7B7A',
                   }}
+                  onClick={() => handleSelectPlan(plan)}
                 >
                   Choose
                 </Button>
@@ -179,7 +181,6 @@ const Pricing = () => {
           ))}
         </Row>
 
-        {/* Show More/Back button */}
         <Row justify="center" style={{ marginTop: '52px' }}>
           <Button
             type="primary"
