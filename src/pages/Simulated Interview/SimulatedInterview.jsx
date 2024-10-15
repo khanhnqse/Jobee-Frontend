@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Button } from 'antd';
+import { Row, Col, Button, Typography } from 'antd';
 import ConfigAntdButton from '@/components/Button/ConfigAntdButton';
 import simulateImage from '../../assets/untitled-design-10-1-1.png';
 
@@ -81,6 +81,7 @@ const Simulated = () => {
           >
             Power Up Your Interview Skills in a Flash!
           </p>
+
           <Col
             style={{
               paddingTop: '520px',
@@ -112,7 +113,7 @@ const Simulated = () => {
                   lineHeight: '36.5px',
                 }}
               >
-                Let’s go
+                Comming Soon
               </Button>
             </ConfigAntdButton>
           </Col>

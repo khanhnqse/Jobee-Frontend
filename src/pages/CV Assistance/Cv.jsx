@@ -1,5 +1,14 @@
 import { useEffect, useState } from 'react';
-import { Row, Col, Button, Select, Card, Spin } from 'antd';
+import {
+  Row,
+  Col,
+  Button,
+  Select,
+  Card,
+  Spin,
+  Input,
+  AutoComplete,
+} from 'antd';
 import SearchBar from '@/components/Search bar/Search-bar';
 import ConfigAntdButton from '@/components/Button/ConfigAntdButton';
 import CvList from '@/components/CV List/CvList';
@@ -7,6 +16,7 @@ import axios from 'axios';
 import CvSample from '@/components/CV Sample/CvSample';
 import hero from '../../assets/brown-minimalist-work-planning-presentation-1-1.png';
 import { Link } from 'react-router-dom';
+import { SearchOutlined } from '@ant-design/icons';
 const { Option } = Select;
 
 const Cv = () => {
@@ -16,6 +26,8 @@ const Cv = () => {
   const [cv, setCv] = useState([]);
   const [loadingCv, setLoadingCv] = useState(true);
   const [loadingSamples, setLoadingSamples] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
 
   const fetchCv = async () => {
     try {
@@ -43,6 +55,24 @@ const Cv = () => {
     fetchCv();
     fetchSample();
   }, []);
+
+  const handleSearch = (value) => {
+    setSearchQuery(value);
+    const filteredSuggestions = cv
+      .map((item) => item.title)
+      .filter((title) => title.toLowerCase().includes(value.toLowerCase()));
+    setSuggestions(filteredSuggestions);
+  };
+
+  const handleSelect = (value) => {
+    setSearchQuery(value);
+  };
+
+  const filteredCv = searchQuery
+    ? cv.filter((item) =>
+        item.title?.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : cv;
 
   return (
     <div className="bg-[#eae3c3] flex justify-center w-full">
@@ -94,10 +124,27 @@ const Cv = () => {
           </div>
         </div>
 
-        <SearchBar
-          style={{ paddingRight: '192px' }}
-          placeholder="Search your CV"
-        />
+        <div className="px-[216px] mt-10">
+          <AutoComplete
+            options={suggestions.map((suggestion) => ({ value: suggestion }))}
+            onSearch={handleSearch}
+            onSelect={handleSelect}
+            style={{ width: '100%' }}
+          >
+            <Input.Search
+              placeholder="Search your CV"
+              enterButton={
+                <Button
+                  type="primary"
+                  style={{ backgroundColor: '#3b7b7a', borderColor: '#3b7b7b' }}
+                >
+                  <SearchOutlined />
+                </Button>
+              }
+              size="large"
+            />
+          </AutoComplete>
+        </div>
 
         {/* CV List Section */}
         {loadingCv ? (
@@ -105,7 +152,7 @@ const Cv = () => {
             <Spin size="large" />
           </div>
         ) : (
-          <CvList data={cv} />
+          <CvList data={filteredCv} />
         )}
 
         {/* Advertising Section */}
