@@ -119,7 +119,7 @@ const Layout1 = ({ resumeData }) => (
         <Divider />
         {resumeData.summary && (
           <>
-            <Text strong>
+            <Text className="text-blue-900" strong>
               <UserOutlined /> Summary
             </Text>
             <p>{resumeData.summary}</p>
@@ -128,7 +128,7 @@ const Layout1 = ({ resumeData }) => (
         )}
         {resumeData.education && resumeData.education.length > 0 && (
           <>
-            <Text strong>
+            <Text className="text-blue-900" strong>
               <BookOutlined /> Education
             </Text>
             <ul>
@@ -150,7 +150,7 @@ const Layout1 = ({ resumeData }) => (
         )}
         {resumeData.experience && resumeData.experience.length > 0 && (
           <>
-            <Text strong>
+            <Text className="text-blue-900" strong>
               <ToolOutlined /> Experience
             </Text>
             <ul>
@@ -172,7 +172,7 @@ const Layout1 = ({ resumeData }) => (
         )}
         {resumeData.projects && resumeData.projects.length > 0 && (
           <>
-            <Text strong>
+            <Text className="text-blue-900" strong>
               <ProjectOutlined /> Projects
             </Text>
             <ul>
@@ -193,7 +193,7 @@ const Layout1 = ({ resumeData }) => (
         )}
         {resumeData.certifications && resumeData.certifications.length > 0 && (
           <>
-            <Text strong>
+            <Text className="text-blue-900" strong>
               <TrophyOutlined /> Certifications
             </Text>
             <ul>

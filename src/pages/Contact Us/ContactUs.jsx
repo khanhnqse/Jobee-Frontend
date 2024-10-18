@@ -226,7 +226,7 @@ const ContactUs = () => {
             </Text>
             <Title level={3} style={{ marginTop: '20px', fontSize: '24px' }}>
               <a
-                href="/"
+                href="/dashboard"
                 style={{
                   color: '#3B7B7A', // Custom color
                   fontWeight: 'bold',

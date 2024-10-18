@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, message, Card, Typography } from 'antd';
+import { Button, message, Card, Typography, Row, Col, Progress } from 'antd';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext'; // Assuming you are using AuthContext for user info
 
@@ -10,6 +10,7 @@ const GradeResume = () => {
   const [file, setFile] = useState(null);
   const [responseBody, setResponseBody] = useState(null);
   const [isHtmlResponse, setIsHtmlResponse] = useState(false); // For checking if the response is HTML
+  const [progress, setProgress] = useState(0); // Progress state
   const { jwtToken } = useAuth(); // Assuming you have JWT token from context
 
   // Handles file upload
@@ -29,6 +30,7 @@ const GradeResume = () => {
     }
 
     setLoading(true);
+    setProgress(0); // Reset progress
 
     const formData = new FormData();
     formData.append('pdfFile', file); // Append the PDF file to the FormData object
@@ -41,6 +43,12 @@ const GradeResume = () => {
           headers: {
             Authorization: `Bearer ${jwtToken}`, // Add token for authentication
             'Content-Type': 'multipart/form-data', // Specify content type for file upload
+          },
+          onUploadProgress: (progressEvent) => {
+            const percentCompleted = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            );
+            setProgress(percentCompleted); // Update progress
           },
         }
       );
@@ -68,59 +76,85 @@ const GradeResume = () => {
   };
 
   return (
-    <div
-      style={{
-        padding: '30px',
-        maxWidth: '600px',
-        height: '600px',
-        margin: '0 auto',
-      }}
-    >
-      <h2>Upload PDF File</h2>
-
-      <input
-        type="file"
-        accept=".pdf"
-        onChange={handleFileChange}
-        style={{ marginBottom: '20px' }}
-      />
-
-      <div style={{ textAlign: 'center' }}>
-        <Button
+    <>
+      <div
+        style={{
+          backgroundImage:
+            'url("https://www.example.com/your-background-image.jpg")', // Add your background image URL here
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          minHeight: '100vh',
+          padding: '30px',
+        }}
+      >
+        <Row justify="center" style={{ marginTop: 64 }}>
+          <Col span={12} style={{ textAlign: 'center' }}>
+            <Title level={2}>Grade your resume</Title>
+          </Col>
+        </Row>
+        <div
           style={{
-            backgroundColor: '#3b7b7a',
-            borderColor: '#3b7b7a',
-            color: 'white',
+            padding: '30px',
+            maxWidth: '600px',
+            margin: '0 auto',
+            backgroundColor: 'rgba(255, 255, 255, 0.9)', // Semi-transparent background
+            borderRadius: '8px',
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
           }}
-          type="primary"
-          onClick={handlePostFile}
-          loading={loading}
-          disabled={!file}
         >
-          {loading ? 'Please wait, Jobee is analyzing your CV' : 'Upload PDF'}
-        </Button>
-      </div>
+          <h2>Upload PDF File</h2>
 
-      {responseBody && (
-        <div style={{ marginTop: '30px' }}>
-          <Card title="Jobee AI" bordered={false}>
-            <Typography>
-              <Title level={4}>This is the suggestion for you</Title>
-              {/* Render based on whether the response is HTML or plain text */}
-              {isHtmlResponse ? (
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: formatResponseBody(responseBody),
-                  }}
-                />
-              ) : (
-                <Paragraph>{responseBody}</Paragraph> // Regular text rendering
-              )}
-            </Typography>
-          </Card>
+          <input
+            type="file"
+            accept=".pdf"
+            onChange={handleFileChange}
+            style={{ marginBottom: '20px' }}
+          />
+
+          <div style={{ textAlign: 'center' }}>
+            <Button
+              style={{
+                backgroundColor: '#3b7b7a',
+                borderColor: '#3b7b7a',
+                color: 'white',
+              }}
+              type="primary"
+              onClick={handlePostFile}
+              disabled={!file || loading} // Disable button when loading
+            >
+              {loading
+                ? 'Please wait, Jobee is analyzing your CV'
+                : 'Upload PDF'}
+            </Button>
+          </div>
+
+          {loading && (
+            <div style={{ marginTop: '20px' }}>
+              <Progress percent={progress} />
+            </div>
+          )}
+          {responseBody && (
+            <div style={{ marginTop: '30px' }}>
+              <Card title="Jobee AI" bordered={false}>
+                <Typography>
+                  <Title level={4}>This is the suggestion for you</Title>
+                  {/* Render based on whether the response is HTML or plain text */}
+                  {isHtmlResponse ? (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: formatResponseBody(responseBody),
+                      }}
+                    />
+                  ) : (
+                    <Paragraph>{responseBody}</Paragraph> // Regular text rendering
+                  )}
+                </Typography>
+              </Card>
+            </div>
+          )}
         </div>
-      )}
-    </div>
+      </div>
+    </>
   );
 };
 

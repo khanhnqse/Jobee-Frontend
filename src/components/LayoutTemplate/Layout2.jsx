@@ -28,7 +28,24 @@ const Layout2 = ({ resumeData }) => (
             <Text>{resumeData.phoneNumber || 'Phone Number'}</Text>
             <br />
             <Text>{resumeData.dateOfBirth || 'Date of Birth'}</Text>
+            <Divider />
+            <Text strong>Skills</Text>
+            <ul>
+              {resumeData.skills?.length > 0 ? (
+                resumeData.skills.map((skill, idx) => (
+                  <li key={idx}>
+                    <Text>{skill?.skill || 'No skill provided'}</Text>
+                  </li>
+                ))
+              ) : (
+                <li>
+                  <Text>No skills provided.</Text>
+                </li>
+              )}
+            </ul>
+            <Divider />
           </Col>
+
           <Col span={12}>
             <Text strong>Education</Text>
             <ul>
@@ -80,21 +97,7 @@ const Layout2 = ({ resumeData }) => (
               )}
             </ul>
             <Divider />
-            <Text strong>Skills</Text>
-            <ul>
-              {resumeData.skills?.length > 0 ? (
-                resumeData.skills.map((skill, idx) => (
-                  <li key={idx}>
-                    <Text>{skill?.skill || 'No skill provided'}</Text>
-                  </li>
-                ))
-              ) : (
-                <li>
-                  <Text>No skills provided.</Text>
-                </li>
-              )}
-            </ul>
-            <Divider />
+
             <Text strong>Projects</Text>
             <ul>
               {resumeData.projects?.length > 0 ? (

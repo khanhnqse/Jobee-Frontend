@@ -9,6 +9,7 @@ import {
   Card,
   Steps,
   Pagination,
+  message,
 } from 'antd';
 import PersonalInfoForm from '@/components/CV Component/PersonalInfoForm';
 import EducationForm from '@/components/CV Component/EducationForm';
@@ -21,9 +22,10 @@ import Layout1 from '@/components/LayoutTemplate/Layout1';
 import Layout2 from '@/components/LayoutTemplate/Layout2';
 import Layout3 from '@/components/LayoutTemplate/Layout3';
 import Layout4 from '@/components/LayoutTemplate/Layout4';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+import Layout5 from '@/components/LayoutTemplate/Layout5';
 import { Link } from 'react-router-dom';
+import CvTemplates from '@/components/CV Form/TemplateSelection';
+import SaveButton from '@/components/CV Form/SaveButton';
 
 const { Title } = Typography;
 const { Step } = Steps;
@@ -107,6 +109,12 @@ const cvTemplates = [
     imageUrl:
       'https://www.my-resume-templates.com/wp-content/uploads/2023/05/functional-resume-template-350x495.jpg',
   },
+  {
+    id: 'layout5',
+    title: 'Elegant',
+    imageUrl:
+      'https://marketplace.canva.com/EAFcO7DTEHM/1/0/1131w/canva-blue-professional-modern-cv-resume-pPAKwLoiobE.jpg',
+  },
 ];
 
 const CvMaker = () => {
@@ -134,39 +142,15 @@ const CvMaker = () => {
     } else {
       setResumeData((prevData) => ({ ...prevData, ...values }));
     }
+
+    // Display success message
+    message.success('Resume generated successfully!');
   };
 
   const handleFormChange = () => {
     const values = form.getFieldsValue();
     console.log('Form values on change:', values);
     setResumeData((prevData) => ({ ...prevData, ...values }));
-  };
-
-  const saveResumeAsPDF = () => {
-    const input = document.getElementById('resume-preview');
-
-    html2canvas(input, { scale: 2, useCORS: true }).then((canvas) => {
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'mm', 'letter');
-      const imgProps = pdf.getImageProperties(imgData);
-      const pdfWidth = pdf.internal.pageSize.getWidth(); // Letter width (215.9 mm)
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width; // Maintain aspect ratio
-      const scaleFactor = 1;
-      const scaledWidth = pdfWidth * scaleFactor;
-      const scaledHeight = pdfHeight * scaleFactor;
-
-      if (scaledHeight > pdf.internal.pageSize.getHeight()) {
-        const scaleToFitFactor =
-          pdf.internal.pageSize.getHeight() / scaledHeight;
-        const finalWidth = scaledWidth * scaleToFitFactor;
-        const finalHeight = scaledHeight * scaleToFitFactor;
-        pdf.addImage(imgData, 'PNG', 0, 0, finalWidth, finalHeight);
-      } else {
-        pdf.addImage(imgData, 'PNG', 0, 0, scaledWidth, scaledHeight);
-      }
-
-      pdf.save('resume.pdf');
-    });
   };
 
   const handleLayoutChange = (templateId) => {
@@ -183,6 +167,8 @@ const CvMaker = () => {
         return <Layout3 resumeData={resumeData} />;
       case 'layout4':
         return <Layout4 resumeData={resumeData} />;
+      case 'layout5':
+        return <Layout5 resumeData={resumeData} />;
       default:
         return <Layout1 resumeData={resumeData} />;
     }
@@ -226,14 +212,6 @@ const CvMaker = () => {
   const prev = () => {
     setCurrentStep(currentStep - 1);
   };
-
-  // Pagination
-  const indexOfLastTemplate = currentPage * templatesPerPage;
-  const indexOfFirstTemplate = indexOfLastTemplate - templatesPerPage;
-  const currentTemplates = cvTemplates.slice(
-    indexOfFirstTemplate,
-    indexOfLastTemplate
-  );
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -311,50 +289,13 @@ const CvMaker = () => {
                 </div>
               </Col>
               <Col span={5}>
-                <Typography.Title level={4}>
-                  Change CV Template
-                </Typography.Title>
-                <Row gutter={[16, 16]}>
-                  {currentTemplates.map((template) => (
-                    <Col span={24} key={template.id}>
-                      <Card
-                        hoverable
-                        onClick={() => handleLayoutChange(template.id)}
-                        cover={
-                          <img
-                            alt={template.title}
-                            src={template.imageUrl}
-                            style={{
-                              height: '250px',
-                              objectFit: 'cover',
-                              marginBottom: '-19px',
-                            }}
-                          />
-                        }
-                        className={
-                          selectedLayout === template.id ? 'selected' : ''
-                        }
-                        style={{
-                          width: '100%',
-                          height: '280px',
-                          border:
-                            selectedLayout === template.id
-                              ? '2px solid #1890ff'
-                              : 'none',
-                          borderRadius: '8px',
-                        }}
-                      >
-                        <Card.Meta title={template.title} />
-                      </Card>
-                    </Col>
-                  ))}
-                </Row>
-                <Pagination
-                  current={currentPage}
-                  pageSize={templatesPerPage}
-                  total={cvTemplates.length}
-                  onChange={handlePageChange}
-                  style={{ marginTop: '16px', textAlign: 'center' }}
+                <CvTemplates
+                  templates={cvTemplates}
+                  selectedLayout={selectedLayout}
+                  handleLayoutChange={handleLayoutChange}
+                  currentPage={currentPage}
+                  templatesPerPage={templatesPerPage}
+                  handlePageChange={handlePageChange}
                 />
               </Col>
             </Row>
@@ -362,21 +303,7 @@ const CvMaker = () => {
         </Row>
         <Row justify="center" style={{ marginTop: '20px' }}>
           <Col>
-            <Button
-              type="primary"
-              onClick={saveResumeAsPDF}
-              style={{
-                backgroundColor: '#3b7b7a',
-                borderColor: '#3b7b7a',
-                color: '#fff',
-                fontWeight: 'bold',
-                width: '250px',
-                height: '50px',
-                marginRight: '10px',
-              }}
-            >
-              Save as PDF
-            </Button>
+            <SaveButton elementId="resume-preview" />
           </Col>
           <Col>
             <Link to="/grade-resume">
