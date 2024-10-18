@@ -26,6 +26,9 @@ import Layout5 from '@/components/LayoutTemplate/Layout5';
 import { Link } from 'react-router-dom';
 import CvTemplates from '@/components/CV Form/TemplateSelection';
 import SaveButton from '@/components/CV Form/SaveButton';
+import ResumePreview from '@/components/CV Form/ResumePreview'; // Import ResumePreview
+import html2pdf from 'html2pdf.js'; // Import html2pdf.js
+import SaveButton2 from '@/components/CV Form/SaveButton2';
 
 const { Title } = Typography;
 const { Step } = Steps;
@@ -217,6 +220,20 @@ const CvMaker = () => {
     setCurrentPage(page);
   };
 
+  const saveResumeAsPDFWithoutData = () => {
+    const element = document.getElementById('resume-preview');
+
+    const opt = {
+      margin: 0.5,
+      filename: 'resume.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+    };
+
+    html2pdf().from(element).set(opt).save();
+  };
+
   return (
     <>
       <div className="min-h-screen bg-[#eae3c3] p-4">
@@ -303,7 +320,11 @@ const CvMaker = () => {
         </Row>
         <Row justify="center" style={{ marginTop: '20px' }}>
           <Col>
-            <SaveButton elementId="resume-preview" />
+            <SaveButton2 elementId="resume-preview" />
+          </Col>
+          <Col>
+            <SaveButton resumeData={resumeData} />{' '}
+            {/* Pass resumeData to SaveButton */}
           </Col>
           <Col>
             <Link to="/grade-resume">
