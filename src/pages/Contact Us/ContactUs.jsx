@@ -1,12 +1,58 @@
-import React from 'react';
-import { Row, Col, Input, Button, Checkbox, Typography } from 'antd';
-
+import React, { useState } from 'react';
+import {
+  Row,
+  Col,
+  Form,
+  Input,
+  Button,
+  Checkbox,
+  Typography,
+  message,
+} from 'antd';
+import { Link } from 'react-router-dom';
 import contact from '../../assets/contact.png';
-import { color } from 'framer-motion';
+import TextArea from 'antd/es/input/TextArea';
 
 const { Title, Text } = Typography;
 
 const ContactUs = () => {
+  const [result, setResult] = useState('');
+
+  const onSubmit = async (values) => {
+    setResult('Sending...');
+
+    const formData = new FormData();
+    formData.append('name', `${values.firstName} ${values.lastName}`);
+    formData.append('email', values.email);
+    formData.append('role', values.role);
+    formData.append('management_level', values.managementLevel);
+    formData.append('company', values.company);
+    formData.append('phone', values.phone);
+    formData.append('message', values.message);
+    formData.append('access_key', 'f172babe-4c28-4c65-b854-6a4134d7fb6c');
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setResult('Form Submitted Successfully');
+        message.success('Your message has been sent!');
+      } else {
+        setResult(data.message);
+        message.error('Submission failed. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setResult('An error occurred. Please try again later.');
+      message.error('An error occurred. Please try again later.');
+    }
+  };
+
   return (
     <div
       style={{
@@ -14,7 +60,7 @@ const ContactUs = () => {
         display: 'flex',
         justifyContent: 'center',
         width: '100%',
-        padding: '50px 0', // Added padding for better spacing
+        padding: '50px 0',
       }}
     >
       <div
@@ -39,40 +85,130 @@ const ContactUs = () => {
             <Text style={{ fontSize: '16px', color: '#999' }}>
               *All fields are required
             </Text>
-            {Array.from({ length: 7 }, (_, index) => (
-              <Input
-                key={index}
-                placeholder={
-                  [
-                    'Work email',
-                    'Function / Role',
-                    'Management level',
-                    'Company name',
-                    'First name',
-                    'Last name',
-                    'Phone',
-                  ][index]
-                }
-                style={{ marginTop: '15px', height: '50px' }}
-              />
-            ))}
 
-            <Button
-              type="primary"
-              style={{
-                marginTop: '15px',
-                backgroundColor: '#c94c4b',
-                borderColor: '#c94c4b',
-                width: '120px',
-              }}
-            >
-              Join us
-            </Button>
-            <br />
-            <Checkbox style={{ marginTop: '15px' }}>
-              Agree with our policies
-            </Checkbox>
+            {/* Ant Design Form for input fields */}
+            <Form layout="vertical" onFinish={onSubmit}>
+              <Form.Item
+                label="Work email"
+                name="email"
+                rules={[
+                  { required: true, message: 'Please enter your email!' },
+                  { type: 'email', message: 'The input is not valid E-mail!' },
+                ]}
+              >
+                <Input
+                  placeholder="Work email"
+                  style={{ marginTop: '15px', height: '50px' }}
+                />
+              </Form.Item>
+
+              <Form.Item
+                label="Function / Role"
+                name="role"
+                rules={[{ required: true, message: 'Please enter your role!' }]}
+              >
+                <Input
+                  placeholder="Function / Role"
+                  style={{ marginTop: '15px', height: '50px' }}
+                />
+              </Form.Item>
+
+              <Form.Item
+                label="Management level"
+                name="managementLevel"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please enter your management level!',
+                  },
+                ]}
+              >
+                <Input
+                  placeholder="Management level"
+                  style={{ marginTop: '15px', height: '50px' }}
+                />
+              </Form.Item>
+
+              <Form.Item
+                label="Company name"
+                name="company"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please enter your company name!',
+                  },
+                ]}
+              >
+                <Input
+                  placeholder="Company name"
+                  style={{ marginTop: '15px', height: '50px' }}
+                />
+              </Form.Item>
+
+              <Form.Item
+                label="First name"
+                name="firstName"
+                rules={[
+                  { required: true, message: 'Please enter your first name!' },
+                ]}
+              >
+                <Input
+                  placeholder="First name"
+                  style={{ marginTop: '15px', height: '50px' }}
+                />
+              </Form.Item>
+
+              <Form.Item
+                label="Last name"
+                name="lastName"
+                rules={[
+                  { required: true, message: 'Please enter your last name!' },
+                ]}
+              >
+                <Input
+                  placeholder="Last name"
+                  style={{ marginTop: '15px', height: '50px' }}
+                />
+              </Form.Item>
+
+              <Form.Item
+                label="Phone"
+                name="phone"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please enter your phone number!',
+                  },
+                ]}
+              >
+                <Input
+                  placeholder="Phone"
+                  style={{ marginTop: '15px', height: '50px' }}
+                />
+              </Form.Item>
+              <Form.Item label="Write your message" name="message">
+                <TextArea
+                  placeholder="message"
+                  style={{ marginTop: '15px', height: '50px' }}
+                />
+              </Form.Item>
+
+              <Form.Item>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  style={{
+                    marginTop: '15px',
+                    backgroundColor: '#c94c4b',
+                    borderColor: '#c94c4b',
+                  }}
+                >
+                  Join us now
+                </Button>
+              </Form.Item>
+            </Form>
           </Col>
+
           <Col span={8} offset={2}>
             <Title level={3} style={{ fontSize: '28px', fontWeight: '500' }}>
               Things are really looking up for you.
@@ -90,7 +226,7 @@ const ContactUs = () => {
             </Text>
             <Title level={3} style={{ marginTop: '20px', fontSize: '24px' }}>
               <a
-                href="/"
+                href="/dashboard"
                 style={{
                   color: '#3B7B7A', // Custom color
                   fontWeight: 'bold',
@@ -108,6 +244,8 @@ const ContactUs = () => {
             </Text>
           </Col>
         </Row>
+
+        {/* Bottom section with background image */}
         <Row
           style={{
             marginTop: '50px',
@@ -130,7 +268,7 @@ const ContactUs = () => {
               height: '100%',
               objectFit: 'cover',
               borderRadius: '10px',
-              // Ensures the image stays behind the content
+              zIndex: -1, // Ensures the image stays behind the content
             }}
           />
 
@@ -158,7 +296,7 @@ const ContactUs = () => {
               }}
             />
             <Checkbox style={{ marginTop: '15px', color: 'white' }}>
-              Agree with our <a href="/">policies</a>
+              Agree with our <Link to="/policy">policies</Link>
             </Checkbox>
             <br />
             <Button
@@ -169,7 +307,7 @@ const ContactUs = () => {
                 borderColor: '#c94c4b',
               }}
             >
-              Sign up
+              Sign up now
             </Button>
           </Col>
         </Row>

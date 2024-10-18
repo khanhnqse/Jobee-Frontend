@@ -1,0 +1,41 @@
+#resume-preview {
+    font-family: Arial, sans-serif;
+  }
+  
+  #resume-preview .ant-typography {
+    margin: 0;
+  }
+  
+  #resume-preview .ant-divider {
+    margin: 8px 0;
+  }
+  
+  #resume-preview .ant-card {
+    border: none;
+  }
+  
+  #resume-preview .ant-card-body {
+    padding: 0;
+  }
+  
+  #resume-preview .ant-row {
+    margin: 0;
+  }
+  
+  #resume-preview .ant-col {
+    padding: 0;
+  }
+  
+  #resume-preview img {
+    display: block;
+    margin: 0 auto;
+  }
+  
+  #resume-preview ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  #resume-preview ul li {
+    margin-bottom: 8px;
+  }

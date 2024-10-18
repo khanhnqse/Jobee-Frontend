@@ -1,0 +1,16 @@
+import { useAuth } from '@/context/AuthContext';
+import React, { useMemo } from 'react';
+import { Navigate } from 'react-router-dom';
+
+const PrivateRoute = ({ children }) => {
+  const { isAuthenticated } = useAuth();
+
+  const renderContent = useMemo(() => {
+    console.log('Is Authenticated:', isAuthenticated);
+    return isAuthenticated ? children : <Navigate to="/login" />;
+  }, [isAuthenticated, children]);
+
+  return renderContent;
+};
+
+export default PrivateRoute;

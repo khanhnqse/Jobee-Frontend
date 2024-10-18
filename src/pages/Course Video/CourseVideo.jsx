@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Card, Button, Collapse, Spin } from 'antd';
+import { Row, Col, Card, Button, Collapse, Spin, Input } from 'antd';
 import video4 from '../../assets/untitled-design-10-1-1.png';
 import heroSection from '../../assets/Hero.png';
 import Title from 'antd/es/typography/Title';
@@ -13,11 +13,14 @@ import TopVideos from '@/components/Video List/VideoList';
 
 const { Meta } = Card;
 const { Panel } = Collapse;
+const { Search } = Input;
+
 const CourseraVideo = () => {
   const apiVideo = 'https://66ee8e6d3ed5bb4d0bf14a30.mockapi.io/video';
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true); // Loading state
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState('');
   const itemsPerPage = 6;
 
   const fetchVideos = async () => {
@@ -35,9 +38,21 @@ const CourseraVideo = () => {
   useEffect(() => {
     fetchVideos();
   }, []);
+
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
+
+  const handleSearch = (value) => {
+    setSearchQuery(value);
+  };
+
+  const filteredVideos = searchQuery
+    ? videos.filter((video) =>
+        video.title.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : videos;
+
   return (
     <>
       <div
@@ -75,7 +90,30 @@ const CourseraVideo = () => {
           <Title level={2}>Browse Our Top Courses</Title>
         </Col>
       </Row>
-      <SearchBar style={{ paddingRight: '72px' }} placeholder="Search video" />
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          padding: '0 85px',
+          marginTop: '16px',
+        }}
+      >
+        <div style={{ width: '350px' }}>
+          <Search
+            placeholder="Search video"
+            onSearch={handleSearch}
+            enterButton={
+              <Button
+                type="primary"
+                style={{ backgroundColor: '#3b7b7a', borderColor: '#3b7b7b' }}
+              >
+                Search
+              </Button>
+            }
+            size="large"
+          />
+        </div>
+      </div>
       {/* Top video */}
       {/* Loading spinner */}
       <div
@@ -90,14 +128,12 @@ const CourseraVideo = () => {
             <Spin size="large" />
           </div>
         ) : (
-          <>
-            <TopVideos
-              videos={videos}
-              itemsPerPage={itemsPerPage}
-              currentPage={currentPage}
-              onPageChange={handlePageChange}
-            />
-          </>
+          <TopVideos
+            videos={filteredVideos}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
         )}
       </div>
 

@@ -57,9 +57,15 @@ const Home = () => {
                 unlock better opportunities.
               </Paragraph>
               <ConfigAntdButton>
-                <Button type="primary" size="large" style={{ marginRight: 16 }}>
-                  Sign up now
-                </Button>
+                <Link to="/register">
+                  <Button
+                    type="primary"
+                    size="large"
+                    style={{ marginRight: 16 }}
+                  >
+                    Sign up now
+                  </Button>
+                </Link>
               </ConfigAntdButton>
               <Button size="large" icon={<GoogleOutlined />}>
                 Sign up using Google
@@ -252,14 +258,16 @@ const Home = () => {
                 possibilities with Simulated Interview.
               </Paragraph>
               <ConfigAntdButton>
-                <Button
-                  className="text-white bg-red-700"
-                  type="primary"
-                  size="large"
-                  style={{ width: '160px' }}
-                >
-                  Try it now
-                </Button>
+                <Link to="/simulated-interview">
+                  <Button
+                    className="text-white bg-red-700"
+                    type="primary"
+                    size="large"
+                    style={{ width: '160px' }}
+                  >
+                    Try it now
+                  </Button>
+                </Link>
               </ConfigAntdButton>
             </Col>
           </Row>
@@ -310,18 +318,20 @@ const Home = () => {
             </Checkbox>
           </div> */}
           <br />
-          <Button
-            type="primary"
-            size="large"
-            style={{
-              backgroundColor: '#d9886a',
-              borderColor: '#d9886a',
-              width: '150px',
-              borderRadius: '8px',
-            }}
-          >
-            Sign up
-          </Button>
+          <Link to="/login">
+            <Button
+              type="primary"
+              size="large"
+              style={{
+                backgroundColor: '#d9886a',
+                borderColor: '#d9886a',
+                width: '150px',
+                borderRadius: '8px',
+              }}
+            >
+              Sign up
+            </Button>
+          </Link>
         </Col>
       </Row>
     </>

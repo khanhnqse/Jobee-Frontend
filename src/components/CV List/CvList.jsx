@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Row, Col, Card, Pagination, Button } from 'antd';
 import ConfigAntdButton from '../Button/ConfigAntdButton';
+import { Link } from 'react-router-dom';
 
 const CvList = ({ data }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -26,35 +27,37 @@ const CvList = ({ data }) => {
             md={8} // Three cards per row on medium screens
             lg={6} // Four cards per row on large screens
           >
-            <Card
-              hoverable
-              cover={
-                <img
-                  alt={`cv-${index + 1}`}
-                  src={cv.img}
-                  style={{
-                    width: '100%',
-                    height: '330px', // Set a flexible height for responsiveness
-                    objectFit: 'cover', // Keep image aspect ratio
-                  }}
-                />
-              }
-              className="w-full h-auto rounded-[8px] shadow-lg"
-            >
-              <Card.Meta title={cv.title} description={cv.description} />
-              <ConfigAntdButton>
-                <div className="flex justify-center mt-8">
-                  <Button
-                    type="primary"
+            <Link to={`/cv-maker`}>
+              <Card
+                hoverable
+                cover={
+                  <img
+                    alt={`cv-${index + 1}`}
+                    src={cv.img}
                     style={{
-                      width: '100px', // Fixed width to prevent shifting
+                      width: '100%',
+                      height: '330px', // Set a flexible height for responsiveness
+                      objectFit: 'cover', // Keep image aspect ratio
                     }}
-                  >
-                    Try this
-                  </Button>
-                </div>
-              </ConfigAntdButton>
-            </Card>
+                  />
+                }
+                className="w-full h-auto rounded-[8px] shadow-lg"
+              >
+                <Card.Meta title={cv.title} description={cv.description} />
+                <ConfigAntdButton>
+                  <div className="flex justify-center mt-8">
+                    <Button
+                      type="primary"
+                      style={{
+                        width: '100px', // Fixed width to prevent shifting
+                      }}
+                    >
+                      Try this
+                    </Button>
+                  </div>
+                </ConfigAntdButton>
+              </Card>
+            </Link>
           </Col>
         ))}
       </Row>
