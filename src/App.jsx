@@ -98,14 +98,7 @@ function App() {
               </PrivateRoute>
             }
           />
-          <Route
-            path={PATHS.GRADE_RESUME}
-            element={
-              <PrivateRoute>
-                <GradeResume />
-              </PrivateRoute>
-            }
-          />
+          <Route path={PATHS.GRADE_RESUME} element={<GradeResume />} />
           <Route
             path={PATHS.DASHBOARD.INDEX}
             element={
