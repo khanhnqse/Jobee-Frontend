@@ -36,8 +36,8 @@ const Checkout = () => {
     const requestBody = {
       productId: planId,
       description: phoneNumber,
-      returnUrl: 'http://localhost:5173/landing-page',
-      cancelUrl: 'http://localhost:5173/pricing',
+      returnUrl: 'https://solva-app.vercel.app/landing-page',
+      cancelUrl: 'https://solva-app.vercel.app/pricing',
     };
 
     setLoading(true); // Set loading to true when starting the API call
