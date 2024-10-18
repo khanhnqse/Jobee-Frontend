@@ -11,14 +11,14 @@ import {
   FileTextOutlined,
 } from '@ant-design/icons';
 
+import profilePicture from '../../assets/avatar.png';
+
 const { Title } = Typography;
 
 const Profile = () => {
   const [form] = Form.useForm();
   const [isEditing, setIsEditing] = useState(false);
-  const [profilePicture, setProfilePicture] = useState(
-    'https://via.placeholder.com/180x180'
-  );
+
   const [user, setUser] = useState(null);
   const { userId, jwtToken } = useAuth();
 
@@ -134,11 +134,11 @@ const Profile = () => {
       <Form
         form={form}
         initialValues={{
-          fullName: user.fullName || 'Quang Khanh',
+          fullName: user.fullName || 'N/A',
           email: user.email || 'N/A',
-          phoneNumber: user.phoneNumber || '0334363339',
+          phoneNumber: user.phoneNumber || 'N/A',
           address: user.address || 'Ho Chi Minh City, Vietnam',
-          age: user.age || '30/03/2003',
+          age: user.age || 'N/A',
           jobTitle: user.jobTitle || 'Software Engineer',
           description: user.description || 'N/A',
         }}
