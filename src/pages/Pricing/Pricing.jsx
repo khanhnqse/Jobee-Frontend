@@ -1,76 +1,80 @@
-import React, { useState } from 'react';
-import { Row, Col, Card, Typography, Button, Divider } from 'antd';
+import React, { useState, useEffect } from 'react';
+import {
+  Row,
+  Col,
+  Card,
+  Typography,
+  Button,
+  Divider,
+  message,
+  Spin,
+  List,
+} from 'antd';
 import { CheckCircleOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const { Title, Text } = Typography;
 
 const Pricing = () => {
   const navigate = useNavigate();
   const [isProfessionalPlans, setIsProfessionalPlans] = useState(false);
+  const [plans, setPlans] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const initialPlans = [
-    {
-      id: 1,
-      title: 'Standard',
-      price: '99,000VND',
-      duration: '/month',
-      features: [
-        'Announcement of competitions and workshops to improve skills',
-        'Open additional interview features to receive JD to complete questions.',
-        'Full access to community features.',
-        'Priority customer support.',
-        'All CV templates',
-      ],
-    },
-    {
-      id: 2,
-      title: 'Standard +',
-      price: '299,000VND',
-      duration: '/3 month',
-      features: [
-        'All services in the Standard',
-        '1-1 career consultation with experts.',
-        'Message directly with recruiters.',
-        'Exclusive access to premium job postings.',
-        'Automatically notify when favorite employers post news',
-        'Interviews are no longer limited',
-        'AI scores your CV and gives advice',
-      ],
-    },
-  ];
+  const featuresMapping = {
+    Standard: [
+      'Announcement of competitions and workshops to improve skills',
+      'Open additional interview features to receive JD to complete questions.',
+      'Full access to community features.',
+      'Priority customer support.',
+      'All CV templates',
+    ],
+    'Standard +': [
+      'Announcement of competitions and workshops to improve skills',
+      'Open additional interview features to receive JD to complete questions.',
+      'Full access to community features.',
+      'Priority customer support.',
+      'All CV templates',
+      'Additional feature for Standard +',
+    ],
+    Professional: [
+      'All features of Standard +',
+      'Access to premium job listings',
+      'One-on-one career coaching sessions',
+      'Exclusive networking events',
+    ],
+    'Professional +': [
+      'All features of Professional',
+      'Dedicated account manager',
+      'Advanced analytics and reporting',
+      'Customizable CV templates',
+    ],
+  };
 
-  const professionalPlans = [
-    {
-      id: 1,
-      title: 'Professional',
-      price: '1,999,000VND',
-      duration: '/month',
-      features: [
-        'Increase the number of job postings.',
-        'Employer branding features.',
-        'Posts are more eye-catching.',
-        'Push news 3 times during prime time.',
-        'Analyze and report candidate data.',
-        'Priority customer support.',
-        'Company introduction page.',
-      ],
-    },
-    {
-      id: 2,
-      title: 'Professional +',
-      price: '4,999,000VND',
-      duration: '/3 month',
-      features: [
-        'Show top searches',
-        'Analyze and report candidate data.',
-        'Access an exclusive source of talented candidates.',
-        'Promote recruitment news.',
-        'Specialized account management.',
-        'All services in the Professional',
-      ],
-    },
-  ];
+  useEffect(() => {
+    fetchPlans();
+  }, []);
+
+  const fetchPlans = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        'https://jobeewepappapi20241008011108.azurewebsites.net/api/SubscriptionPlan/plans'
+      );
+      const fetchedPlans = response.data.map((plan) => ({
+        ...plan,
+        features: featuresMapping[plan.planName] || [],
+      }));
+      setPlans(fetchedPlans);
+      message.success('Plans fetched successfully!');
+    } catch (error) {
+      console.error('Failed to fetch plans:', error);
+      message.error('Failed to fetch plans. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleTogglePlans = () => {
     setIsProfessionalPlans(!isProfessionalPlans);
@@ -80,7 +84,24 @@ const Pricing = () => {
     navigate('/checkout', { state: { selectedPlan: plan } });
   };
 
-  const plansToDisplay = isProfessionalPlans ? professionalPlans : initialPlans;
+  const plansToDisplay = isProfessionalPlans
+    ? plans.filter((plan) => plan.planName.includes('Professional'))
+    : plans.filter((plan) => !plan.planName.includes('Professional'));
+
+  if (loading) {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+        }}
+      >
+        <Spin size="large" />
+      </div>
+    );
+  }
 
   return (
     <div
@@ -123,7 +144,7 @@ const Pricing = () => {
 
         <Row justify="center" gutter={[32, 32]} style={{ marginTop: '52px' }}>
           {plansToDisplay.map((plan) => (
-            <Col key={plan.id} xs={24} sm={12} md={8}>
+            <Col key={plan.planId} xs={24} sm={12} md={8}>
               <Card
                 style={{
                   borderRadius: '20px',
@@ -137,31 +158,27 @@ const Pricing = () => {
                   height: '100%',
                 }}
               >
-                <Title level={2}>{plan.title}</Title>
+                <Title level={2}>{plan.planName}</Title>
                 <div style={{ marginTop: '28px', flexGrow: 1 }}>
-                  {plan.features.map((item, index) => (
-                    <div
-                      key={index}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '8px',
-                        marginTop: '16px',
-                      }}
-                    >
-                      <CheckCircleOutlined
-                        style={{ fontSize: '24px', color: '#34343e' }}
-                      />
-                      <Text style={{ fontSize: '18px', color: '#34343e' }}>
-                        {item}
-                      </Text>
-                    </div>
-                  ))}
+                  <List
+                    dataSource={plan.features}
+                    renderItem={(feature) => (
+                      <List.Item>
+                        <CheckCircleOutlined
+                          style={{ color: '#3B7B7A', marginRight: '8px' }}
+                        />
+                        {feature}
+                      </List.Item>
+                    )}
+                  />
                 </div>
                 <Divider style={{ marginTop: '28px' }} />
                 <Title level={2} style={{ marginTop: '16px' }}>
-                  {plan.price}
-                  <span style={{ fontSize: '18px' }}>{plan.duration}</span>
+                  {plan.price.toLocaleString('vi-VN')} VND
+                  <span style={{ fontSize: '18px' }}>
+                    {' '}
+                    / {plan.duration} month(s)
+                  </span>
                 </Title>
                 <Button
                   type="primary"

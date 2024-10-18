@@ -22,6 +22,8 @@ import Profile from './pages/Profile/Profile';
 import GradeResume from './pages/GradeResume/GradeResume';
 import Dashboard from './pages/Admin/Dashboard/Dashboard';
 import UserManagement from './pages/Admin/User Management/UserManagement';
+import JobManagement from './pages/Admin/Job Management/JobManagement';
+import PlanManagement from './pages/Admin/Plan Management/PlanManagement';
 
 function App() {
   return (
@@ -98,11 +100,33 @@ function App() {
               </PrivateRoute>
             }
           />
-          <Route path={PATHS.GRADE_RESUME} element={<GradeResume />} />
-          <Route path={PATHS.DASHBOARD.INDEX} element={<Dashboard />}>
+          <Route
+            path={PATHS.GRADE_RESUME}
+            element={
+              <PrivateRoute>
+                <GradeResume />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={PATHS.DASHBOARD.INDEX}
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          >
             <Route
               path={PATHS.DASHBOARD.CHILDREN.USER}
               element={<UserManagement />}
+            />
+            <Route
+              path={PATHS.DASHBOARD.CHILDREN.JOB}
+              element={<JobManagement />}
+            />
+            <Route
+              path={PATHS.DASHBOARD.CHILDREN.PLAN}
+              element={<PlanManagement />}
             />
           </Route>
         </Route>

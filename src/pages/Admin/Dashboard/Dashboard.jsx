@@ -19,10 +19,10 @@ function getItem(label, key, icon, children) {
 }
 
 const items = [
-  getItem('Overview', '/dashboard/overview', <PieChartOutlined />),
+  getItem('Overview', '/dashboard/data', <PieChartOutlined />),
   getItem('User Management', '/dashboard/user', <MenuFoldOutlined />),
-  getItem('Users', '/dashboard/users', <DesktopOutlined />),
-  getItem('Settings', '/dashboard/settings', <UserOutlined />),
+  getItem('Job Management', '/dashboard/job', <DesktopOutlined />),
+  getItem('Plan Management', '/dashboard/plan', <UserOutlined />),
 ];
 
 const Dashboard = () => {

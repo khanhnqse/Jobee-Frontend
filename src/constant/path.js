@@ -22,6 +22,8 @@ export const PATHS = {
     INDEX: '/dashboard',
     CHILDREN: {
       USER: '/dashboard/user',
+      JOB: '/dashboard/job',
+      PLAN: '/dashboard/plan',
      
     },
   },
@@ -57,6 +59,7 @@ export const PATHS = {
   },
   CHECKOUT:{
     INDEX: CHECKOUT,
-  }
+  },
+
 
 };
