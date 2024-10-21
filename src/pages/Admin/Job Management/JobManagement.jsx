@@ -5,12 +5,20 @@ import {
   Modal,
   Form,
   Input,
-  Space,
   message,
   Popconfirm,
+  Dropdown,
+  Menu,
+  Tooltip,
 } from 'antd';
-import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import {
+  PlusOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  MoreOutlined,
+} from '@ant-design/icons';
 import jobService from '@/services/jobService';
+import TextArea from 'antd/es/input/TextArea';
 
 const JobManagement = () => {
   const [jobs, setJobs] = useState([]);
@@ -27,8 +35,12 @@ const JobManagement = () => {
     setLoading(true);
     try {
       const response = await jobService.getJobsList();
-      setJobs(response.data);
-      message.success('Jobs fetched successfully!');
+      if (response.data.isSuccess) {
+        setJobs(response.data.results);
+        message.success('Jobs fetched successfully!');
+      } else {
+        message.error(response.data.message || 'Failed to fetch jobs.');
+      }
     } catch (error) {
       console.error('Failed to fetch jobs:', error);
       message.error('Failed to fetch jobs. Please try again.');
@@ -39,13 +51,14 @@ const JobManagement = () => {
 
   const handleAddJob = () => {
     setEditingJob(null);
+    form.resetFields();
     setIsModalVisible(true);
   };
 
   const handleEditJob = (job) => {
     setEditingJob(job);
-    setIsModalVisible(true);
     form.setFieldsValue(job);
+    setIsModalVisible(true);
   };
 
   const handleDeleteJob = async (jobId) => {
@@ -61,11 +74,20 @@ const JobManagement = () => {
 
   const handleFormSubmit = async (values) => {
     try {
+      const jobData = {
+        title: values.title,
+        description: values.description,
+        location: values.location,
+        jobType: values.jobType,
+        salaryRange: values.salaryRange,
+        status: values.status,
+      };
+
       if (editingJob) {
-        await jobService.updateJob(editingJob.jobId, values);
+        await jobService.updateJob(editingJob.jobId, jobData);
         message.success('Job updated successfully!');
       } else {
-        await jobService.createJob(values);
+        await jobService.createJob(jobData);
         message.success('Job created successfully!');
       }
       fetchJobs();
@@ -77,7 +99,39 @@ const JobManagement = () => {
     }
   };
 
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    form.resetFields();
+  };
+
+  const menu = (record) => (
+    <Menu>
+      <Menu.Item
+        key="edit"
+        icon={<EditOutlined />}
+        onClick={() => handleEditJob(record)}
+      >
+        Edit
+      </Menu.Item>
+      <Menu.Item key="delete" icon={<DeleteOutlined />}>
+        <Popconfirm
+          title="Are you sure you want to delete this job?"
+          onConfirm={() => handleDeleteJob(record.jobId)}
+          okText="Yes"
+          cancelText="No"
+        >
+          Delete
+        </Popconfirm>
+      </Menu.Item>
+    </Menu>
+  );
+
   const columns = [
+    {
+      title: 'Job ID',
+      dataIndex: 'jobId',
+      key: 'jobId',
+    },
     {
       title: 'Title',
       dataIndex: 'title',
@@ -87,6 +141,14 @@ const JobManagement = () => {
       title: 'Description',
       dataIndex: 'description',
       key: 'description',
+      ellipsis: {
+        showTitle: false,
+      },
+      render: (description) => (
+        <Tooltip placement="topLeft" title={description}>
+          {description}
+        </Tooltip>
+      ),
     },
     {
       title: 'Location',
@@ -112,20 +174,9 @@ const JobManagement = () => {
       title: 'Actions',
       key: 'actions',
       render: (text, record) => (
-        <Space size="middle">
-          <Button
-            icon={<EditOutlined />}
-            onClick={() => handleEditJob(record)}
-          />
-          <Popconfirm
-            title="Are you sure you want to delete this job?"
-            onConfirm={() => handleDeleteJob(record.jobId)}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button icon={<DeleteOutlined />} />
-          </Popconfirm>
-        </Space>
+        <Dropdown overlay={menu(record)} trigger={['click']}>
+          <Button icon={<MoreOutlined />} />
+        </Dropdown>
       ),
     },
   ];
@@ -150,7 +201,7 @@ const JobManagement = () => {
       <Modal
         title={editingJob ? 'Edit Job' : 'Add Job'}
         visible={isModalVisible}
-        onCancel={() => setIsModalVisible(false)}
+        onCancel={handleCancel}
         onOk={() => form.submit()}
       >
         <Form form={form} onFinish={handleFormSubmit} layout="vertical">
@@ -168,7 +219,7 @@ const JobManagement = () => {
               { required: true, message: 'Please enter the job description' },
             ]}
           >
-            <Input />
+            <TextArea />
           </Form.Item>
           <Form.Item
             name="location"

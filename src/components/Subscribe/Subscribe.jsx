@@ -3,6 +3,7 @@ import { FaBell } from 'react-icons/fa';
 import BgImage from '../../assets/bg.png';
 import { motion } from 'framer-motion';
 import { Button } from 'antd';
+import { Link } from 'react-router-dom';
 
 const bgStyle = {
   backgroundImage: `url(${BgImage})`,
@@ -36,19 +37,21 @@ const Subscribe = () => {
               overall experience but also provide you with significant added
               value.
             </p>
-            <Button
-              style={{
-                backgroundColor: '#c94c4b',
-                borderColor: '#c94c4b',
-                height: '50px',
+            <Link to="/pricing" className="text-[#3B7B7A] underline">
+              <Button
+                style={{
+                  backgroundColor: '#c94c4b',
+                  borderColor: '#c94c4b',
+                  height: '50px',
 
-                color: '#fff',
-              }}
-              className="primary-btn !mt-8 inline-flex items-center gap-4 group"
-            >
-              Subscribe Now
-              <FaBell className="group-hover:animate-bounce group-hover:text-lg duration-200" />
-            </Button>
+                  color: '#fff',
+                }}
+                className="primary-btn !mt-8 inline-flex items-center gap-4 group"
+              >
+                Subscribe Now
+                <FaBell className="group-hover:animate-bounce group-hover:text-lg duration-200" />
+              </Button>
+            </Link>
           </div>
         </motion.div>
       </motion.div>

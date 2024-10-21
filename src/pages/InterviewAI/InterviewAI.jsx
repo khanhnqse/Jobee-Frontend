@@ -23,7 +23,7 @@ const { Title, Paragraph } = Typography;
 const { Step } = Steps;
 const { Panel } = Collapse;
 
-const GradeResume = () => {
+const InterviewAI = () => {
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
   const [responseBody, setResponseBody] = useState(null);
@@ -55,7 +55,7 @@ const GradeResume = () => {
 
     try {
       const response = await axios.post(
-        'https://jobeewepappapi20241008011108.azurewebsites.net/api/Account/grade', // Update the API endpoint if necessary
+        'https://jobeewepappapi20241008011108.azurewebsites.net/api/Account/interview-with-ai', // Update the API endpoint if necessary
         formData,
         {
           headers: {
@@ -105,9 +105,9 @@ const GradeResume = () => {
           padding: '30px',
         }}
       >
-        <Row justify="center" style={{ marginTop: 64 }}>
+        <Row justify="center" style={{ marginTop: 20 }}>
           <Col span={12} style={{ textAlign: 'center' }}>
-            <Title level={2}>Grade your resume</Title>
+            <Title level={2}>Simulated Interview</Title>
           </Col>
         </Row>
         <div
@@ -145,7 +145,7 @@ const GradeResume = () => {
                 />
                 <Step
                   title="View the results"
-                  description="View the generated suggestions in the response section below."
+                  description="View the generated interview questions in the response section below."
                   icon={<CheckCircleOutlined />}
                 />
               </Steps>
@@ -187,7 +187,7 @@ const GradeResume = () => {
             <div style={{ marginTop: '30px' }}>
               <Card title="Jobee AI" bordered={false}>
                 <Typography>
-                  <Title level={4}>This is the suggestion for you</Title>
+                  <Title level={4}>This is the questions for you</Title>
                   {/* Render based on whether the response is HTML or plain text */}
                   {isHtmlResponse ? (
                     <div
@@ -208,4 +208,4 @@ const GradeResume = () => {
   );
 };
 
-export default GradeResume;
+export default InterviewAI;

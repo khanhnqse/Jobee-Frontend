@@ -43,7 +43,7 @@ export default function Footer() {
           </Title>
           <Typography direction="vertical" size="middle">
             <Paragraph className="footer-paragraph">
-              <MailOutlined /> jobee.co@gmail.com
+              <MailOutlined /> jobee.officialvn@gmail.com
             </Paragraph>
             <Paragraph className="footer-paragraph">
               <PhoneOutlined /> (+84) 000 000 0000

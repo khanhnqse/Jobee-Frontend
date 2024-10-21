@@ -8,8 +8,15 @@ import {
   Space,
   message,
   Popconfirm,
+  Dropdown,
+  Menu,
 } from 'antd';
-import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import {
+  PlusOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  MoreOutlined,
+} from '@ant-design/icons';
 import planService from '@/services/planService';
 
 const PlanManagement = () => {
@@ -17,7 +24,7 @@ const PlanManagement = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editingPlan, setEditingPlan] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [confirmLoading, setConfirmLoading] = useState(false); // Add confirmLoading state
+  const [confirmLoading, setConfirmLoading] = useState(false);
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -27,8 +34,8 @@ const PlanManagement = () => {
   const fetchPlans = async () => {
     setLoading(true);
     try {
-      const response = await planService.getPlansList();
-      setPlans(response.data);
+      const plansList = await planService.getPlansList();
+      setPlans(plansList);
       message.success('Plans fetched successfully!');
     } catch (error) {
       console.error('Failed to fetch plans:', error);
@@ -66,7 +73,7 @@ const PlanManagement = () => {
   };
 
   const handleFormSubmit = async (values) => {
-    setConfirmLoading(true); // Set confirmLoading to true when submitting the form
+    setConfirmLoading(true);
     try {
       if (editingPlan) {
         await planService.updatePlan(editingPlan.planId, values);
@@ -82,11 +89,38 @@ const PlanManagement = () => {
       console.error('Failed to submit form:', error);
       message.error('Failed to submit form. Please try again.');
     } finally {
-      setConfirmLoading(false); // Set confirmLoading to false after the form submission is complete
+      setConfirmLoading(false);
     }
   };
 
+  const menu = (record) => (
+    <Menu>
+      <Menu.Item
+        key="edit"
+        icon={<EditOutlined />}
+        onClick={() => handleEditPlan(record)}
+      >
+        Edit
+      </Menu.Item>
+      <Menu.Item key="delete" icon={<DeleteOutlined />}>
+        <Popconfirm
+          title="Are you sure you want to delete this plan?"
+          onConfirm={() => handleDeletePlan(record.planId)}
+          okText="Yes"
+          cancelText="No"
+        >
+          Delete
+        </Popconfirm>
+      </Menu.Item>
+    </Menu>
+  );
+
   const columns = [
+    {
+      title: 'Plan ID',
+      dataIndex: 'planId',
+      key: 'planId',
+    },
     {
       title: 'Plan Name',
       dataIndex: 'planName',
@@ -106,20 +140,9 @@ const PlanManagement = () => {
       title: 'Actions',
       key: 'actions',
       render: (text, record) => (
-        <Space size="middle">
-          <Button
-            icon={<EditOutlined />}
-            onClick={() => handleEditPlan(record)}
-          />
-          <Popconfirm
-            title="Are you sure you want to delete this plan?"
-            onConfirm={() => handleDeletePlan(record.planId)}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button icon={<DeleteOutlined />} />
-          </Popconfirm>
-        </Space>
+        <Dropdown overlay={menu(record)} trigger={['click']}>
+          <Button icon={<MoreOutlined />} />
+        </Dropdown>
       ),
     },
   ];
@@ -146,7 +169,7 @@ const PlanManagement = () => {
         visible={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
         onOk={() => form.submit()}
-        confirmLoading={confirmLoading} // Add confirmLoading prop to Modal
+        confirmLoading={confirmLoading}
       >
         <Form form={form} onFinish={handleFormSubmit} layout="vertical">
           <Form.Item name="planId" label="Plan ID" hidden>

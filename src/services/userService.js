@@ -5,19 +5,39 @@ const axiosInstance = axios.create({
 });
 
 const GetUsersList = async () => {
-  return axiosInstance.get('/users');
+  const response = await axiosInstance.get('/user');
+  if (response.data.isSuccess) {
+    return response.data.results;
+  } else {
+    throw new Error(response.data.message || 'Failed to fetch users');
+  }
 };
 
 const RegisterUser = async (userData) => {
-  return axiosInstance.post('/users', userData);
+  const response = await axiosInstance.post('/user', userData);
+  if (response.data.isSuccess) {
+    return response.data.result;
+  } else {
+    throw new Error(response.data.message || 'Failed to register user');
+  }
 };
 
 const UpdateUser = async (userId, userData) => {
-  return axiosInstance.put(`/users/${userId}`, userData);
+  const response = await axiosInstance.put(`/${userId}`, userData);
+  if (response.data.isSuccess) {
+    return response.data.result;
+  } else {
+    throw new Error(response.data.message || 'Failed to update user');
+  }
 };
 
 const DeleteUser = async (userId) => {
-  return axiosInstance.delete(`/users/${userId}`);
+  const response = await axiosInstance.delete(`/user/${userId}`);
+  if (response.data.isSuccess) {
+    return response.data.result;
+  } else {
+    throw new Error(response.data.message || 'Failed to delete user');
+  }
 };
 
 const userService = {

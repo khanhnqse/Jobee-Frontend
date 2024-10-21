@@ -2,6 +2,7 @@ import React from 'react';
 import { Row, Col, Button, Typography } from 'antd';
 import ConfigAntdButton from '@/components/Button/ConfigAntdButton';
 import simulateImage from '../../assets/untitled-design-10-1-1.png';
+import { Link } from 'react-router-dom';
 
 const Simulated = () => {
   return (
@@ -96,25 +97,27 @@ const Simulated = () => {
             }}
           >
             <ConfigAntdButton>
-              <Button
-                type="primary"
-                style={{
-                  position: 'absolute',
-                  width: '213px',
-                  height: '59px',
-                  top: '45%',
-                  left: '50%',
-                  transform: 'translateX(-50%)', // Center the button
-                  backgroundColor: '#c94c4b',
-                  borderRadius: '10px',
-                  fontFamily: "'Poppins-Medium', Helvetica",
-                  fontWeight: '500',
-                  fontSize: '1.25rem', // Responsive font size
-                  lineHeight: '36.5px',
-                }}
-              >
-                Comming Soon
-              </Button>
+              <Link to="/interview">
+                <Button
+                  type="primary"
+                  style={{
+                    position: 'absolute',
+                    width: '213px',
+                    height: '59px',
+                    top: '45%',
+                    left: '50%',
+                    transform: 'translateX(-50%)', // Center the button
+                    backgroundColor: '#c94c4b',
+                    borderRadius: '10px',
+                    fontFamily: "'Poppins-Medium', Helvetica",
+                    fontWeight: '500',
+                    fontSize: '1.25rem', // Responsive font size
+                    lineHeight: '36.5px',
+                  }}
+                >
+                  Try now
+                </Button>
+              </Link>
             </ConfigAntdButton>
           </Col>
         </Row>
