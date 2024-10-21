@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Row, Col, message, Spin, Input, Select, Space } from 'antd';
+import {
+  Card,
+  Row,
+  Col,
+  message,
+  Spin,
+  Input,
+  Select,
+  Space,
+  AutoComplete,
+} from 'antd';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './JobPage.css';
 
 const { Meta } = Card;
-const { Search } = Input;
 const { Option } = Select;
 
 const JobPage = () => {
@@ -13,6 +22,7 @@ const JobPage = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [jobTypeFilter, setJobTypeFilter] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,7 +37,6 @@ const JobPage = () => {
       );
       if (response.data.isSuccess) {
         setJobs(response.data.results);
-        message.success('Jobs fetched successfully!');
       } else {
         message.error(response.data.message || 'Failed to fetch jobs.');
       }
@@ -41,6 +50,10 @@ const JobPage = () => {
 
   const handleSearch = (value) => {
     setSearchTerm(value);
+    const filteredSuggestions = jobs
+      .filter((job) => job.title.toLowerCase().includes(value.toLowerCase()))
+      .map((job) => ({ value: job.title }));
+    setSuggestions(filteredSuggestions);
   };
 
   const handleJobTypeChange = (value) => {
@@ -50,7 +63,9 @@ const JobPage = () => {
   const filteredJobs = jobs.filter((job) => {
     return (
       job.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (jobTypeFilter ? job.jobType === jobTypeFilter : true)
+      (jobTypeFilter === '' ||
+        jobTypeFilter === 'All' ||
+        job.jobType === jobTypeFilter)
     );
   });
 
@@ -71,18 +86,21 @@ const JobPage = () => {
         Job Listings
       </h1>
       <Space direction="vertical" style={{ width: '100%' }} className="mb-6">
-        <Search
-          placeholder="Search jobs"
-          enterButton
+        <AutoComplete
+          options={suggestions}
           onSearch={handleSearch}
+          onSelect={handleSearch}
           style={{ width: '100%', maxWidth: '350px', margin: '0 auto' }}
-        />
+        >
+          <Input.Search placeholder="Search jobs" enterButton />
+        </AutoComplete>
         <Select
           placeholder="Filter by job type"
           onChange={handleJobTypeChange}
           style={{ width: '100%', maxWidth: '350px', margin: '0 auto' }}
           allowClear
         >
+          <Option value="All">All</Option>
           <Option value="Full-time">Full-time</Option>
           <Option value="Part-time">Part-time</Option>
           <Option value="Contract">Contract</Option>

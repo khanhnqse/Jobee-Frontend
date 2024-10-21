@@ -1,7 +1,12 @@
 import axios from 'axios';
 
+
+const jwtToken = localStorage.getItem('jwtToken');
 const axiosInstance = axios.create({
   baseURL: 'https://jobeewepappapi20241008011108.azurewebsites.net/api/Job',
+  headers: {
+    Authorization: `Bearer ${jwtToken}`,
+  },
 });
 
 const getJobsList = async () => {
@@ -13,7 +18,7 @@ const createJob = async (jobData) => {
 };
 
 const updateJob = async (jobId, jobData) => {
-  return axiosInstance.patch(`/jobs/${jobId}`, jobData);
+  return axiosInstance.put(`/${jobId}`, jobData);
 };
 
 const deleteJob = async (jobId) => {
