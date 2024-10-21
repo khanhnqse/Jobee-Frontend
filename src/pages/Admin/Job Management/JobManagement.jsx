@@ -27,8 +27,12 @@ const JobManagement = () => {
     setLoading(true);
     try {
       const response = await jobService.getJobsList();
-      setJobs(response.data);
-      message.success('Jobs fetched successfully!');
+      if (response.data.isSuccess) {
+        setJobs(response.data.results);
+        message.success('Jobs fetched successfully!');
+      } else {
+        message.error(response.data.message || 'Failed to fetch jobs.');
+      }
     } catch (error) {
       console.error('Failed to fetch jobs:', error);
       message.error('Failed to fetch jobs. Please try again.');
@@ -61,11 +65,20 @@ const JobManagement = () => {
 
   const handleFormSubmit = async (values) => {
     try {
+      const jobData = {
+        title: values.title,
+        description: values.description,
+        location: values.location,
+        jobType: values.jobType,
+        salaryRange: values.salaryRange,
+        status: values.status,
+      };
+
       if (editingJob) {
-        await jobService.updateJob(editingJob.jobId, values);
+        await jobService.updateJob(editingJob.jobId, jobData);
         message.success('Job updated successfully!');
       } else {
-        await jobService.createJob(values);
+        await jobService.createJob(jobData);
         message.success('Job created successfully!');
       }
       fetchJobs();

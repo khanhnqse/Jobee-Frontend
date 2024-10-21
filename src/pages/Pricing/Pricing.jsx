@@ -36,10 +36,10 @@ const Pricing = () => {
       'Full access to community features.',
       'Priority customer support.',
       'All CV templates',
-      'Additional feature for Standard +',
+      'Additional feature for Plan Plus',
     ],
     Professional: [
-      'All features of Standard +',
+      'All features of Plan Plus',
       'Access to premium job listings',
       'One-on-one career coaching sessions',
       'Exclusive networking events',
@@ -60,14 +60,17 @@ const Pricing = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        'https://jobeewepappapi20241008011108.azurewebsites.net/api/SubscriptionPlan/plans'
+        'https://jobeewepappapi20241008011108.azurewebsites.net/api/subcription-plan'
       );
-      const fetchedPlans = response.data.map((plan) => ({
-        ...plan,
-        features: featuresMapping[plan.planName] || [],
-      }));
-      setPlans(fetchedPlans);
-      message.success('Plans fetched successfully!');
+      if (response.data.isSuccess) {
+        const fetchedPlans = response.data.results.map((plan) => ({
+          ...plan,
+          features: featuresMapping[plan.planName] || [],
+        }));
+        setPlans(fetchedPlans);
+      } else {
+        message.error(response.data.message || 'Failed to fetch plans.');
+      }
     } catch (error) {
       console.error('Failed to fetch plans:', error);
       message.error('Failed to fetch plans. Please try again.');

@@ -22,6 +22,10 @@ export const MenuItems = [
     key: PATHS.PRICING.INDEX,
   },
   {
+    label: 'Recruitment',
+    key: PATHS.JOB,
+  },
+  {
     label: 'Contact us',
     key: PATHS.CONTACT.INDEX,
   },

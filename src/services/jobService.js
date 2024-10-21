@@ -9,7 +9,7 @@ const getJobsList = async () => {
 };
 
 const createJob = async (jobData) => {
-  return axiosInstance.post('/create', jobData);
+  return axiosInstance.post('', jobData);
 };
 
 const updateJob = async (jobId, jobData) => {

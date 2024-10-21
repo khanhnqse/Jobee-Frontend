@@ -18,6 +18,11 @@ export const PATHS = {
   RESET_PASSWORD: '/reset-password',
   PROFILE: '/profile',
   GRADE_RESUME: '/grade-resume',
+  INTERVIEW: '/interview',
+  SUCCESS: '/success',
+  FAIL: '/fail',
+  JOB: '/job',
+  JOB_DETAIL: '/job/:id',
   DASHBOARD: {
     INDEX: '/dashboard',
     CHILDREN: {
@@ -60,6 +65,7 @@ export const PATHS = {
   CHECKOUT:{
     INDEX: CHECKOUT,
   },
+
 
 
 };

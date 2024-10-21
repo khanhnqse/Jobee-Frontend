@@ -1,4 +1,4 @@
-import { Col, Menu, Row, Button, Dropdown, message } from 'antd';
+import { Col, Menu, Row, Button, Dropdown, message, Avatar, Spin } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import logo from '../../assets/artboard-3-copy-2-4x-1.png';
 import { Header as AntHeader } from 'antd/es/layout/layout';
@@ -6,17 +6,51 @@ import { MenuItems } from '@/constant/menu-data';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
+import axios from 'axios';
 import './Header.css';
 
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedKey, setSelectedKey] = useState(location.pathname);
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, userId, jwtToken } = useAuth();
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setSelectedKey(location.pathname);
   }, [location.pathname]);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (isAuthenticated && userId && jwtToken) {
+        setLoading(true);
+        try {
+          const response = await axios.get(
+            `https://jobeewepappapi20241008011108.azurewebsites.net/api/Account/${userId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${jwtToken}`,
+              },
+            }
+          );
+          if (response.data.isSuccess) {
+            setUserData(response.data.result);
+          } else {
+            message.error(
+              response.data.message || 'Failed to fetch user data.'
+            );
+          }
+        } catch (error) {
+          message.error('Failed to fetch user data.');
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchUserData();
+  }, [isAuthenticated, userId, jwtToken]);
 
   const handleMenuClick = ({ key }) => {
     setSelectedKey(key);
@@ -78,11 +112,24 @@ const Header = () => {
                 style={{
                   backgroundColor: '#3b7b7a',
                   color: 'white',
+                  display: 'flex',
+                  alignItems: 'center',
                 }}
                 type="primary"
-                shape="circle"
-                icon={<UserOutlined />}
-              />
+              >
+                {loading ? (
+                  <Spin size="small" />
+                ) : (
+                  <>
+                    <Avatar
+                      src={userData?.profilePicture}
+                      icon={<UserOutlined />}
+                      style={{ marginRight: 8 }}
+                    />
+                    {userData?.fullName}
+                  </>
+                )}
+              </Button>
             </Dropdown>
           ) : (
             <Button

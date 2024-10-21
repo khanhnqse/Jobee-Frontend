@@ -1,0 +1,11 @@
+/* Custom styles to override Ant Design search button */
+.ant-input-search-button {
+    background-color: #3b7b7a !important;
+    border-color: #3b7b7a !important;
+    color: #fff !important;
+  }
+  
+  .ant-input-search-button:hover {
+    background-color: #336b6a !important;
+    border-color: #336b6a !important;
+  }

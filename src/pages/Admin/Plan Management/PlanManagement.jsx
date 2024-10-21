@@ -27,8 +27,8 @@ const PlanManagement = () => {
   const fetchPlans = async () => {
     setLoading(true);
     try {
-      const response = await planService.getPlansList();
-      setPlans(response.data);
+      const plansList = await planService.getPlansList();
+      setPlans(plansList);
       message.success('Plans fetched successfully!');
     } catch (error) {
       console.error('Failed to fetch plans:', error);

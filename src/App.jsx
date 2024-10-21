@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MainLayout from './layout/MainLayout/MainLayout';
 import { PATHS } from './constant/path';
 import PageNotFound from './pages/PageNotFound/PageNotFound';
@@ -24,6 +24,11 @@ import Dashboard from './pages/Admin/Dashboard/Dashboard';
 import UserManagement from './pages/Admin/User Management/UserManagement';
 import JobManagement from './pages/Admin/Job Management/JobManagement';
 import PlanManagement from './pages/Admin/Plan Management/PlanManagement';
+import InterviewAI from './pages/InterviewAI/InterviewAI';
+import PaymentSuccess from './pages/PaymentStatus/PaymentSuccess';
+import PaymentFail from './pages/PaymentStatus/PaymentFail';
+import JobPage from './pages/JobPage/JobPage/JobPage';
+import JobDetailPage from './pages/JobPage/JobPageDetail/JobPageDetail';
 
 function App() {
   return (
@@ -129,6 +134,11 @@ function App() {
               element={<PlanManagement />}
             />
           </Route>
+          <Route path={PATHS.INTERVIEW} element={<InterviewAI />} />
+          <Route path={PATHS.SUCCESS} element={<PaymentSuccess />} />
+          <Route path={PATHS.FAIL} element={<PaymentFail />} />
+          <Route path="/job" element={<JobPage />} />
+          <Route path="/job/:jobId" element={<JobDetailPage />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>

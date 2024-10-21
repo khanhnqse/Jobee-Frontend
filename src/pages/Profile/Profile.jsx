@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, Typography, message, Row, Col, Spin } from 'antd';
+import {
+  Form,
+  Input,
+  Button,
+  Typography,
+  message,
+  Row,
+  Col,
+  Spin,
+  DatePicker,
+} from 'antd';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import {
@@ -10,39 +20,59 @@ import {
   IdcardOutlined,
   FileTextOutlined,
 } from '@ant-design/icons';
+import moment from 'moment';
 
-import profilePicture from '../../assets/avatar.png';
+import defaultProfilePicture from '../../assets/avatar.png';
 
 const { Title } = Typography;
 
 const Profile = () => {
   const [form] = Form.useForm();
   const [isEditing, setIsEditing] = useState(false);
-
   const [user, setUser] = useState(null);
+  const [profilePicture, setProfilePicture] = useState(defaultProfilePicture);
+  const [loading, setLoading] = useState(true); // Loading state
   const { userId, jwtToken } = useAuth();
 
   useEffect(() => {
     const fetchUserData = async () => {
+      setLoading(true); // Set loading to true when starting the API call
       try {
         const response = await axios.get(
-          `https://jobeewepappapi20241008011108.azurewebsites.net/api/Account/user?id=${userId}`,
+          `https://jobeewepappapi20241008011108.azurewebsites.net/api/Account/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${jwtToken}`,
             },
           }
         );
-        setUser(response.data);
+        if (response.data.isSuccess) {
+          const userData = response.data.result;
+          setUser(userData);
+          setProfilePicture(userData.profilePicture || defaultProfilePicture);
+          form.setFieldsValue({
+            fullName: userData.fullName,
+            email: userData.email,
+            phoneNumber: userData.phoneNumber,
+            address: userData.address,
+            dob: userData.dob ? moment(userData.dob) : null,
+            jobTitle: userData.jobTitle,
+            description: userData.description,
+          });
+        } else {
+          message.error(response.data.message || 'Failed to fetch user data.');
+        }
       } catch (error) {
         message.error('Failed to fetch user data.');
+      } finally {
+        setLoading(false); // Set loading to false after the API call is complete
       }
     };
 
     if (userId && jwtToken) {
       fetchUserData();
     }
-  }, [userId, jwtToken]);
+  }, [userId, jwtToken, form]);
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -51,13 +81,32 @@ const Profile = () => {
   const handleCancel = () => {
     setIsEditing(false);
     form.resetFields();
+    form.setFieldsValue({
+      fullName: user.fullName,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+      address: user.address,
+      dob: user.dob ? moment(user.dob) : null,
+      jobTitle: user.jobTitle,
+      description: user.description,
+    });
   };
 
   const handleFormSubmit = async (values) => {
+    const updateData = {
+      address: values.address,
+      dob: values.dob ? values.dob.toISOString() : null,
+      description: values.description,
+      fullName: values.fullName,
+      jobTitle: values.jobTitle,
+      phoneNumber: values.phoneNumber,
+      profilePicture: profilePicture,
+    };
+
     try {
       await axios.put(
         `https://jobeewepappapi20241008011108.azurewebsites.net/api/Account/${userId}`,
-        values,
+        updateData,
         {
           headers: {
             Authorization: `Bearer ${jwtToken}`,
@@ -66,24 +115,45 @@ const Profile = () => {
       );
       message.success('Profile updated successfully!');
       setIsEditing(false);
-      setUser(values);
+      setUser(updateData);
     } catch (error) {
       message.error('Failed to update profile.');
     }
   };
 
-  const handleProfilePictureChange = (e) => {
+  const handleProfilePictureChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfilePicture(reader.result);
-      };
-      reader.readAsDataURL(file);
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const response = await axios.post(
+          'https://jobeewepappapi20241008011108.azurewebsites.net/api/Account/upload-image',
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${jwtToken}`,
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
+        if (response.data.url) {
+          setProfilePicture(response.data.url);
+          console.log('image', response.data.url);
+          message.success('Profile picture uploaded successfully!');
+        } else {
+          message.error(
+            response.data.message || 'Failed to upload profile picture.'
+          );
+        }
+      } catch (error) {
+        message.error('Failed to upload profile picture.');
+      }
     }
   };
 
-  if (!user) {
+  if (loading) {
     return (
       <div className="flex justify-center items-center my-96">
         <Spin size="large" />
@@ -120,28 +190,21 @@ const Profile = () => {
               margin: '0 auto',
             }}
           />
-          <div style={{ marginTop: '10px', textAlign: 'center' }}>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleProfilePictureChange}
-              style={{ border: 'none' }}
-            />
-          </div>
+          {isEditing && (
+            <div style={{ marginTop: '10px', textAlign: 'center' }}>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleProfilePictureChange}
+                style={{ border: 'none' }}
+              />
+            </div>
+          )}
         </Col>
       </Row>
 
       <Form
         form={form}
-        initialValues={{
-          fullName: user.fullName || 'N/A',
-          email: user.email || 'N/A',
-          phoneNumber: user.phoneNumber || 'N/A',
-          address: user.address || 'Ho Chi Minh City, Vietnam',
-          age: user.age || 'N/A',
-          jobTitle: user.jobTitle || 'Software Engineer',
-          description: user.description || 'N/A',
-        }}
         onFinish={handleFormSubmit}
         layout="vertical"
         style={{ marginTop: '20px' }}
@@ -174,8 +237,12 @@ const Profile = () => {
 
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item name="age" label="Age">
-              <Input prefix={<IdcardOutlined />} disabled={!isEditing} />
+            <Form.Item name="dob" label="Date of Birth">
+              <DatePicker
+                style={{ width: '100%' }}
+                disabled={!isEditing}
+                format="YYYY-MM-DD"
+              />
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -193,28 +260,33 @@ const Profile = () => {
           />
         </Form.Item>
 
-        <div style={{ textAlign: 'center' }}>
-          {isEditing ? (
-            <>
-              <Button
-                type="primary"
-                htmlType="submit"
-                style={{ marginRight: '8px' }}
-              >
-                Save
-              </Button>
-              <Button onClick={handleCancel}>Cancel</Button>
-            </>
-          ) : (
+        {isEditing && (
+          <div style={{ textAlign: 'center' }}>
             <Button
-              onClick={handleEdit}
-              style={{ backgroundColor: '#3B7B7A', color: 'white' }}
+              type="primary"
+              htmlType="submit"
+              style={{ marginRight: '8px' }}
             >
-              Edit Profile
+              Save
             </Button>
-          )}
-        </div>
+            <Button type="button" onClick={handleCancel}>
+              Cancel
+            </Button>
+          </div>
+        )}
       </Form>
+
+      {!isEditing && (
+        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+          <Button
+            type="button"
+            onClick={handleEdit}
+            style={{ backgroundColor: '#3B7B7A', color: 'white' }}
+          >
+            Edit Profile
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
