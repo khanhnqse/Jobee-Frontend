@@ -22,6 +22,7 @@ const JobPage = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [jobTypeFilter, setJobTypeFilter] = useState('');
+  const [locationFilter, setLocationFilter] = useState(''); // State for location filter
   const [suggestions, setSuggestions] = useState([]);
   const navigate = useNavigate();
 
@@ -60,12 +61,19 @@ const JobPage = () => {
     setJobTypeFilter(value);
   };
 
+  const handleLocationChange = (value) => {
+    setLocationFilter(value);
+  };
+
   const filteredJobs = jobs.filter((job) => {
     return (
       job.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
       (jobTypeFilter === '' ||
         jobTypeFilter === 'All' ||
-        job.jobType === jobTypeFilter)
+        job.jobType === jobTypeFilter) &&
+      (locationFilter === '' ||
+        locationFilter === 'All' ||
+        job.location === locationFilter)
     );
   });
 
@@ -76,6 +84,9 @@ const JobPage = () => {
       </div>
     );
   }
+
+  // Extract unique locations for the location filter
+  const uniqueLocations = [...new Set(jobs.map((job) => job.location))];
 
   return (
     <div className="px-4 py-8">
@@ -106,6 +117,19 @@ const JobPage = () => {
           <Option value="Contract">Contract</Option>
           <Option value="Internship">Internship</Option>
         </Select>
+        <Select
+          placeholder="Filter by location"
+          onChange={handleLocationChange}
+          style={{ width: '100%', maxWidth: '350px', margin: '0 auto' }}
+          allowClear
+        >
+          <Option value="All">All</Option>
+          {uniqueLocations.map((location) => (
+            <Option key={location} value={location}>
+              {location}
+            </Option>
+          ))}
+        </Select>
       </Space>
       <Row gutter={[16, 16]}>
         {filteredJobs.map((job) => (
@@ -118,13 +142,13 @@ const JobPage = () => {
                   alt="job"
                   src={
                     job.image ||
-                    'https://scontent.fsgn2-6.fna.fbcdn.net/v/t39.30808-6/461591299_122110542386522467_1333278165059898220_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeEv_KqamgNYp0SgPtGsHMolA86DYidu0csDzoNiJ27RyzH4OJs8EFQCATZGrml3tUMsDVMlCCDURopCyLXrY8IU&_nc_ohc=YvoE6HWnCpIQ7kNvgHWDFvy&_nc_zt=23&_nc_ht=scontent.fsgn2-6.fna&_nc_gid=AxfKuSU46g3ztU_TTJuYDxy&oh=00_AYDFRByhjGU3C1EwmKQfkzK0e3TzCT2Phcim891Tz3rf4Q&oe=671C7E78'
+                    'https://scontent.fsgn2-8.fna.fbcdn.net/v/t39.30808-6/464281644_1950062842139533_6380269300463716880_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeF2-b79THvqo8QwWxtBc3YnuYCsI_55PZ25gKwj_nk9nWPcwDS3sI6KX40eEjmNHbTz7qYbMFxs_La1Gs_nvtSD&_nc_ohc=qdVQgxpEoLoQ7kNvgETRkEF&_nc_zt=23&_nc_ht=scontent.fsgn2-8.fna&_nc_gid=AB8f3PwH32B8Q6W9dESuIqE&oh=00_AYAOMr6MzGjm4FKV1hOyJGO0uyHXXYMVHg1exgLvfENTrg&oe=671CFC42'
                   }
                   style={{ height: '150px', objectFit: 'cover' }}
                   onError={(e) => {
                     e.target.onerror = null;
                     e.target.src =
-                      'https://scontent.fsgn2-6.fna.fbcdn.net/v/t39.30808-6/461591299_122110542386522467_1333278165059898220_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeEv_KqamgNYp0SgPtGsHMolA86DYidu0csDzoNiJ27RyzH4OJs8EFQCATZGrml3tUMsDVMlCCDURopCyLXrY8IU&_nc_ohc=YvoE6HWnCpIQ7kNvgHWDFvy&_nc_zt=23&_nc_ht=scontent.fsgn2-6.fna&_nc_gid=AxfKuSU46g3ztU_TTJuYDxy&oh=00_AYDFRByhjGU3C1EwmKQfkzK0e3TzCT2Phcim891Tz3rf4Q&oe=671C7E78';
+                      'https://scontent.fsgn2-8.fna.fbcdn.net/v/t39.30808-6/464281644_1950062842139533_6380269300463716880_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeF2-b79THvqo8QwWxtBc3YnuYCsI_55PZ25gKwj_nk9nWPcwDS3sI6KX40eEjmNHbTz7qYbMFxs_La1Gs_nvtSD&_nc_ohc=qdVQgxpEoLoQ7kNvgETRkEF&_nc_zt=23&_nc_ht=scontent.fsgn2-8.fna&_nc_gid=AB8f3PwH32B8Q6W9dESuIqE&oh=00_AYAOMr6MzGjm4FKV1hOyJGO0uyHXXYMVHg1exgLvfENTrg&oe=671CFC42';
                   }}
                 />
               }
