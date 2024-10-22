@@ -29,6 +29,7 @@ import PaymentSuccess from './pages/PaymentStatus/PaymentSuccess';
 import PaymentFail from './pages/PaymentStatus/PaymentFail';
 import JobPage from './pages/JobPage/JobPage/JobPage';
 import JobDetailPage from './pages/JobPage/JobPageDetail/JobPageDetail';
+import OverviewManagement from './pages/Admin/OverViewManagement/Overview';
 
 function App() {
   return (
@@ -132,6 +133,10 @@ function App() {
             <Route
               path={PATHS.DASHBOARD.CHILDREN.PLAN}
               element={<PlanManagement />}
+            />
+            <Route
+              path={PATHS.DASHBOARD.CHILDREN.OVERVIEW}
+              element={<OverviewManagement />}
             />
           </Route>
           <Route path={PATHS.INTERVIEW} element={<InterviewAI />} />

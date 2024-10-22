@@ -29,6 +29,7 @@ export const PATHS = {
       USER: '/dashboard/user',
       JOB: '/dashboard/job',
       PLAN: '/dashboard/plan',
+      OVERVIEW: '/dashboard/overview',
      
     },
   },
