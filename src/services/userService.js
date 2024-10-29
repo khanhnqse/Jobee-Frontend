@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'https://jobeewepappapi20241008011108.azurewebsites.net/api/Account',
+  baseURL: 'https://jobeeapi.azurewebsites.net/api/Account',
 });
 
 const GetUsersList = async () => {

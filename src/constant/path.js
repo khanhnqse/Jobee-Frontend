@@ -23,12 +23,14 @@ export const PATHS = {
   FAIL: '/fail',
   JOB: '/job',
   JOB_DETAIL: '/job/:id',
+  APPLICATION: '/application',
   DASHBOARD: {
     INDEX: '/dashboard',
     CHILDREN: {
       USER: '/dashboard/user',
       JOB: '/dashboard/job',
       PLAN: '/dashboard/plan',
+      APPLICATION: '/dashboard/application',
       OVERVIEW: '/dashboard/overview',
      
     },

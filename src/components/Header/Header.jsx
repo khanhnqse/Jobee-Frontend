@@ -13,7 +13,7 @@ const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedKey, setSelectedKey] = useState(location.pathname);
-  const { isAuthenticated, logout, userId, jwtToken } = useAuth();
+  const { isAuthenticated, logout, userId, jwtToken, userRole } = useAuth();
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -27,7 +27,7 @@ const Header = () => {
         setLoading(true);
         try {
           const response = await axios.get(
-            `https://jobeewepappapi20241008011108.azurewebsites.net/api/Account/${userId}`,
+            `https://jobeeapi.azurewebsites.net/api/Account/${userId}`,
             {
               headers: {
                 Authorization: `Bearer ${jwtToken}`,
@@ -90,21 +90,23 @@ const Header = () => {
             />
           </a>
         </Col>
-        <Col xs={24} sm={24} md={12}>
-          <Menu
-            theme="dark"
-            onClick={handleMenuClick}
-            mode="horizontal"
-            selectedKeys={[selectedKey]}
-            style={{
-              backgroundColor: '#3b7b7a',
-              color: 'white',
-              width: '100%',
-              justifyContent: 'space-around', // Center menu items on small screens
-            }}
-            items={MenuItems}
-          />
-        </Col>
+        {userRole !== 'Admin' && (
+          <Col xs={24} sm={24} md={12}>
+            <Menu
+              theme="dark"
+              onClick={handleMenuClick}
+              mode="horizontal"
+              selectedKeys={[selectedKey]}
+              style={{
+                backgroundColor: '#3b7b7a',
+                color: 'white',
+                width: '100%',
+                justifyContent: 'space-around', // Center menu items on small screens
+              }}
+              items={MenuItems}
+            />
+          </Col>
+        )}
         <Col>
           {isAuthenticated ? (
             <Dropdown overlay={profileMenu} trigger={['click']}>
@@ -126,7 +128,9 @@ const Header = () => {
                       icon={<UserOutlined />}
                       style={{ marginRight: 8 }}
                     />
-                    {userData?.fullName}
+                    {userRole === 'Admin'
+                      ? 'Welcome, Admin'
+                      : userData?.fullName}
                   </>
                 )}
               </Button>
@@ -141,6 +145,21 @@ const Header = () => {
             </Button>
           )}
         </Col>
+        {userRole === 'Admin' && (
+          <Col>
+            <Button
+              type="primary"
+              onClick={() => navigate('/dashboard')}
+              style={{
+                marginLeft: 16,
+                backgroundColor: '#ed8125',
+                color: 'white',
+              }}
+            >
+              Dashboard
+            </Button>
+          </Col>
+        )}
       </Row>
     </AntHeader>
   );

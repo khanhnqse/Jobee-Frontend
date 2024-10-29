@@ -7,6 +7,8 @@ import {
 } from '@ant-design/icons';
 import { Layout, Menu, theme } from 'antd';
 import { Outlet, useNavigate } from 'react-router-dom';
+import { get } from 'react-hook-form';
+import { IoPaperPlaneOutline } from 'react-icons/io5';
 const { Content, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
@@ -23,6 +25,11 @@ const items = [
   getItem('User Management', '/dashboard/user', <MenuFoldOutlined />),
   getItem('Job Management', '/dashboard/job', <DesktopOutlined />),
   getItem('Plan Management', '/dashboard/plan', <UserOutlined />),
+  getItem(
+    'Application Management',
+    '/dashboard/application',
+    <IoPaperPlaneOutline />
+  ),
 ];
 
 const Dashboard = () => {

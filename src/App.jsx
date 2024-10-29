@@ -30,6 +30,8 @@ import PaymentFail from './pages/PaymentStatus/PaymentFail';
 import JobPage from './pages/JobPage/JobPage/JobPage';
 import JobDetailPage from './pages/JobPage/JobPageDetail/JobPageDetail';
 import OverviewManagement from './pages/Admin/OverViewManagement/Overview';
+import ApplicationPage from './pages/ApplicationPage/ApplicationPage';
+import ApplicationManagement from './pages/Admin/ApplicationManagement/ApplicationManagement';
 
 function App() {
   return (
@@ -117,7 +119,7 @@ function App() {
           <Route
             path={PATHS.DASHBOARD.INDEX}
             element={
-              <PrivateRoute>
+              <PrivateRoute roles={['Admin', 'Employer']}>
                 <Dashboard />
               </PrivateRoute>
             }
@@ -138,12 +140,17 @@ function App() {
               path={PATHS.DASHBOARD.CHILDREN.OVERVIEW}
               element={<OverviewManagement />}
             />
+            <Route
+              path={PATHS.DASHBOARD.CHILDREN.APPLICATION}
+              element={<ApplicationManagement />}
+            />
           </Route>
           <Route path={PATHS.INTERVIEW} element={<InterviewAI />} />
           <Route path={PATHS.SUCCESS} element={<PaymentSuccess />} />
           <Route path={PATHS.FAIL} element={<PaymentFail />} />
           <Route path="/job" element={<JobPage />} />
           <Route path="/job/:jobId" element={<JobDetailPage />} />
+          <Route path={PATHS.APPLICATION} element={<ApplicationPage />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>

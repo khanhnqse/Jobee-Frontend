@@ -4,8 +4,11 @@ import { Outlet } from 'react-router-dom';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 import { MainContextProvider } from '../../context/MainContext';
+import { useAuth } from '../../context/AuthContext';
 
 const MainLayout = () => {
+  const { userRole } = useAuth();
+
   return (
     <>
       <MainContextProvider>
@@ -16,7 +19,7 @@ const MainLayout = () => {
               <Outlet />
             </Content>
           </Layout>
-          <Footer />
+          {userRole !== 'Admin' && <Footer />}
         </Layout>
       </MainContextProvider>
     </>

@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const jwtToken = localStorage.getItem('jwtToken');
 const axiosInstance = axios.create({
-  baseURL: 'https://jobeewepappapi20241008011108.azurewebsites.net/api/Job',
+  baseURL: 'https://jobeeapi.azurewebsites.net/api/Job',
   headers: {
     Authorization: `Bearer ${jwtToken}`,
   },

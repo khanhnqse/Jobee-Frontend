@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Spin, message, Button, Modal } from 'antd';
+import { Spin, message, Button, Modal, Form, Input } from 'antd';
 import axios from 'axios';
+import { useAuth } from '@/context/AuthContext'; // Import the useAuth hook
 
 const JobDetailPage = () => {
-  const { jobId } = useParams();
+  const { jobId } = useParams(); // Retrieve jobId from URL parameters
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isContactModalVisible, setIsContactModalVisible] = useState(false);
+  const [isApplyModalVisible, setIsApplyModalVisible] = useState(false);
+  const [form] = Form.useForm();
+  const { userId } = useAuth(); // Get userId from AuthContext
 
   // Constants for email and phone
   const name = 'Cong Ty TNHH ABC';
@@ -22,11 +26,10 @@ const JobDetailPage = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://jobeewepappapi20241008011108.azurewebsites.net/api/Job/job/${jobId}`
+        `https://jobeeapi.azurewebsites.net/api/Job/job/${jobId}`
       );
       if (response.data.isSuccess) {
         setJob(response.data.result);
-        message.success('Job details fetched successfully!');
       } else {
         message.error(response.data.message || 'Failed to fetch job details.');
       }
@@ -48,6 +51,44 @@ const JobDetailPage = () => {
 
   const handleContactModalCancel = () => {
     setIsContactModalVisible(false);
+  };
+
+  const showApplyModal = () => {
+    setIsApplyModalVisible(true);
+  };
+
+  const handleApplyModalOk = () => {
+    form.submit();
+  };
+
+  const handleApplyModalCancel = () => {
+    setIsApplyModalVisible(false);
+  };
+
+  const handleFormSubmit = async (values) => {
+    const applicationData = {
+      jobId: jobId, // Ensure jobId is accessible here
+      jobSeekerId: userId,
+      resume: values.resume,
+      status: 'Pending',
+    };
+
+    try {
+      const response = await axios.post(
+        'https://jobeeapi.azurewebsites.net/api/applications',
+        applicationData
+      );
+      if (response.data.isSuccess) {
+        message.success('Application submitted successfully!');
+        setIsApplyModalVisible(false);
+        form.resetFields();
+      } else {
+        message.error(response.data.message || 'Failed to submit application.');
+      }
+    } catch (error) {
+      console.error('Failed to submit application:', error);
+      message.error('Failed to submit application. Please try again.');
+    }
   };
 
   if (loading) {
@@ -114,6 +155,7 @@ const JobDetailPage = () => {
           }}
           type="primary"
           size="large"
+          onClick={showApplyModal}
         >
           Apply Now
         </Button>
@@ -146,6 +188,42 @@ const JobDetailPage = () => {
         <p>Email: {email}</p>
         <p>Phone: {phone}</p>
         <p>Company: {name}</p>
+      </Modal>
+
+      {/* Apply Modal */}
+      <Modal
+        title="Apply for Job"
+        visible={isApplyModalVisible}
+        onOk={handleApplyModalOk}
+        onCancel={handleApplyModalCancel}
+        footer={[
+          <Button
+            style={{
+              backgroundColor: '#3b7b7a',
+              borderColor: '#3b7b7a',
+              color: 'white',
+            }}
+            key="submit"
+            type="primary"
+            onClick={handleApplyModalOk}
+          >
+            Submit
+          </Button>,
+        ]}
+      >
+        <Form form={form} layout="vertical" onFinish={handleFormSubmit}>
+          <p>Please submit your resume by pasting the link below.</p>
+          <Form.Item
+            name="resume"
+            label="Resume"
+            rules={[
+              { required: true, message: 'Please upload your resume' },
+              { type: 'url', message: 'Please enter a valid URL' },
+            ]}
+          >
+            <Input placeholder="Paste the URL of your resume here" />
+          </Form.Item>
+        </Form>
       </Modal>
     </div>
   );

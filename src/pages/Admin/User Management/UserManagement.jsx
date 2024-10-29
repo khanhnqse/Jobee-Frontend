@@ -52,7 +52,6 @@ const UserManagement = () => {
           : 'N/A',
       }));
       setUsers(formattedUsers);
-      message.success('Users fetched successfully!');
     } catch (error) {
       console.error('Failed to fetch users:', error);
       message.error('Failed to fetch users. Please try again.');
@@ -168,6 +167,10 @@ const UserManagement = () => {
       title: 'Description',
       dataIndex: 'description',
       key: 'description',
+      render: (description) =>
+        description.length > 50
+          ? `${description.slice(0, 50)}...`
+          : description,
     },
     {
       title: 'Job Title',

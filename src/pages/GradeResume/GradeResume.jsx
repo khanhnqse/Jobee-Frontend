@@ -55,7 +55,7 @@ const GradeResume = () => {
 
     try {
       const response = await axios.post(
-        'https://jobeewepappapi20241008011108.azurewebsites.net/api/Account/grade', // Update the API endpoint if necessary
+        'https://jobeeapi.azurewebsites.net/api/Account/grade', // Update the API endpoint if necessary
         formData,
         {
           headers: {

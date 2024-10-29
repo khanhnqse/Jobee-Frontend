@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Input, message, Spin, Form } from 'antd';
-import {
-  FacebookOutlined,
-  GoogleOutlined,
-  LinkedinOutlined,
-} from '@ant-design/icons';
+import { GoogleOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import logo from '../../assets/logo-removebg-preview.png';
 import { Link, useNavigate } from 'react-router-dom';
@@ -19,7 +15,7 @@ const LoginPage = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        'https://jobeewepappapi20241008011108.azurewebsites.net/api/Account/login',
+        'https://jobeeapi.azurewebsites.net/api/Account/login',
         {
           email: values.email,
           passwordHash: values.password,
@@ -28,11 +24,16 @@ const LoginPage = () => {
       console.log(response.data);
       // Handle successful login
       message.success('Login successful!');
-      // Store user ID and JWT token in localStorage
-      const { userId, jwtToken } = response.data;
-      login(userId, jwtToken);
-      // Redirect to landing page or any other page
-      navigate('/landing-page');
+      // Store user ID, JWT token, and user role in localStorage
+      const { userId, jwtToken, role } = response.data;
+      login(userId, jwtToken, role);
+
+      // Redirect based on user role
+      if (role === 'Admin' || role === 'Employer') {
+        navigate('/dashboard');
+      } else {
+        navigate('/landing-page');
+      }
     } catch (error) {
       // Handle login error
       message.error('Login failed. Please check your credentials.');
@@ -59,25 +60,16 @@ const LoginPage = () => {
           {/* Social login buttons */}
           <div className="flex space-x-4 mb-6">
             <Button
-              icon={<FacebookOutlined />}
-              className="w-1/3 flex items-center justify-center"
-              style={{ backgroundColor: '#3b5998', color: '#fff' }}
-            >
-              Facebook
-            </Button>
-            <Button
               icon={<GoogleOutlined />}
-              className="w-1/3 flex items-center justify-center"
-              style={{ backgroundColor: '#db4437', color: '#fff' }}
+              className="w-full flex items-center justify-center rounded-full shadow-lg"
+              style={{
+                backgroundColor: '#a6382e',
+                color: '#fff',
+                border: 'none',
+                fontSize: '16px',
+              }}
             >
-              Google
-            </Button>
-            <Button
-              icon={<LinkedinOutlined />}
-              className="w-1/3 flex items-center justify-center"
-              style={{ backgroundColor: '#0077b5', color: '#fff' }}
-            >
-              LinkedIn
+              Sign up with Google
             </Button>
           </div>
 

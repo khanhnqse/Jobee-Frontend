@@ -299,16 +299,18 @@ const ContactUs = () => {
               Agree with our <Link to="/policy">policies</Link>
             </Checkbox>
             <br />
-            <Button
-              type="primary"
-              style={{
-                marginTop: '15px',
-                backgroundColor: '#c94c4b',
-                borderColor: '#c94c4b',
-              }}
-            >
-              Sign up now
-            </Button>
+            <Link to="/register">
+              <Button
+                type="primary"
+                style={{
+                  marginTop: '15px',
+                  backgroundColor: '#c94c4b',
+                  borderColor: '#c94c4b',
+                }}
+              >
+                Sign up now
+              </Button>
+            </Link>
           </Col>
         </Row>
       </div>

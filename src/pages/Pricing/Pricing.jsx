@@ -60,7 +60,7 @@ const Pricing = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        'https://jobeewepappapi20241008011108.azurewebsites.net/api/subcription-plan'
+        'https://jobeeapi.azurewebsites.net/api/subcription-plan'
       );
       if (response.data.isSuccess) {
         const fetchedPlans = response.data.results.map((plan) => ({

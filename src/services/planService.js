@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'https://jobeewepappapi20241008011108.azurewebsites.net/api/subcription-plan',
+  baseURL: 'https://jobeeapi.azurewebsites.net/api/subcription-plan',
 });
 
 const getPlansList = async () => {

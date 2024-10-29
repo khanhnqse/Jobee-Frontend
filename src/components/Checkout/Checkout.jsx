@@ -44,7 +44,7 @@ const Checkout = () => {
 
     try {
       const response = await axios.post(
-        'https://jobeewepappapi20241008011108.azurewebsites.net/create-payment-link',
+        'https://jobeeapi.azurewebsites.net/create-payment-link',
         requestBody
       );
       message.success('Payment link created successfully!');

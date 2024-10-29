@@ -36,7 +36,6 @@ const PlanManagement = () => {
     try {
       const plansList = await planService.getPlansList();
       setPlans(plansList);
-      message.success('Plans fetched successfully!');
     } catch (error) {
       console.error('Failed to fetch plans:', error);
       message.error('Failed to fetch plans. Please try again.');

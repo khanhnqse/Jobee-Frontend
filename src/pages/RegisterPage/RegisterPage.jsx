@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
-import { Button, Input, message, Spin, Form } from 'antd';
-import {
-  FacebookOutlined,
-  GoogleOutlined,
-  LinkedinOutlined,
-} from '@ant-design/icons';
+import { Button, Input, message, Spin, Form, Checkbox } from 'antd';
+import { GoogleOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import logo from '../../assets/logo-removebg-preview.png';
 import { Link, useNavigate } from 'react-router-dom';
@@ -17,16 +13,13 @@ const RegisterPage = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        'https://jobeewepappapi20241008011108.azurewebsites.net/api/Account/signin',
+        'https://jobeeapi.azurewebsites.net/api/Account/signin',
         {
           email: values.email,
           passwordHash: values.password,
         }
       );
-      console.log(response.data);
-
       message.success('Registration successful!');
-
       navigate('/login');
     } catch (error) {
       message.error('Registration failed. Please check your details.');
@@ -44,8 +37,7 @@ const RegisterPage = () => {
         {/* Left section (Register form) */}
         <div className="w-2/3 p-10">
           <div className="text-left mb-8">
-            <img src={logo} alt="Logo" className="h-12 mb-4" />{' '}
-            {/* Replace with your logo */}
+            <img src={logo} alt="Logo" className="h-12 mb-4" />
             <h2 className="text-3xl font-bold mb-2">Create Your Account</h2>
             <p className="text-gray-500">Register using social networks</p>
           </div>
@@ -53,25 +45,16 @@ const RegisterPage = () => {
           {/* Social register buttons */}
           <div className="flex space-x-4 mb-6">
             <Button
-              icon={<FacebookOutlined />}
-              className="w-1/3 flex items-center justify-center"
-              style={{ backgroundColor: '#3b5998', color: '#fff' }}
-            >
-              Facebook
-            </Button>
-            <Button
               icon={<GoogleOutlined />}
-              className="w-1/3 flex items-center justify-center"
-              style={{ backgroundColor: '#db4437', color: '#fff' }}
+              className="w-full flex items-center justify-center rounded-full shadow-lg"
+              style={{
+                backgroundColor: '#a6382e',
+                color: '#fff',
+                border: 'none',
+                fontSize: '16px',
+              }}
             >
-              Google
-            </Button>
-            <Button
-              icon={<LinkedinOutlined />}
-              className="w-1/3 flex items-center justify-center"
-              style={{ backgroundColor: '#0077b5', color: '#fff' }}
-            >
-              LinkedIn
+              Sign up with Google
             </Button>
           </div>
 
@@ -137,12 +120,32 @@ const RegisterPage = () => {
               />
             </Form.Item>
 
+            {/* Policies Checkbox */}
+            <Form.Item
+              name="agreement"
+              valuePropName="checked"
+              rules={[
+                {
+                  validator: (_, value) =>
+                    value
+                      ? Promise.resolve()
+                      : Promise.reject(
+                          new Error('You must agree to the policies!')
+                        ),
+                },
+              ]}
+            >
+              <Checkbox>
+                I agree to the <a href="/policy">policies</a>
+              </Checkbox>
+            </Form.Item>
+
             {/* Register Button */}
             <Form.Item>
               <Button
                 type="primary"
                 size="large"
-                className="w-full mt-6 bg-gradient-to-r from-[#3B7B7A] to-teal-500 "
+                className="w-full mt-6 bg-gradient-to-r from-[#3B7B7A] to-teal-500"
                 htmlType="submit"
                 loading={loading}
               >
@@ -162,7 +165,7 @@ const RegisterPage = () => {
             <Button
               type="ghost"
               size="large"
-              className="bg-white text-teal-500 font-semibold"
+              className="bg-white text-teal-500 font-semibold rounded-full"
             >
               Login
             </Button>

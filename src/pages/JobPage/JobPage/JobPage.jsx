@@ -34,7 +34,7 @@ const JobPage = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        'https://jobeewepappapi20241008011108.azurewebsites.net/api/Job/jobs'
+        'https://jobeeapi.azurewebsites.net/api/Job/jobs'
       );
       if (response.data.isSuccess) {
         setJobs(response.data.results);
@@ -140,15 +140,11 @@ const JobPage = () => {
               cover={
                 <img
                   alt="job"
-                  src={
-                    job.image ||
-                    'https://scontent.fsgn2-8.fna.fbcdn.net/v/t39.30808-6/464281644_1950062842139533_6380269300463716880_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeF2-b79THvqo8QwWxtBc3YnuYCsI_55PZ25gKwj_nk9nWPcwDS3sI6KX40eEjmNHbTz7qYbMFxs_La1Gs_nvtSD&_nc_ohc=qdVQgxpEoLoQ7kNvgETRkEF&_nc_zt=23&_nc_ht=scontent.fsgn2-8.fna&_nc_gid=AB8f3PwH32B8Q6W9dESuIqE&oh=00_AYAOMr6MzGjm4FKV1hOyJGO0uyHXXYMVHg1exgLvfENTrg&oe=671CFC42'
-                  }
+                  src={job.image || 'https://i.postimg.cc/59BPgYhX/JOBEE-2.png'}
                   style={{ height: '150px', objectFit: 'cover' }}
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src =
-                      'https://scontent.fsgn2-8.fna.fbcdn.net/v/t39.30808-6/464281644_1950062842139533_6380269300463716880_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeF2-b79THvqo8QwWxtBc3YnuYCsI_55PZ25gKwj_nk9nWPcwDS3sI6KX40eEjmNHbTz7qYbMFxs_La1Gs_nvtSD&_nc_ohc=qdVQgxpEoLoQ7kNvgETRkEF&_nc_zt=23&_nc_ht=scontent.fsgn2-8.fna&_nc_gid=AB8f3PwH32B8Q6W9dESuIqE&oh=00_AYAOMr6MzGjm4FKV1hOyJGO0uyHXXYMVHg1exgLvfENTrg&oe=671CFC42';
+                    e.target.src = 'https://i.postimg.cc/59BPgYhX/JOBEE-2.png';
                   }}
                 />
               }

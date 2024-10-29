@@ -37,7 +37,6 @@ const JobManagement = () => {
       const response = await jobService.getJobsList();
       if (response.data.isSuccess) {
         setJobs(response.data.results);
-        message.success('Jobs fetched successfully!');
       } else {
         message.error(response.data.message || 'Failed to fetch jobs.');
       }

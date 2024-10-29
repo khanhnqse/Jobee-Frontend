@@ -97,8 +97,6 @@ const OverviewManagement = () => {
           jobTitleCount[a] > jobTitleCount[b] ? a : b
         )
       );
-
-      message.success('Data fetched successfully!');
     } catch (error) {
       console.error('Failed to fetch data:', error);
       message.error('Failed to fetch data. Please try again.');

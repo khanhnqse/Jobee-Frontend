@@ -39,7 +39,7 @@ const Profile = () => {
       setLoading(true); // Set loading to true when starting the API call
       try {
         const response = await axios.get(
-          `https://jobeewepappapi20241008011108.azurewebsites.net/api/Account/${userId}`,
+          `https://jobeeapi.azurewebsites.net/api/Account/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${jwtToken}`,
@@ -105,7 +105,7 @@ const Profile = () => {
 
     try {
       await axios.put(
-        `https://jobeewepappapi20241008011108.azurewebsites.net/api/Account/${userId}`,
+        `https://jobeeapi.azurewebsites.net/api/Account/${userId}`,
         updateData,
         {
           headers: {
@@ -129,7 +129,7 @@ const Profile = () => {
 
       try {
         const response = await axios.post(
-          'https://jobeewepappapi20241008011108.azurewebsites.net/api/Account/upload-image',
+          'https://jobeeapi.azurewebsites.net/api/Account/upload-image',
           formData,
           {
             headers: {
