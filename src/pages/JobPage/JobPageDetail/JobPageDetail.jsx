@@ -26,7 +26,7 @@ const JobDetailPage = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://jobeeapi.azurewebsites.net/api/Job/job/${jobId}`
+        `https://jobeeapi.azurewebsites.net/api/jobs/${jobId}`
       );
       if (response.data.isSuccess) {
         setJob(response.data.result);
@@ -79,7 +79,9 @@ const JobDetailPage = () => {
         applicationData
       );
       if (response.data.isSuccess) {
-        message.success('Application submitted successfully!');
+        message.success(
+          'Application submitted successfully! Employer will contact you soon.'
+        );
         setIsApplyModalVisible(false);
         form.resetFields();
       } else {

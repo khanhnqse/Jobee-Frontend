@@ -34,7 +34,7 @@ const JobPage = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        'https://jobeeapi.azurewebsites.net/api/Job/jobs'
+        'https://jobeeapi.azurewebsites.net/api/jobs'
       );
       if (response.data.isSuccess) {
         setJobs(response.data.results);

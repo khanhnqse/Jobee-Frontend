@@ -1,28 +1,37 @@
 import axios from 'axios';
 
-
-const jwtToken = localStorage.getItem('jwtToken');
 const axiosInstance = axios.create({
-  baseURL: 'https://jobeeapi.azurewebsites.net/api/Job',
-  headers: {
-    Authorization: `Bearer ${jwtToken}`,
-  },
+  baseURL: 'https://jobeeapi.azurewebsites.net/api',
 });
+
+// Add a request interceptor to attach the JWT token to each request
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const jwtToken = localStorage.getItem('jwtToken');
+    if (jwtToken) {
+      config.headers.Authorization = `Bearer ${jwtToken}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 const getJobsList = async () => {
   return axiosInstance.get('/jobs');
 };
 
 const createJob = async (jobData) => {
-  return axiosInstance.post('', jobData);
+  return axiosInstance.post('/jobs', jobData);
 };
 
 const updateJob = async (jobId, jobData) => {
-  return axiosInstance.put(`/${jobId}`, jobData);
+  return axiosInstance.put(`/jobs/${jobId}`, jobData);
 };
 
 const deleteJob = async (jobId) => {
-  return axiosInstance.delete(`/delete/${jobId}`);
+  return axiosInstance.delete(`/jobs/delete/${jobId}`);
 };
 
 const jobService = {
