@@ -15,6 +15,7 @@ import {
   Card,
   Avatar,
   Divider,
+  Tag,
 } from 'antd';
 import {
   PlusOutlined,
@@ -151,6 +152,19 @@ const ApplicationManagement = () => {
     </Menu>
   );
 
+  const getStatusTag = (status) => {
+    switch (status) {
+      case 'Pending':
+        return <Tag color="orange">Pending</Tag>;
+      case 'Accepted':
+        return <Tag color="green">Accepted</Tag>;
+      case 'Rejected':
+        return <Tag color="red">Rejected</Tag>;
+      default:
+        return <Tag>{status}</Tag>;
+    }
+  };
+
   const columns = [
     {
       title: 'Application ID',
@@ -187,6 +201,7 @@ const ApplicationManagement = () => {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
+      render: (status) => getStatusTag(status),
     },
     {
       title: 'Actions',
