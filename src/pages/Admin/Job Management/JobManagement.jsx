@@ -10,6 +10,8 @@ import {
   Dropdown,
   Menu,
   Tooltip,
+  Tag,
+  Select,
 } from 'antd';
 import {
   PlusOutlined,
@@ -19,6 +21,8 @@ import {
 } from '@ant-design/icons';
 import jobService from '@/services/jobService';
 import TextArea from 'antd/es/input/TextArea';
+
+const { Option } = Select;
 
 const JobManagement = () => {
   const [jobs, setJobs] = useState([]);
@@ -125,6 +129,32 @@ const JobManagement = () => {
     </Menu>
   );
 
+  const getStatusTag = (status) => {
+    switch (status) {
+      case 'Pending':
+        return <Tag color="orange">Pending</Tag>;
+      case 'Active':
+        return <Tag color="green">Active</Tag>;
+      case 'Closed':
+        return <Tag color="red">Closed</Tag>;
+      default:
+        return <Tag>{status}</Tag>;
+    }
+  };
+
+  const getJobTypeTag = (jobType) => {
+    switch (jobType) {
+      case 'Full-time':
+        return <Tag color="blue">Full-time</Tag>;
+      case 'Part-time':
+        return <Tag color="purple">Part-time</Tag>;
+      case 'Contract':
+        return <Tag color="gold">Contract</Tag>;
+      default:
+        return <Tag>{jobType}</Tag>;
+    }
+  };
+
   const columns = [
     {
       title: 'Job ID',
@@ -158,6 +188,7 @@ const JobManagement = () => {
       title: 'Job Type',
       dataIndex: 'jobType',
       key: 'jobType',
+      render: (jobType) => getJobTypeTag(jobType),
     },
     {
       title: 'Salary Range',
@@ -168,6 +199,7 @@ const JobManagement = () => {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
+      render: (status) => getStatusTag(status),
     },
     {
       title: 'Actions',
@@ -229,12 +261,13 @@ const JobManagement = () => {
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            name="jobType"
-            label="Job Type"
-            rules={[{ required: true, message: 'Please enter the job type' }]}
-          >
-            <Input />
+          <Form.Item name="jobType" label="Job Type">
+            <Select placeholder="Select Job Type">
+              <Option value="Full-time">Full-time</Option>
+              <Option value="Part-time	">Part-time </Option>
+              <Option value="Internship">Internship</Option>
+              <Option value="Contract">Contract</Option>
+            </Select>
           </Form.Item>
           <Form.Item
             name="salaryRange"
@@ -248,9 +281,15 @@ const JobManagement = () => {
           <Form.Item
             name="status"
             label="Status"
-            rules={[{ required: true, message: 'Please enter the job status' }]}
+            rules={[
+              { required: true, message: 'Please select the job status' },
+            ]}
           >
-            <Input />
+            <Select placeholder="Select status">
+              <Option value="Pending">Pending</Option>
+              <Option value="Active">Active</Option>
+              <Option value="Closed">Closed</Option>
+            </Select>
           </Form.Item>
         </Form>
       </Modal>
