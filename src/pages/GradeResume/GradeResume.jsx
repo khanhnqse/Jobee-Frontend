@@ -48,25 +48,25 @@ const GradeResume = () => {
     }
 
     setLoading(true);
-    setProgress(0); // Reset progress
+    setProgress(0);
 
     const formData = new FormData();
-    formData.append('pdfFile', file); // Append the PDF file to the FormData object
+    formData.append('pdfFile', file);
 
     try {
       const response = await axios.post(
-        'https://jobeeapi.azurewebsites.net/api/Account/grade', // Update the API endpoint if necessary
+        'https://jobeeapi.azurewebsites.net/api/Account/grade',
         formData,
         {
           headers: {
-            Authorization: `Bearer ${jwtToken}`, // Add token for authentication
-            'Content-Type': 'multipart/form-data', // Specify content type for file upload
+            Authorization: `Bearer ${jwtToken}`,
+            'Content-Type': 'multipart/form-data',
           },
           onUploadProgress: (progressEvent) => {
             const percentCompleted = Math.round(
               (progressEvent.loaded * 100) / progressEvent.total
             );
-            setProgress(percentCompleted); // Update progress
+            setProgress(percentCompleted);
           },
         }
       );
@@ -74,8 +74,7 @@ const GradeResume = () => {
       message.success('PDF file uploaded successfully!');
       setResponseBody(response.data);
 
-      // Check if response is HTML or plain text
-      setIsHtmlResponse(/<\/?[a-z][\s\S]*>/i.test(response.data)); // Simple check for HTML tags
+      setIsHtmlResponse(/<\/?[a-z][\s\S]*>/i.test(response.data));
     } catch (error) {
       message.error('Failed to upload PDF file. Please try again.');
     } finally {
@@ -83,12 +82,10 @@ const GradeResume = () => {
     }
   };
 
-  // Function to format responseBody to display properly
   const formatResponseBody = (text) => {
-    // Replace new lines and format markdown-like bold with HTML
     const formattedText = text
-      .replace(/\n\n/g, '<br/><br/>') // Replace double newlines with paragraph breaks
-      .replace(/\* \*\*(.*?)\*\*/g, '<strong>$1</strong>'); // Replace * **text** with <strong>text</strong>
+      .replace(/\n\n/g, '<br/><br/>')
+      .replace(/\* \*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
     return formattedText;
   };
@@ -170,7 +167,7 @@ const GradeResume = () => {
               }}
               type="primary"
               onClick={handlePostFile}
-              disabled={!file || loading} // Disable button when loading
+              disabled={!file || loading}
             >
               {loading
                 ? 'Please wait, Jobee is analyzing your CV'
@@ -188,7 +185,7 @@ const GradeResume = () => {
               <Card title="Jobee AI" bordered={false}>
                 <Typography>
                   <Title level={4}>This is the suggestion for you</Title>
-                  {/* Render based on whether the response is HTML or plain text */}
+
                   {isHtmlResponse ? (
                     <div
                       dangerouslySetInnerHTML={{
@@ -196,7 +193,7 @@ const GradeResume = () => {
                       }}
                     />
                   ) : (
-                    <Paragraph>{responseBody}</Paragraph> // Regular text rendering
+                    <Paragraph>{responseBody}</Paragraph>
                   )}
                 </Typography>
               </Card>
