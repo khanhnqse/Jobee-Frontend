@@ -4,13 +4,28 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
 const SaveButton = ({ resumeData }) => {
-  const saveResumeAsPDF = () => {
+  const loadFont = async (url) => {
+    const response = await fetch(url);
+    const fontBlob = await response.blob();
+    const reader = new FileReader();
+    return new Promise((resolve, reject) => {
+      reader.onloadend = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = reject;
+      reader.readAsDataURL(fontBlob);
+    });
+  };
+
+  const saveResumeAsPDF = async () => {
     const pdf = new jsPDF();
 
-    // Add resume title and personal info
-    pdf.setFontSize(22);
+    const fontBase64 = await loadFont('/fonts/Roboto-Regular.ttf');
+    pdf.addFileToVFS('Roboto-Regular.ttf', fontBase64);
+    pdf.addFont('Roboto-Regular.ttf', 'Roboto', 'normal');
+    pdf.setFont('Roboto');
+
+    pdf.setFontSize(18);
     pdf.text(resumeData.fullName || 'Full Name', 105, 20, null, null, 'center');
-    pdf.setFontSize(16);
+    pdf.setFontSize(14);
     pdf.text(
       resumeData.professionalTitle || 'Professional Title',
       105,
@@ -20,31 +35,38 @@ const SaveButton = ({ resumeData }) => {
       'center'
     );
 
-    // Add Contact Information
-    pdf.setFontSize(12);
-    pdf.text('Contact Information', 15, 50);
-    pdf.text(`Address: ${resumeData.address || 'Address'}`, 15, 60);
-    pdf.text(`Email: ${resumeData.email || 'Email'}`, 15, 70);
-    pdf.text(`Phone: ${resumeData.phoneNumber || 'Phone Number'}`, 15, 80);
+    pdf.setFontSize(10);
+    pdf.text('Contact Information', 15, 40);
+    pdf.text(`Address: ${resumeData.address || 'Address'}`, 15, 45);
+    pdf.text(`Email: ${resumeData.email || 'Email'}`, 15, 50);
+    pdf.text(`Phone: ${resumeData.phoneNumber || 'Phone Number'}`, 15, 55);
     pdf.text(
       `Date of Birth: ${resumeData.dateOfBirth || 'Date of Birth'}`,
       15,
-      90
+      60
     );
 
-    // Skills Section
-    pdf.text('Skills', 15, 110);
-    let finalY = 115;
+    let finalY = 65;
+
+    if (resumeData.summary) {
+      pdf.text('Summary', 15, finalY);
+      pdf.text(resumeData.summary, 15, finalY + 5, { maxWidth: 180 });
+      finalY += 15;
+    }
+
+    pdf.text('Skills', 15, finalY);
+    finalY += 5;
     pdf.autoTable({
       startY: finalY,
       body: resumeData.skills?.map((skill) => [
         skill?.skill || 'No skill provided',
       ]) || [['No skills provided']],
       theme: 'plain',
+      styles: { font: 'Roboto', fontSize: 10 },
+      pageBreak: 'avoid',
     });
     finalY = pdf.lastAutoTable.finalY + 10;
 
-    // Education Section
     pdf.text('Education', 15, finalY);
     pdf.autoTable({
       startY: finalY + 5,
@@ -59,6 +81,8 @@ const SaveButton = ({ resumeData }) => {
         }`,
       ]) || [['No education details provided']],
       theme: 'plain',
+      styles: { font: 'Roboto', fontSize: 10 },
+      pageBreak: 'avoid',
     });
     finalY = pdf.lastAutoTable.finalY + 10;
 
@@ -77,6 +101,8 @@ const SaveButton = ({ resumeData }) => {
         }`,
       ]) || [['No experience details provided']],
       theme: 'plain',
+      styles: { font: 'Roboto', fontSize: 10 },
+      pageBreak: 'avoid',
     });
     finalY = pdf.lastAutoTable.finalY + 10;
 
@@ -89,6 +115,8 @@ const SaveButton = ({ resumeData }) => {
         `${project?.description || 'No description provided'}`,
       ]) || [['No projects provided']],
       theme: 'plain',
+      styles: { font: 'Roboto', fontSize: 10 },
+      pageBreak: 'avoid',
     });
     finalY = pdf.lastAutoTable.finalY + 10;
 
@@ -101,6 +129,8 @@ const SaveButton = ({ resumeData }) => {
         `by ${cert?.issuer || 'Issuer'}`,
       ]) || [['No certifications provided']],
       theme: 'plain',
+      styles: { font: 'Roboto', fontSize: 10 },
+      pageBreak: 'avoid',
     });
 
     // Save PDF

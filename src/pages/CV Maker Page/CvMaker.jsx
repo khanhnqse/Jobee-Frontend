@@ -29,6 +29,9 @@ import SaveButton from '@/components/CV Form/SaveButton';
 import ResumePreview from '@/components/CV Form/ResumePreview'; // Import ResumePreview
 import html2pdf from 'html2pdf.js'; // Import html2pdf.js
 import SaveButton2 from '@/components/CV Form/SaveButton2';
+import Layout6 from '@/components/LayoutTemplate/Layout6';
+import Layout7 from '@/components/LayoutTemplate/Layout7';
+import Layout8 from '@/components/LayoutTemplate/Layout8';
 
 const { Title } = Typography;
 const { Step } = Steps;
@@ -118,6 +121,24 @@ const cvTemplates = [
     imageUrl:
       'https://marketplace.canva.com/EAFcO7DTEHM/1/0/1131w/canva-blue-professional-modern-cv-resume-pPAKwLoiobE.jpg',
   },
+  {
+    id: 'layout6',
+    title: 'Creative',
+    imageUrl:
+      'https://marketplace.canva.com/EAE98Fv93nI/1/0/1131w/canva-green-modern-woman-cv-resume-simple-RjJGLyvNhxg.jpg',
+  },
+  {
+    id: 'layout7',
+    title: 'Professional',
+    imageUrl:
+      'https://cultivatedculture.com/wp-content/themes/x5-child/assets/images/templates/template5.jpg',
+  },
+  {
+    id: 'layout8',
+    title: 'Stylish',
+    imageUrl:
+      'https://cdn-images.zety.com/templates/zety/cascade-3-duo-blue-navy-21@3x.png',
+  },
 ];
 
 const CvMaker = () => {
@@ -172,6 +193,12 @@ const CvMaker = () => {
         return <Layout4 resumeData={resumeData} />;
       case 'layout5':
         return <Layout5 resumeData={resumeData} />;
+      case 'layout6':
+        return <Layout6 resumeData={resumeData} />;
+      case 'layout7':
+        return <Layout7 resumeData={resumeData} />;
+      case 'layout8':
+        return <Layout8 resumeData={resumeData} />;
       default:
         return <Layout1 resumeData={resumeData} />;
     }
@@ -218,20 +245,6 @@ const CvMaker = () => {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
-  };
-
-  const saveResumeAsPDFWithoutData = () => {
-    const element = document.getElementById('resume-preview');
-
-    const opt = {
-      margin: 0.5,
-      filename: 'resume.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
-    };
-
-    html2pdf().from(element).set(opt).save();
   };
 
   return (

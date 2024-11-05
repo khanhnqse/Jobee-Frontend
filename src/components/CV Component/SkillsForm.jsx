@@ -1,8 +1,9 @@
 import React from 'react';
-import { Form, Input, Space, Button, Typography } from 'antd';
+import { Form, Input, Space, Button, Typography, Select, Progress } from 'antd';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 
 const { Title } = Typography;
+const { Option } = Select;
 
 const SkillsForm = () => (
   <>
@@ -21,9 +22,21 @@ const SkillsForm = () => (
                 name={[name, 'skill']}
                 fieldKey={[fieldKey, 'skill']}
                 label="Skill"
-                rules={[{ required: true, message: 'Please enter the skill' }]}
               >
                 <Input placeholder="Skill" />
+              </Form.Item>
+              <Form.Item
+                {...restField}
+                name={[name, 'proficiency']}
+                fieldKey={[fieldKey, 'proficiency']}
+                label="Proficiency Level"
+              >
+                <Select placeholder="Select proficiency level">
+                  <Option value="Beginner">Beginner</Option>
+                  <Option value="Intermediate">Intermediate</Option>
+                  <Option value="Advanced">Advanced</Option>
+                  <Option value="Expert">Expert</Option>
+                </Select>
               </Form.Item>
               <MinusCircleOutlined onClick={() => remove(name)} />
             </Space>
