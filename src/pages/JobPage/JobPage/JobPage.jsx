@@ -105,21 +105,21 @@ const JobPage = () => {
       <Carousel autoplay className="mb-8">
         <div>
           <img
-            src="https://i.ibb.co/Jxmthc4/1-10.png"
+            src="https://i.ibb.co/cY2gwQN/banner2.png"
             alt="Job Opportunity 1"
             style={{ width: '100%', height: '450px', objectFit: 'cover' }}
           />
         </div>
         <div>
           <img
-            src="https://i.ibb.co/VTBxhk5/6.png"
+            src="https://i.ibb.co/BzrcKF6/banner3.png"
             alt="Job Opportunity 2"
             style={{ width: '100%', height: '450px', objectFit: 'cover' }}
           />
         </div>
         <div>
           <img
-            src="https://i.ibb.co/rFjKn0H/4.png"
+            src="https://i.ibb.co/bbzhCVT/banner1.png"
             alt="Job Opportunity 3"
             style={{ width: '100%', height: '450px', objectFit: 'cover' }}
           />
