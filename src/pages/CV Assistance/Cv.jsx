@@ -147,13 +147,21 @@ const Cv = () => {
         </div>
 
         {/* CV List Section */}
-        {loadingCv ? (
-          <div className="flex justify-center items-center my-10">
-            <Spin size="large" />
-          </div>
-        ) : (
-          <CvList data={filteredCv} />
-        )}
+        <div
+          className="mt-10 py-10"
+          style={{
+            background:
+              'linear-gradient(to right, rgba(59, 123, 122, 0.8), rgba(234, 227, 195, 0.8))', // Transparent gradient background
+          }}
+        >
+          {loadingCv ? (
+            <div className="flex justify-center items-center my-10">
+              <Spin size="large" />
+            </div>
+          ) : (
+            <CvList data={filteredCv} />
+          )}
+        </div>
 
         {/* Advertising Section */}
         <div className="mt-20 bg-[#0f1110cc] py-10">

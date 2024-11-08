@@ -24,9 +24,13 @@ const LoginPage = () => {
       console.log(response.data);
       // Handle successful login
       message.success('Login successful!');
-      // Store user ID, JWT token, and user role in localStorage
-      const { userId, jwtToken, role } = response.data;
+      // Store user ID, JWT token, user role, and subscription details in localStorage
+      const { userId, jwtToken, role, subcription } = response.data;
       login(userId, jwtToken, role);
+
+      // Store subscription details in localStorage
+      localStorage.setItem('subscription', JSON.stringify(subcription));
+      localStorage.setItem('plan', JSON.stringify(subcription.plan));
 
       // Redirect based on user role
       if (role === 'Admin' || role === 'Employer') {

@@ -9,6 +9,8 @@ import {
   Col,
   Spin,
   DatePicker,
+  Card,
+  Descriptions,
 } from 'antd';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
@@ -33,6 +35,7 @@ const Profile = () => {
   const [profilePicture, setProfilePicture] = useState(defaultProfilePicture);
   const [loading, setLoading] = useState(true); // Loading state
   const { userId, jwtToken } = useAuth();
+  const [subscription, setSubscription] = useState(null); // Subscription state
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -71,6 +74,12 @@ const Profile = () => {
 
     if (userId && jwtToken) {
       fetchUserData();
+    }
+
+    // Retrieve subscription details from localStorage
+    const storedSubscription = localStorage.getItem('subscription');
+    if (storedSubscription) {
+      setSubscription(JSON.parse(storedSubscription));
     }
   }, [userId, jwtToken, form]);
 
@@ -212,12 +221,12 @@ const Profile = () => {
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item name="fullName" label="Full Name">
-              <Input prefix={<UserOutlined />} disabled={!isEditing} />
+              <Input prefix={<UserOutlined />} readOnly={!isEditing} />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item name="email" label="Email">
-              <Input prefix={<MailOutlined />} disabled={!isEditing} />
+              <Input prefix={<MailOutlined />} readOnly={!isEditing} />
             </Form.Item>
           </Col>
         </Row>
@@ -225,12 +234,12 @@ const Profile = () => {
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item name="phoneNumber" label="Phone Number">
-              <Input prefix={<PhoneOutlined />} disabled={!isEditing} />
+              <Input prefix={<PhoneOutlined />} readOnly={!isEditing} />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item name="address" label="Address">
-              <Input prefix={<HomeOutlined />} disabled={!isEditing} />
+              <Input prefix={<HomeOutlined />} readOnly={!isEditing} />
             </Form.Item>
           </Col>
         </Row>
@@ -247,7 +256,7 @@ const Profile = () => {
           </Col>
           <Col span={12}>
             <Form.Item name="jobTitle" label="Job Title">
-              <Input prefix={<IdcardOutlined />} disabled={!isEditing} />
+              <Input prefix={<IdcardOutlined />} readOnly={!isEditing} />
             </Form.Item>
           </Col>
         </Row>
@@ -255,7 +264,7 @@ const Profile = () => {
         <Form.Item name="description" label="Description">
           <Input.TextArea
             prefix={<FileTextOutlined />}
-            disabled={!isEditing}
+            readOnly={!isEditing}
             rows={4}
           />
         </Form.Item>
@@ -286,6 +295,36 @@ const Profile = () => {
             Edit Profile
           </Button>
         </div>
+      )}
+
+      {/* Subscription Details */}
+      {subscription && (
+        <Card
+          title="Subscription Details"
+          bordered={false}
+          style={{
+            marginTop: '20px',
+            borderRadius: '8px',
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+            background:
+              'linear-gradient(to right, rgba(59, 123, 122, 0.8), rgba(234, 227, 195, 0.8))', // Transparent gradient background
+          }}
+        >
+          <Descriptions column={1}>
+            <Descriptions.Item label="Plan Name">
+              {subscription.plan.planName}
+            </Descriptions.Item>
+            <Descriptions.Item label="Start Date">
+              {moment(subscription.startDate).format('YYYY-MM-DD')}
+            </Descriptions.Item>
+            <Descriptions.Item label="End Date">
+              {moment(subscription.endDate).format('YYYY-MM-DD')}
+            </Descriptions.Item>
+            <Descriptions.Item label="Duration">
+              {subscription.plan.duration} months
+            </Descriptions.Item>
+          </Descriptions>
+        </Card>
       )}
     </div>
   );

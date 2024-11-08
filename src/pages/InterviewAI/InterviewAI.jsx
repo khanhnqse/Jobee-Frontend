@@ -97,8 +97,8 @@ const InterviewAI = () => {
     <>
       <div
         style={{
-          backgroundImage:
-            'url("https://www.example.com/your-background-image.jpg")', // Add your background image URL here
+          background:
+            'linear-gradient(to right, rgba(59, 123, 122, 0.8), rgba(234, 227, 195, 0.8))', // Transparent gradient background
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           minHeight: '100vh',

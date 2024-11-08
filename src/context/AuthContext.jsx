@@ -45,7 +45,10 @@ export const AuthProvider = ({ children }) => {
     setUserRole(null); // Clear userRole state
     localStorage.removeItem('userId');
     localStorage.removeItem('jwtToken');
-    localStorage.removeItem('userRole'); // Remove userRole from localStorage
+    localStorage.removeItem('userRole');
+    localStorage.removeItem('subscription'); // Remove subscription from localStorage
+    localStorage.removeItem('plan'); // Remove plan from localStorage
+    // Remove userRole from localStorage
   };
 
   const value = useMemo(

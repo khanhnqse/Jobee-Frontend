@@ -121,6 +121,8 @@ const CourseraVideo = () => {
           padding: '16px',
           paddingTop: '32px',
           marginTop: '32px',
+          background:
+            'linear-gradient(to right, rgba(59, 123, 122, 0.8), rgba(234, 227, 195, 0.8))', // Transparent gradient background
         }}
       >
         {loading ? (
