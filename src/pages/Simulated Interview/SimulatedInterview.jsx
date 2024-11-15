@@ -35,7 +35,7 @@ const Simulated = () => {
                 width: '100%',
                 height: '100%',
                 objectFit: 'cover',
-                filter: 'brightness(0.7)', // Dim the background image for better text contrast
+                filter: 'brightness(0.7)',
               }}
               alt="Untitled design"
               src={simulateImage}
@@ -47,7 +47,7 @@ const Simulated = () => {
                 left: 0,
                 right: 0,
                 bottom: 0,
-                backgroundColor: 'rgba(15, 17, 16, 0.8)', // Adjusted for better visibility
+                backgroundColor: 'rgba(15, 17, 16, 0.8)',
               }}
             />
           </Col>
@@ -60,7 +60,7 @@ const Simulated = () => {
               textAlign: 'center',
               color: 'white',
               fontFamily: "'Poppins-Medium', Helvetica",
-              fontSize: '3rem', // Responsive font size
+              fontSize: '3rem',
               lineHeight: '1.2',
             }}
           >
@@ -76,7 +76,7 @@ const Simulated = () => {
               color: 'white',
               fontFamily: "'Poppins-Light', Helvetica",
               fontWeight: '300',
-              fontSize: '1.5rem', // Responsive font size
+              fontSize: '1.5rem',
               lineHeight: '1.5',
             }}
           >
@@ -92,7 +92,7 @@ const Simulated = () => {
               textAlign: 'center',
               color: 'white',
               fontFamily: "'Poppins-Medium', Helvetica",
-              fontSize: '3rem', // Responsive font size
+              fontSize: '3rem',
               lineHeight: '1.2',
             }}
           >
@@ -106,12 +106,12 @@ const Simulated = () => {
                     height: '59px',
                     top: '45%',
                     left: '50%',
-                    transform: 'translateX(-50%)', // Center the button
+                    transform: 'translateX(-50%)',
                     backgroundColor: '#c94c4b',
                     borderRadius: '10px',
                     fontFamily: "'Poppins-Medium', Helvetica",
                     fontWeight: '500',
-                    fontSize: '1.25rem', // Responsive font size
+                    fontSize: '1.25rem',
                     lineHeight: '36.5px',
                   }}
                 >

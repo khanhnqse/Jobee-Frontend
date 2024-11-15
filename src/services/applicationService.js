@@ -4,7 +4,7 @@ const API_URL = 'https://jobeeapi.azurewebsites.net/api/applications';
 
 const getApplications = async () => {
   const response = await axios.get(API_URL);
-  return response.data.results; // Updated to return response.data.results
+  return response.data.results; 
 };
 
 const updateApplication = async (applicationId, applicationData) => {

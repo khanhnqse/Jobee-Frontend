@@ -22,16 +22,16 @@ export const cookieToken = {
 
 const tokenMethod = {
   get: () => {
-    // return localToken.get()
+
     return cookieToken.get();
   },
   set: (token) => {
     console.log("token", token);
-    // localToken.set(token)
+
     cookieToken.set(token);
   },
   remove: () => {
-    // localToken.remove();
+
     cookieToken.remove();
   },
 };

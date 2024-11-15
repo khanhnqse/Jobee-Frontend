@@ -4,7 +4,7 @@ const axiosInstance = axios.create({
   baseURL: 'https://jobeeapi.azurewebsites.net/api',
 });
 
-// Add a request interceptor to attach the JWT token to each request
+
 axiosInstance.interceptors.request.use(
   (config) => {
     const jwtToken = localStorage.getItem('jwtToken');
