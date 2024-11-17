@@ -110,7 +110,7 @@ const Pricing = () => {
     <div
       style={{
         background:
-          'linear-gradient(to right, rgba(59, 123, 122, 0.8), rgba(201, 76, 75, 0.4))', // Transparent gradient background
+          'linear-gradient(to right, rgba(59, 123, 122, 0.8), rgba(201, 76, 75, 0.4))',
         display: 'flex',
         justifyContent: 'center',
         width: '100%',
@@ -119,7 +119,7 @@ const Pricing = () => {
     >
       <div
         style={{
-          backgroundColor: 'transparent', // Make inner container background transparent
+          backgroundColor: 'transparent',
           maxWidth: '1440px',
           width: '100%',
           height: 'auto',
