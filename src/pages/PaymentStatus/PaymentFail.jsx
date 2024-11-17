@@ -9,7 +9,7 @@ const PaymentFail = () => {
   const navigate = useNavigate();
 
   const handleBackToHome = () => {
-    navigate('/'); // Navigate to the home page or another relevant page
+    navigate('/');
   };
 
   return (

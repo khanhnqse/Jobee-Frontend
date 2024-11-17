@@ -4,7 +4,6 @@ import { Typography, Divider } from 'antd';
 
 const { Title, Paragraph } = Typography;
 
-// The policy data as a constant
 const policyData = [
   {
     title: '1. CV Optimization:',
@@ -72,7 +71,6 @@ const PolicyPage = () => {
         </Paragraph>
         <Divider />
 
-        {/* Mapping through policyData to render each section */}
         <div className="space-y-6">
           {policyData.map((policy, index) => (
             <div key={index}>
