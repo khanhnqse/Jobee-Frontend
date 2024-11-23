@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import {
   Row,
@@ -13,6 +13,7 @@ import {
   Spin,
 } from 'antd';
 import axios from 'axios';
+import { useAuth } from '../../context/AuthContext';
 
 const { Title, Text } = Typography;
 
@@ -23,6 +24,38 @@ const Checkout = () => {
   const [form] = Form.useForm();
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { userId, jwtToken } = useAuth();
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(
+          `https://jobeeapi.azurewebsites.net/api/Account/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${jwtToken}`,
+            },
+          }
+        );
+        if (response.data.isSuccess) {
+          const userData = response.data.result;
+          form.setFieldsValue({
+            fullName: userData.fullName,
+            email: userData.email,
+            phoneNumber: userData.phoneNumber,
+          });
+        } else {
+          message.error(response.data.message || 'Failed to fetch user data.');
+        }
+      } catch (error) {
+        message.error('Failed to fetch user data.');
+      }
+    };
+
+    if (userId && jwtToken) {
+      fetchUserData();
+    }
+  }, [userId, jwtToken, form]);
 
   const handleFormSubmit = async (values) => {
     const { phoneNumber } = values;
@@ -128,7 +161,6 @@ const Checkout = () => {
           </Col>
           <Col span={16}>
             <Spin spinning={loading}>
-              {' '}
               <Form form={form} layout="vertical" onFinish={handleFormSubmit}>
                 <Title level={4}>User Information</Title>
                 <Form.Item

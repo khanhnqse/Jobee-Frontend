@@ -22,24 +22,25 @@ const LoginPage = () => {
         }
       );
       console.log(response.data);
-      // Handle successful login
+
       message.success('Login successful!');
-      // Store user ID, JWT token, user role, and subscription details in localStorage
+
       const { userId, jwtToken, role, subcription } = response.data;
       login(userId, jwtToken, role);
 
-      // Store subscription details in localStorage
-      localStorage.setItem('subscription', JSON.stringify(subcription));
-      localStorage.setItem('plan', JSON.stringify(subcription.plan));
+      // Check if subscription exists, if not set it to "normal"
+      const subscriptionData = subcription || { planName: 'normal' };
+      localStorage.setItem('subscription', JSON.stringify(subscriptionData));
+      if (subscriptionData.plan) {
+        localStorage.setItem('plan', JSON.stringify(subscriptionData.plan));
+      }
 
-      // Redirect based on user role
       if (role === 'Admin' || role === 'Employer') {
         navigate('/dashboard');
       } else {
         navigate('/landing-page');
       }
     } catch (error) {
-      // Handle login error
       message.error('Login failed. Please check your credentials.');
     } finally {
       setLoading(false);
