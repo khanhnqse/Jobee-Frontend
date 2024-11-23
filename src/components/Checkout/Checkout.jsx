@@ -22,7 +22,7 @@ const Checkout = () => {
 
   const [form] = Form.useForm();
   const [paymentMethod, setPaymentMethod] = useState(null);
-  const [loading, setLoading] = useState(false); // Add loading state
+  const [loading, setLoading] = useState(false);
 
   const handleFormSubmit = async (values) => {
     const { phoneNumber } = values;
@@ -40,7 +40,7 @@ const Checkout = () => {
       cancelUrl: 'https://solva-app.vercel.app/fail',
     };
 
-    setLoading(true); // Set loading to true when starting the API call
+    setLoading(true);
 
     try {
       const response = await axios.post(
@@ -48,13 +48,13 @@ const Checkout = () => {
         requestBody
       );
       message.success('Payment link created successfully!');
-      // Redirect to the payment link
+
       window.location.href = response.data;
     } catch (error) {
       console.error('Failed to create payment link:', error);
       message.error('Failed to create payment link. Please try again.');
     } finally {
-      setLoading(false); // Set loading to false after the API call is complete
+      setLoading(false);
     }
   };
 
@@ -66,7 +66,6 @@ const Checkout = () => {
     }
   };
 
-  // Default plan in case selectedPlan is undefined
   const defaultPlan = {
     planName: 'No Plan Selected',
     price: 0,
@@ -130,7 +129,6 @@ const Checkout = () => {
           <Col span={16}>
             <Spin spinning={loading}>
               {' '}
-              {/* Add Spin component */}
               <Form form={form} layout="vertical" onFinish={handleFormSubmit}>
                 <Title level={4}>User Information</Title>
                 <Form.Item
