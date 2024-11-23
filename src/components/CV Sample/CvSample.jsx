@@ -6,15 +6,15 @@ import 'slick-carousel/slick/slick-theme.css';
 
 const CvSample = ({ samples }) => {
   const settings = {
-    // dots: true,
+    dots: true,
     infinite: true,
     speed: 800,
-    slidesToShow: 4, // Display 4 cards at a time
-    slidesToScroll: 1, // Scroll 1 card at a time
-    swipeToSlide: true, // Enable swipe gestures
-    autoplay: true, // Enable autoplay
-    autoplaySpeed: 2000, // Set the autoplay speed to 3 seconds
-    pauseOnHover: true, // Pause autoplay when hovering};
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    swipeToSlide: true,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    pauseOnHover: true,
   };
   return (
     <div className="px-[16px] md:px-[173px] mt-10 pb-10">
