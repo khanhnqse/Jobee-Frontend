@@ -95,6 +95,8 @@ const UserManagement = () => {
         jobTitle: values.jobTitle,
         phoneNumber: values.phoneNumber,
         profilePicture: values.profilePicture,
+        email: values.email,
+        passwordHash: values.passwordHash,
       };
 
       if (editingUser) {
@@ -136,6 +138,10 @@ const UserManagement = () => {
       title: 'ID',
       dataIndex: 'id',
       key: 'id',
+      sorter: {
+        compare: (a, b) => a.id - b.id,
+      },
+      defaultSortOrder: 'decend',
     },
     {
       title: 'Full Name',
@@ -237,66 +243,96 @@ const UserManagement = () => {
         onOk={() => form.submit()}
       >
         <Form form={form} onFinish={handleFormSubmit} layout="vertical">
-          <Form.Item
-            name="fullName"
-            label="Full Name"
-            rules={[{ required: true, message: 'Please enter the full name' }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="address"
-            label="Address"
-            rules={[{ required: true, message: 'Please enter the address' }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="dob"
-            label="Date of Birth"
-            rules={[
-              { required: true, message: 'Please enter the date of birth' },
-            ]}
-          >
-            <DatePicker />
-          </Form.Item>
-          <Form.Item
-            name="description"
-            label="Description"
-            rules={[
-              { required: true, message: 'Please enter the description' },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="jobTitle"
-            label="Job Title"
-            rules={[{ required: true, message: 'Please enter the job title' }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="phoneNumber"
-            label="Phone Number"
-            rules={[
-              { required: true, message: 'Please enter the phone number' },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="profilePicture"
-            label="Profile Picture"
-            rules={[
-              {
-                required: true,
-                message: 'Please enter the profile picture URL',
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
+          {!editingUser && (
+            <>
+              <Form.Item
+                name="email"
+                label="Email"
+                rules={[{ required: true, message: 'Please enter the email' }]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                name="passwordHash"
+                label="Password"
+                rules={[
+                  { required: true, message: 'Please enter the password' },
+                ]}
+              >
+                <Input.Password />
+              </Form.Item>
+            </>
+          )}
+          {editingUser && (
+            <>
+              <Form.Item
+                name="fullName"
+                label="Full Name"
+                rules={[
+                  { required: true, message: 'Please enter the full name' },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                name="address"
+                label="Address"
+                rules={[
+                  { required: true, message: 'Please enter the address' },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                name="dob"
+                label="Date of Birth"
+                rules={[
+                  { required: true, message: 'Please enter the date of birth' },
+                ]}
+              >
+                <DatePicker />
+              </Form.Item>
+              <Form.Item
+                name="description"
+                label="Description"
+                rules={[
+                  { required: true, message: 'Please enter the description' },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                name="jobTitle"
+                label="Job Title"
+                rules={[
+                  { required: true, message: 'Please enter the job title' },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                name="phoneNumber"
+                label="Phone Number"
+                rules={[
+                  { required: true, message: 'Please enter the phone number' },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                name="profilePicture"
+                label="Profile Picture"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please enter the profile picture URL',
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+            </>
+          )}
         </Form>
       </Modal>
     </div>

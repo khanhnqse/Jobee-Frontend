@@ -69,8 +69,8 @@ const Checkout = () => {
     const requestBody = {
       productId: planId,
       description: phoneNumber,
-      returnUrl: 'https://solva-app.vercel.app/success',
-      cancelUrl: 'https://solva-app.vercel.app/fail',
+      returnUrl: `https://solva-app.vercel.app/success?planId=${planId}&amount=${selectedPlan.price}&paymentMethod=vnpay`,
+      cancelUrl: `https://solva-app.vercel.app/fail?planId=${planId}&amount=${selectedPlan.price}&paymentMethod=vnpay`,
     };
 
     setLoading(true);

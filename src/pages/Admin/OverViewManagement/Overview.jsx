@@ -8,8 +8,6 @@ import {
   CalendarOutlined,
   IdcardOutlined,
   AppstoreAddOutlined,
-  CheckCircleOutlined,
-  CloseCircleOutlined,
 } from '@ant-design/icons';
 import {
   BarChart,
@@ -28,6 +26,7 @@ import userService from '@/services/userService';
 import jobService from '@/services/jobService';
 import planService from '@/services/planService';
 import applicationService from '@/services/applicationService';
+import axios from 'axios';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
@@ -37,6 +36,7 @@ const OverviewManagement = () => {
   const [jobStats, setJobStats] = useState({ total: 0 });
   const [planStats, setPlanStats] = useState({ total: 0 });
   const [applicationStats, setApplicationStats] = useState({ total: 0 });
+  const [orderStats, setOrderStats] = useState({ total: 0, totalAmount: 0 });
   const [activeUsers, setActiveUsers] = useState(0);
   const [jobTypeStats, setJobTypeStats] = useState([]);
   const [applicationStatusStats, setApplicationStatusStats] = useState([]);
@@ -47,6 +47,7 @@ const OverviewManagement = () => {
   const [userRoleStats, setUserRoleStats] = useState([]);
   const [userAgeGroupStats, setUserAgeGroupStats] = useState([]);
   const [userLocationStats, setUserLocationStats] = useState([]);
+  const [orderDetailStats, setOrderDetailStats] = useState([]);
 
   useEffect(() => {
     fetchData();
@@ -59,6 +60,9 @@ const OverviewManagement = () => {
       const jobsList = await jobService.getJobsList();
       const plansList = await planService.getPlansList();
       const applicationsList = await applicationService.getApplications();
+      const ordersList = await axios.get(
+        'https://jobeeapi.azurewebsites.net/api/order'
+      );
 
       setUserStats({
         total: usersList.length,
@@ -75,6 +79,38 @@ const OverviewManagement = () => {
       setApplicationStats({
         total: applicationsList.length,
       });
+
+      const totalOrderAmount = ordersList.data.results.reduce(
+        (acc, order) => acc + order.amount,
+        0
+      );
+      setOrderStats({
+        total: ordersList.data.results.length,
+        totalAmount: totalOrderAmount,
+      });
+
+      const orderDetailCount = {
+        'Standard service': 0,
+        'Professional service': 0,
+        Other: 0,
+      };
+
+      ordersList.data.results.forEach((order) => {
+        if (order.amount === 99000) {
+          orderDetailCount['Standard service'] += 1;
+        } else if (order.amount === 1999000) {
+          orderDetailCount['Professional service'] += 1;
+        } else {
+          orderDetailCount['Other'] += 1;
+        }
+      });
+
+      setOrderDetailStats(
+        Object.keys(orderDetailCount).map((key) => ({
+          name: key,
+          value: orderDetailCount[key],
+        }))
+      );
 
       setActiveUsers(usersList.filter((user) => user.isActive).length);
 
@@ -117,6 +153,10 @@ const OverviewManagement = () => {
         {
           name: 'Applications',
           Total: applicationsList.length,
+        },
+        {
+          name: 'Orders',
+          Total: ordersList.data.results.length,
         },
       ]);
 
@@ -223,7 +263,7 @@ const OverviewManagement = () => {
       </h1>
       <Row gutter={[16, 16]}>
         <Col xs={24} sm={12} md={8}>
-          <Card>
+          <Card style={{ backgroundColor: '#f0f2f5' }}>
             <Statistic
               title="Total Users"
               value={userStats.total}
@@ -232,7 +272,7 @@ const OverviewManagement = () => {
           </Card>
         </Col>
         <Col xs={24} sm={12} md={8}>
-          <Card>
+          <Card style={{ backgroundColor: '#e6f7ff' }}>
             <Statistic
               title="Total Jobs"
               value={jobStats.total}
@@ -241,7 +281,7 @@ const OverviewManagement = () => {
           </Card>
         </Col>
         <Col xs={24} sm={12} md={8}>
-          <Card>
+          <Card style={{ backgroundColor: '#fff1f0' }}>
             <Statistic
               title="Total Plans"
               value={planStats.total}
@@ -250,7 +290,7 @@ const OverviewManagement = () => {
           </Card>
         </Col>
         <Col xs={24} sm={12} md={8}>
-          <Card>
+          <Card style={{ backgroundColor: '#f9f0ff' }}>
             <Statistic
               title="Total Applications"
               value={applicationStats.total}
@@ -259,18 +299,27 @@ const OverviewManagement = () => {
           </Card>
         </Col>
         <Col xs={24} sm={12} md={8}>
-          <Card>
+          <Card style={{ backgroundColor: '#fffbe6' }}>
             <Statistic
-              title="Active Users"
-              value={activeUsers}
-              prefix={<CheckCircleOutlined />}
+              title="Total Orders"
+              value={orderStats.total}
+              prefix={<DollarOutlined />}
+            />
+          </Card>
+        </Col>
+        <Col xs={24} sm={12} md={8}>
+          <Card style={{ backgroundColor: '#f6ffed' }}>
+            <Statistic
+              title="Total Order Amount"
+              value={`${orderStats.totalAmount.toLocaleString('vi-VN')} VND`}
+              prefix={<DollarOutlined />}
             />
           </Card>
         </Col>
       </Row>
       <Row gutter={[16, 16]} className="mt-6">
         <Col xs={24} sm={12} md={8}>
-          <Card>
+          <Card style={{ backgroundColor: '#e6fffb' }}>
             <Statistic
               title="Most Common Address"
               value={mostCommonAddress}
@@ -279,7 +328,7 @@ const OverviewManagement = () => {
           </Card>
         </Col>
         <Col xs={24} sm={12} md={8}>
-          <Card>
+          <Card style={{ backgroundColor: '#fff0f6' }}>
             <Statistic
               title="Most Common Age"
               value={mostCommonAge}
@@ -288,7 +337,7 @@ const OverviewManagement = () => {
           </Card>
         </Col>
         <Col xs={24} sm={12} md={8}>
-          <Card>
+          <Card style={{ backgroundColor: '#f0f5ff' }}>
             <Statistic
               title="Most Common Job Title"
               value={mostCommonJobTitle}
@@ -299,7 +348,7 @@ const OverviewManagement = () => {
       </Row>
       <Row gutter={[16, 16]} className="mt-6">
         <Col xs={24} md={12}>
-          <Card title="Job Types">
+          <Card title="Job Types" style={{ backgroundColor: '#e6f7ff' }}>
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
                 <Pie
@@ -325,7 +374,10 @@ const OverviewManagement = () => {
           </Card>
         </Col>
         <Col xs={24} md={12}>
-          <Card title="Application Status">
+          <Card
+            title="Application Status"
+            style={{ backgroundColor: '#fffbe6' }}
+          >
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
                 <Pie
@@ -353,7 +405,7 @@ const OverviewManagement = () => {
       </Row>
       <Row gutter={[16, 16]} className="mt-6">
         <Col xs={24} md={12}>
-          <Card title="User Roles">
+          <Card title="User Roles" style={{ backgroundColor: '#f9f0ff' }}>
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
                 <Pie
@@ -379,7 +431,7 @@ const OverviewManagement = () => {
           </Card>
         </Col>
         <Col xs={24} md={12}>
-          <Card title="User Age Groups">
+          <Card title="User Age Groups" style={{ backgroundColor: '#fff0f6' }}>
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
                 <Pie
@@ -407,7 +459,7 @@ const OverviewManagement = () => {
       </Row>
       <Row gutter={[16, 16]} className="mt-6">
         <Col xs={24}>
-          <Card title="User Locations">
+          <Card title="User Locations" style={{ backgroundColor: '#e6fffb' }}>
             <ResponsiveContainer width="100%" height={400}>
               <BarChart
                 data={userLocationStats}
@@ -426,7 +478,26 @@ const OverviewManagement = () => {
       </Row>
       <Row gutter={[16, 16]} className="mt-6">
         <Col xs={24}>
-          <Card title="Overview Chart">
+          <Card title="Order Details" style={{ backgroundColor: '#fff1f0' }}>
+            <ResponsiveContainer width="100%" height={400}>
+              <BarChart
+                data={orderDetailStats}
+                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="value" fill="#3b7b7a" />
+              </BarChart>
+            </ResponsiveContainer>
+          </Card>
+        </Col>
+      </Row>
+      <Row gutter={[16, 16]} className="mt-6">
+        <Col xs={24}>
+          <Card title="Overview Chart" style={{ backgroundColor: '#f6ffed' }}>
             <ResponsiveContainer width="100%" height={400}>
               <BarChart
                 data={chartData}

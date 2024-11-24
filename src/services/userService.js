@@ -14,7 +14,12 @@ const GetUsersList = async () => {
 };
 
 const RegisterUser = async (userData) => {
-  const response = await axiosInstance.post('/user', userData);
+  const requestBody = {
+    email: userData.email,
+    passwordHash: userData.passwordHash,
+  };
+
+  const response = await axiosInstance.post('/signin', requestBody);
   if (response.data.isSuccess) {
     return response.data.result;
   } else {

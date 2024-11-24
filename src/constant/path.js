@@ -32,6 +32,7 @@ export const PATHS = {
       PLAN: '/dashboard/plan',
       APPLICATION: '/dashboard/application',
       OVERVIEW: '/dashboard/overview',
+      ORDER: '/dashboard/order',
      
     },
   },
@@ -67,6 +68,9 @@ export const PATHS = {
   },
   CHECKOUT:{
     INDEX: CHECKOUT,
+  },
+  MY_ORDERS:{
+    INDEX: '/my-orders',
   },
 
 

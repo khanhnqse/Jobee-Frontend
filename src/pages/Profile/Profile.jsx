@@ -298,7 +298,7 @@ const Profile = () => {
       )}
 
       {/* Subscription Details */}
-      {subscription && (
+      {subscription && subscription.planName !== 'normal' && (
         <Card
           title="Subscription Details"
           bordered={false}

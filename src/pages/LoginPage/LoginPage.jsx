@@ -36,7 +36,7 @@ const LoginPage = () => {
       }
 
       if (role === 'Admin' || role === 'Employer') {
-        navigate('/dashboard');
+        navigate('/dashboard/overview');
       } else {
         navigate('/landing-page');
       }

@@ -75,6 +75,9 @@ const Header = () => {
       <Menu.Item key="application" onClick={() => navigate('/application')}>
         Your application
       </Menu.Item>
+      <Menu.Item key="order" onClick={() => navigate('/my-orders')}>
+        Your order
+      </Menu.Item>
       <Menu.Item key="logout" onClick={handleLogoutClick}>
         Logout
       </Menu.Item>

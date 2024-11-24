@@ -30,6 +30,7 @@ const items = [
     '/dashboard/application',
     <IoPaperPlaneOutline />
   ),
+  getItem('Order Management', '/dashboard/order', <DesktopOutlined />),
 ];
 
 const Dashboard = () => {

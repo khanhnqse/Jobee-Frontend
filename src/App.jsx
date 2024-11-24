@@ -32,6 +32,8 @@ import JobDetailPage from './pages/JobPage/JobPageDetail/JobPageDetail';
 import OverviewManagement from './pages/Admin/OverViewManagement/Overview';
 import ApplicationPage from './pages/ApplicationPage/ApplicationPage';
 import ApplicationManagement from './pages/Admin/ApplicationManagement/ApplicationManagement';
+import OrderManagement from './pages/Admin/OrderManagement/OderManagement';
+import MyOrder from './pages/My Oder/MyOrder';
 
 function App() {
   return (
@@ -91,6 +93,14 @@ function App() {
           />
           <Route path={PATHS.POLICY.INDEX} element={<PolicyPage />} />
           <Route
+            path={PATHS.MY_ORDERS.INDEX}
+            element={
+              <PrivateRoute>
+                <MyOrder />
+              </PrivateRoute>
+            }
+          />
+          <Route
             path={PATHS.CV_MAKER.INDEX}
             element={
               <PrivateRoute>
@@ -143,6 +153,10 @@ function App() {
             <Route
               path={PATHS.DASHBOARD.CHILDREN.APPLICATION}
               element={<ApplicationManagement />}
+            />
+            <Route
+              path={PATHS.DASHBOARD.CHILDREN.ORDER}
+              element={<OrderManagement />}
             />
           </Route>
           <Route path={PATHS.INTERVIEW} element={<InterviewAI />} />
