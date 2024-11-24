@@ -11,7 +11,7 @@ const JobDetailPage = () => {
   const [isContactModalVisible, setIsContactModalVisible] = useState(false);
   const [isApplyModalVisible, setIsApplyModalVisible] = useState(false);
   const [form] = Form.useForm();
-  const { userId } = useAuth(); // Get userId from AuthContext
+  const { userId, isAuthenticated } = useAuth(); // Get userId and isAuthenticated from AuthContext
 
   // Constants for email and phone
   const name = 'Cong Ty TNHH ABC';
@@ -42,7 +42,11 @@ const JobDetailPage = () => {
   };
 
   const showContactModal = () => {
-    setIsContactModalVisible(true);
+    if (isAuthenticated) {
+      setIsContactModalVisible(true);
+    } else {
+      message.warning('Please log in to access this feature.');
+    }
   };
 
   const handleContactModalOk = () => {
@@ -54,7 +58,11 @@ const JobDetailPage = () => {
   };
 
   const showApplyModal = () => {
-    setIsApplyModalVisible(true);
+    if (isAuthenticated) {
+      setIsApplyModalVisible(true);
+    } else {
+      message.warning('Please log in to access this feature.');
+    }
   };
 
   const handleApplyModalOk = () => {
@@ -124,7 +132,10 @@ const JobDetailPage = () => {
       {/* Job Description */}
       <div className="mb-6">
         <h2 className="text-xl font-medium mb-2">Job Description</h2>
-        <p className="text-gray-700 leading-relaxed">{job.description}</p>
+        <div
+          className="text-gray-700 leading-relaxed"
+          dangerouslySetInnerHTML={{ __html: job.description }}
+        />
       </div>
 
       {/* Job Details */}

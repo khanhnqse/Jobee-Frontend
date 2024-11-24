@@ -7,8 +7,9 @@ import {
 } from '@ant-design/icons';
 import { Layout, Menu, theme } from 'antd';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { get } from 'react-hook-form';
 import { IoPaperPlaneOutline } from 'react-icons/io5';
+import { useAuth } from '@/context/AuthContext'; // Import the useAuth hook
+
 const { Content, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
@@ -20,7 +21,7 @@ function getItem(label, key, icon, children) {
   };
 }
 
-const items = [
+const allItems = [
   getItem('Overview', '/dashboard/overview', <PieChartOutlined />),
   getItem('User Management', '/dashboard/user', <MenuFoldOutlined />),
   getItem('Job Management', '/dashboard/job', <DesktopOutlined />),
@@ -39,6 +40,20 @@ const Dashboard = () => {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
   const navigate = useNavigate();
+  const { userRole } = useAuth(); // Get userRole from AuthContext
+
+  // Filter items based on user role
+  const items =
+    userRole === 'Employer'
+      ? allItems.filter((item) =>
+          [
+            'User Management',
+            'Job Management',
+            ,
+            'Application Management',
+          ].includes(item.label)
+        )
+      : allItems;
 
   const handleMenuClick = ({ key }) => {
     navigate(key);

@@ -8,6 +8,7 @@ import {
   Spin,
   Input,
   AutoComplete,
+  message,
 } from 'antd';
 import SearchBar from '@/components/Search bar/Search-bar';
 import ConfigAntdButton from '@/components/Button/ConfigAntdButton';
@@ -15,8 +16,10 @@ import CvList from '@/components/CV List/CvList';
 import axios from 'axios';
 import CvSample from '@/components/CV Sample/CvSample';
 import hero from '../../assets/brown-minimalist-work-planning-presentation-1-1.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { SearchOutlined } from '@ant-design/icons';
+import { useAuth } from '@/context/AuthContext';
+
 const { Option } = Select;
 
 const Cv = () => {
@@ -28,6 +31,8 @@ const Cv = () => {
   const [loadingSamples, setLoadingSamples] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   const fetchCv = async () => {
     try {
@@ -68,6 +73,14 @@ const Cv = () => {
     setSearchQuery(value);
   };
 
+  const handleButtonClick = (path) => {
+    if (isAuthenticated) {
+      navigate(path);
+    } else {
+      message.warning('Please log in to access this feature.');
+    }
+  };
+
   const filteredCv = searchQuery
     ? cv.filter((item) =>
         item.title?.toLowerCase().includes(searchQuery.toLowerCase())
@@ -97,16 +110,15 @@ const Cv = () => {
             </p>
             <div className="flex space-x-4 mt-6">
               <ConfigAntdButton>
-                <Link to="/cv-maker">
-                  <Button
-                    type="primary"
-                    className="w-[245px] h-[72px] rounded-[12px]"
-                  >
-                    <span className="font-poppins font-medium text-[25px] leading-[36.5px] text-white">
-                      Create your CV
-                    </span>
-                  </Button>
-                </Link>
+                <Button
+                  type="primary"
+                  className="w-[245px] h-[72px] rounded-[12px]"
+                  onClick={() => handleButtonClick('/cv-maker')}
+                >
+                  <span className="font-poppins font-medium text-[25px] leading-[36.5px] text-white">
+                    Create your CV
+                  </span>
+                </Button>
               </ConfigAntdButton>
               <Select defaultValue="Language" className="w-[246px] h-[47px]">
                 <Option value="Language">Language</Option>

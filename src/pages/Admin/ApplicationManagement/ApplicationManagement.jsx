@@ -5,7 +5,6 @@ import {
   Modal,
   Form,
   Input,
-  Space,
   message,
   Popconfirm,
   Dropdown,
@@ -16,6 +15,11 @@ import {
   Avatar,
   Divider,
   Tag,
+  Space,
+  Progress,
+  Steps,
+  Collapse,
+  Typography,
 } from 'antd';
 import {
   PlusOutlined,
@@ -23,26 +27,46 @@ import {
   DeleteOutlined,
   MoreOutlined,
   EyeOutlined,
+  UploadOutlined,
+  FilePdfOutlined,
+  CheckCircleOutlined,
+  LoadingOutlined,
 } from '@ant-design/icons';
 import applicationService from '@/services/applicationService';
 import axios from 'axios';
+import { useAuth } from '@/context/AuthContext';
+import Title from 'antd/es/typography/Title';
 
 const { Option } = Select;
+const { Step } = Steps;
+const { Panel } = Collapse;
 
 const ApplicationManagement = () => {
   const [applications, setApplications] = useState([]);
+  const [filteredApplications, setFilteredApplications] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
+  const [isGradeModalVisible, setIsGradeModalVisible] = useState(false);
   const [editingApplication, setEditingApplication] = useState(null);
   const [loading, setLoading] = useState(true);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [profileLoading, setProfileLoading] = useState(false);
   const [jobSeekerProfile, setJobSeekerProfile] = useState(null);
   const [form] = Form.useForm();
+  const [statusFilter, setStatusFilter] = useState('All');
+  const [file, setFile] = useState(null);
+  const [responseBody, setResponseBody] = useState(null);
+  const [isHtmlResponse, setIsHtmlResponse] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const { jwtToken } = useAuth();
 
   useEffect(() => {
     fetchApplications();
   }, []);
+
+  useEffect(() => {
+    filterApplicationsByStatus(statusFilter);
+  }, [applications, statusFilter]);
 
   const fetchApplications = async () => {
     setLoading(true);
@@ -55,6 +79,20 @@ const ApplicationManagement = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const filterApplicationsByStatus = (status) => {
+    if (status === 'All') {
+      setFilteredApplications(applications);
+    } else {
+      setFilteredApplications(
+        applications.filter((application) => application.status === status)
+      );
+    }
+  };
+
+  const handleStatusFilterChange = (value) => {
+    setStatusFilter(value);
   };
 
   const handleEditApplication = (application) => {
@@ -123,6 +161,69 @@ const ApplicationManagement = () => {
     }
   };
 
+  const handleGradeCv = (application) => {
+    setEditingApplication(application);
+    setIsGradeModalVisible(true);
+  };
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile && selectedFile.type === 'application/pdf') {
+      setFile(selectedFile);
+    } else {
+      message.error('Please select a valid PDF file.');
+    }
+  };
+
+  const handlePostFile = async () => {
+    if (!file) {
+      message.error('Please upload a PDF file.');
+      return;
+    }
+
+    setLoading(true);
+    setProgress(0);
+
+    const formData = new FormData();
+    formData.append('pdfFile', file);
+
+    try {
+      const response = await axios.post(
+        `https://jobeeapi.azurewebsites.net/api/Account/review-cv/${editingApplication.jobId}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+            'Content-Type': 'multipart/form-data',
+          },
+          onUploadProgress: (progressEvent) => {
+            const percentCompleted = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            );
+            setProgress(percentCompleted);
+          },
+        }
+      );
+
+      message.success('PDF file uploaded successfully!');
+      setResponseBody(response.data);
+
+      setIsHtmlResponse(/<\/?[a-z][\s\S]*>/i.test(response.data));
+    } catch (error) {
+      message.error('Failed to upload PDF file. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const formatResponseBody = (text) => {
+    const formattedText = text
+      .replace(/\n\n/g, '<br/><br/>')
+      .replace(/\* \*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+    return formattedText;
+  };
+
   const menu = (record) => (
     <Menu>
       <Menu.Item
@@ -148,6 +249,13 @@ const ApplicationManagement = () => {
         >
           Delete
         </Popconfirm>
+      </Menu.Item>
+      <Menu.Item
+        key="grade"
+        icon={<UploadOutlined />}
+        onClick={() => handleGradeCv(record)}
+      >
+        Grade CV
       </Menu.Item>
     </Menu>
   );
@@ -216,9 +324,21 @@ const ApplicationManagement = () => {
 
   return (
     <div>
+      <Space style={{ marginBottom: 16 }}>
+        <Select
+          defaultValue="All"
+          style={{ width: 200 }}
+          onChange={handleStatusFilterChange}
+        >
+          <Option value="All">All</Option>
+          <Option value="Pending">Pending</Option>
+          <Option value="Accepted">Accepted</Option>
+          <Option value="Rejected">Rejected</Option>
+        </Select>
+      </Space>
       <Table
         columns={columns}
-        dataSource={applications}
+        dataSource={filteredApplications}
         rowKey="applicationId"
         loading={loading}
       />
@@ -316,6 +436,98 @@ const ApplicationManagement = () => {
         ) : (
           <p>No profile data available</p>
         )}
+      </Modal>
+
+      <Modal
+        title="Grade CV"
+        visible={isGradeModalVisible}
+        onCancel={() => setIsGradeModalVisible(false)}
+        footer={null}
+      >
+        <div>
+          <Collapse className="mb-10">
+            <Panel header="How to Use Jobee AI" key="1">
+              <Steps direction="vertical" size="small" current={-1}>
+                <Step
+                  title="Select a PDF file"
+                  description="Choose a gradeFile from your device by clicking the 'Choose File' button."
+                  icon={<FilePdfOutlined />}
+                />
+                <Step
+                  title="Ensure the file is valid"
+                  description="Make sure the file is a valid PDF document."
+                  icon={<CheckCircleOutlined />}
+                />
+                <Step
+                  title="Upload the PDF"
+                  description="Click the 'Upload PDF' button to submit the file."
+                  icon={<UploadOutlined />}
+                />
+                <Step
+                  title="Wait for analysis"
+                  description="Wait for the file to be uploaded and analyzed by Jobee AI."
+                  icon={loading ? <LoadingOutlined /> : <CheckCircleOutlined />}
+                />
+                <Step
+                  title="View the results"
+                  description="View the generated suggestions in the response section below."
+                  icon={<CheckCircleOutlined />}
+                />
+              </Steps>
+            </Panel>
+          </Collapse>
+
+          <h2>Upload PDF File</h2>
+
+          <input
+            type="file"
+            accept=".pdf"
+            onChange={handleFileChange}
+            style={{ marginBottom: '20px' }}
+          />
+
+          <div style={{ textAlign: 'center' }}>
+            <Button
+              style={{
+                backgroundColor: '#3b7b7a',
+                borderColor: '#3b7b7a',
+                color: 'white',
+              }}
+              type="primary"
+              onClick={handlePostFile}
+              disabled={!file || loading}
+            >
+              {loading
+                ? 'Please wait, Jobee is analyzing your CV'
+                : 'Upload PDF'}
+            </Button>
+          </div>
+
+          {loading && (
+            <div style={{ marginTop: '20px' }}>
+              <Progress percent={progress} />
+            </div>
+          )}
+          {responseBody && (
+            <div style={{ marginTop: '30px' }}>
+              <Card title="Jobee AI" bordered={false}>
+                <Typography>
+                  <Title level={4}>This is the suggestion for you</Title>
+
+                  {isHtmlResponse ? (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: formatResponseBody(responseBody),
+                      }}
+                    />
+                  ) : (
+                    <Paragraph>{responseBody}</Paragraph>
+                  )}
+                </Typography>
+              </Card>
+            </div>
+          )}
+        </div>
       </Modal>
     </div>
   );

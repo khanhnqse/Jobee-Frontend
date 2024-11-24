@@ -20,7 +20,9 @@ import {
   MoreOutlined,
 } from '@ant-design/icons';
 import jobService from '@/services/jobService';
-import TextArea from 'antd/es/input/TextArea';
+import { useAuth } from '@/context/AuthContext';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const { Option } = Select;
 
@@ -30,15 +32,22 @@ const JobManagement = () => {
   const [editingJob, setEditingJob] = useState(null);
   const [loading, setLoading] = useState(true);
   const [form] = Form.useForm();
+  const { userId, userRole } = useAuth(); // Ensure userRole is retrieved from AuthContext
 
   useEffect(() => {
     fetchJobs();
-  }, []);
+  }, [userRole, userId]); // Ensure fetchJobs is called when userRole or userId changes
 
   const fetchJobs = async () => {
     setLoading(true);
     try {
-      const response = await jobService.getJobsList();
+      let response;
+      if (userRole === 'Employer') {
+        response = await jobService.getJobsByUserId(userId);
+      } else {
+        response = await jobService.getJobsList();
+      }
+
       if (response.data.isSuccess) {
         setJobs(response.data.results);
       } else {
@@ -155,11 +164,22 @@ const JobManagement = () => {
     }
   };
 
+  const truncateDescription = (description, maxLength = 100) => {
+    if (description.length <= maxLength) {
+      return description;
+    }
+    return `${description.slice(0, maxLength)}...`;
+  };
+
   const columns = [
     {
       title: 'Job ID',
       dataIndex: 'jobId',
       key: 'jobId',
+      sorter: {
+        compare: (a, b) => a.jobId - b.jobId,
+      },
+      defaultSortOrder: 'descend',
     },
     {
       title: 'Title',
@@ -175,7 +195,11 @@ const JobManagement = () => {
       },
       render: (description) => (
         <Tooltip placement="topLeft" title={description}>
-          {description}
+          <div
+            dangerouslySetInnerHTML={{
+              __html: truncateDescription(description),
+            }}
+          />
         </Tooltip>
       ),
     },
@@ -250,7 +274,7 @@ const JobManagement = () => {
               { required: true, message: 'Please enter the job description' },
             ]}
           >
-            <TextArea />
+            <ReactQuill theme="snow" />
           </Form.Item>
           <Form.Item
             name="location"
@@ -264,7 +288,7 @@ const JobManagement = () => {
           <Form.Item name="jobType" label="Job Type">
             <Select placeholder="Select Job Type">
               <Option value="Full-time">Full-time</Option>
-              <Option value="Part-time	">Part-time </Option>
+              <Option value="Part-time">Part-time</Option>
               <Option value="Internship">Internship</Option>
               <Option value="Contract">Contract</Option>
             </Select>

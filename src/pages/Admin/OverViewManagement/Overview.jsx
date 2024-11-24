@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Card, Statistic, Spin, message } from 'antd';
+import { Row, Col, Spin, message } from 'antd';
 import {
   UserOutlined,
   FileTextOutlined,
@@ -9,26 +9,14 @@ import {
   IdcardOutlined,
   AppstoreAddOutlined,
 } from '@ant-design/icons';
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-} from 'recharts';
 import userService from '@/services/userService';
 import jobService from '@/services/jobService';
 import planService from '@/services/planService';
 import applicationService from '@/services/applicationService';
 import axios from 'axios';
-
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+import StatisticsCard from '@/components/Statistics Card/StatisticsCard';
+import PieChartCard from '@/components/Pie ChartCard/PieChartCard';
+import BarChartCard from '@/components/Bar ChartCard/BarChartCard';
 
 const OverviewManagement = () => {
   const [loading, setLoading] = useState(true);
@@ -48,6 +36,9 @@ const OverviewManagement = () => {
   const [userAgeGroupStats, setUserAgeGroupStats] = useState([]);
   const [userLocationStats, setUserLocationStats] = useState([]);
   const [orderDetailStats, setOrderDetailStats] = useState([]);
+  const [acceptedPercentage, setAcceptedPercentage] = useState(0);
+  const [rejectedPercentage, setRejectedPercentage] = useState(0);
+  const [mostAppliedJob, setMostAppliedJob] = useState('');
 
   useEffect(() => {
     fetchData();
@@ -136,6 +127,37 @@ const OverviewManagement = () => {
           value: applicationStatusCount[key],
         }))
       );
+
+      const totalApplications = applicationsList.length;
+      const acceptedApplications = applicationsList.filter(
+        (application) => application.status === 'Accepted'
+      ).length;
+      const rejectedApplications = applicationsList.filter(
+        (application) => application.status === 'Rejected'
+      ).length;
+
+      setAcceptedPercentage(
+        ((acceptedApplications / totalApplications) * 100).toFixed(2)
+      );
+      setRejectedPercentage(
+        ((rejectedApplications / totalApplications) * 100).toFixed(2)
+      );
+
+      const jobApplicationCount = {};
+      applicationsList.forEach((application) => {
+        jobApplicationCount[application.jobId] =
+          (jobApplicationCount[application.jobId] || 0) + 1;
+      });
+
+      const mostAppliedJobId = Object.keys(jobApplicationCount).reduce((a, b) =>
+        jobApplicationCount[a] > jobApplicationCount[b] ? a : b
+      );
+
+      const mostAppliedJob = jobsList.data.results.find(
+        (job) => job.jobId === parseInt(mostAppliedJobId)
+      );
+
+      setMostAppliedJob(mostAppliedJob ? mostAppliedJob.title : 'N/A');
 
       setChartData([
         {
@@ -263,255 +285,163 @@ const OverviewManagement = () => {
       </h1>
       <Row gutter={[16, 16]}>
         <Col xs={24} sm={12} md={8}>
-          <Card style={{ backgroundColor: '#f0f2f5' }}>
-            <Statistic
-              title="Total Users"
-              value={userStats.total}
-              prefix={<UserOutlined />}
-            />
-          </Card>
+          <StatisticsCard
+            title="Total Users"
+            value={userStats.total}
+            prefix={<UserOutlined />}
+            backgroundColor="#f0f2f5"
+          />
         </Col>
         <Col xs={24} sm={12} md={8}>
-          <Card style={{ backgroundColor: '#e6f7ff' }}>
-            <Statistic
-              title="Total Jobs"
-              value={jobStats.total}
-              prefix={<FileTextOutlined />}
-            />
-          </Card>
+          <StatisticsCard
+            title="Total Jobs"
+            value={jobStats.total}
+            prefix={<FileTextOutlined />}
+            backgroundColor="#e6f7ff"
+          />
         </Col>
         <Col xs={24} sm={12} md={8}>
-          <Card style={{ backgroundColor: '#fff1f0' }}>
-            <Statistic
-              title="Total Plans"
-              value={planStats.total}
-              prefix={<DollarOutlined />}
-            />
-          </Card>
+          <StatisticsCard
+            title="Total Plans"
+            value={planStats.total}
+            prefix={<DollarOutlined />}
+            backgroundColor="#fff1f0"
+          />
         </Col>
         <Col xs={24} sm={12} md={8}>
-          <Card style={{ backgroundColor: '#f9f0ff' }}>
-            <Statistic
-              title="Total Applications"
-              value={applicationStats.total}
-              prefix={<AppstoreAddOutlined />}
-            />
-          </Card>
+          <StatisticsCard
+            title="Total Applications"
+            value={applicationStats.total}
+            prefix={<AppstoreAddOutlined />}
+            backgroundColor="#f9f0ff"
+          />
         </Col>
         <Col xs={24} sm={12} md={8}>
-          <Card style={{ backgroundColor: '#fffbe6' }}>
-            <Statistic
-              title="Total Orders"
-              value={orderStats.total}
-              prefix={<DollarOutlined />}
-            />
-          </Card>
+          <StatisticsCard
+            title="Total Orders"
+            value={orderStats.total}
+            prefix={<DollarOutlined />}
+            backgroundColor="#fffbe6"
+          />
         </Col>
         <Col xs={24} sm={12} md={8}>
-          <Card style={{ backgroundColor: '#f6ffed' }}>
-            <Statistic
-              title="Total Order Amount"
-              value={`${orderStats.totalAmount.toLocaleString('vi-VN')} VND`}
-              prefix={<DollarOutlined />}
-            />
-          </Card>
+          <StatisticsCard
+            title="Total Order Amount"
+            value={`${orderStats.totalAmount.toLocaleString('vi-VN')} VND`}
+            prefix={<DollarOutlined />}
+            backgroundColor="#f6ffed"
+          />
         </Col>
       </Row>
       <Row gutter={[16, 16]} className="mt-6">
         <Col xs={24} sm={12} md={8}>
-          <Card style={{ backgroundColor: '#e6fffb' }}>
-            <Statistic
-              title="Most Common Address"
-              value={mostCommonAddress}
-              prefix={<HomeOutlined />}
-            />
-          </Card>
+          <StatisticsCard
+            title="Most Common Address"
+            value={mostCommonAddress}
+            prefix={<HomeOutlined />}
+            backgroundColor="#e6fffb"
+          />
         </Col>
         <Col xs={24} sm={12} md={8}>
-          <Card style={{ backgroundColor: '#fff0f6' }}>
-            <Statistic
-              title="Most Common Age"
-              value={mostCommonAge}
-              prefix={<CalendarOutlined />}
-            />
-          </Card>
+          <StatisticsCard
+            title="Most Common Age"
+            value={mostCommonAge}
+            prefix={<CalendarOutlined />}
+            backgroundColor="#fff0f6"
+          />
         </Col>
         <Col xs={24} sm={12} md={8}>
-          <Card style={{ backgroundColor: '#f0f5ff' }}>
-            <Statistic
-              title="Most Common Job Title"
-              value={mostCommonJobTitle}
-              prefix={<IdcardOutlined />}
-            />
-          </Card>
+          <StatisticsCard
+            title="Most Common Job Title"
+            value={mostCommonJobTitle}
+            prefix={<IdcardOutlined />}
+            backgroundColor="#f0f5ff"
+          />
+        </Col>
+      </Row>
+      <Row gutter={[16, 16]} className="mt-6">
+        <Col xs={24} sm={12} md={8}>
+          <StatisticsCard
+            title="Accepted Applications (%)"
+            value={`${acceptedPercentage}%`}
+            prefix={<AppstoreAddOutlined />}
+            backgroundColor="#e6f7ff"
+          />
+        </Col>
+        <Col xs={24} sm={12} md={8}>
+          <StatisticsCard
+            title="Rejected Applications (%)"
+            value={`${rejectedPercentage}%`}
+            prefix={<AppstoreAddOutlined />}
+            backgroundColor="#fffbe6"
+          />
+        </Col>
+        <Col xs={24} sm={12} md={8}>
+          <StatisticsCard
+            title="Most Applied Job"
+            value={mostAppliedJob}
+            prefix={<FileTextOutlined />}
+            backgroundColor="#f9f0ff"
+          />
         </Col>
       </Row>
       <Row gutter={[16, 16]} className="mt-6">
         <Col xs={24} md={12}>
-          <Card title="Job Types" style={{ backgroundColor: '#e6f7ff' }}>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={jobTypeStats}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={100}
-                  fill="#8884d8"
-                  label
-                >
-                  {jobTypeStats.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
-          </Card>
+          <PieChartCard
+            title="Job Types"
+            data={jobTypeStats}
+            backgroundColor="#e6f7ff"
+          />
         </Col>
         <Col xs={24} md={12}>
-          <Card
+          <PieChartCard
             title="Application Status"
-            style={{ backgroundColor: '#fffbe6' }}
-          >
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={applicationStatusStats}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={100}
-                  fill="#82ca9d"
-                  label
-                >
-                  {applicationStatusStats.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
-          </Card>
+            data={applicationStatusStats}
+            backgroundColor="#fffbe6"
+          />
         </Col>
       </Row>
       <Row gutter={[16, 16]} className="mt-6">
         <Col xs={24} md={12}>
-          <Card title="User Roles" style={{ backgroundColor: '#f9f0ff' }}>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={userRoleStats}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={100}
-                  fill="#8884d8"
-                  label
-                >
-                  {userRoleStats.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
-          </Card>
+          <PieChartCard
+            title="User Roles"
+            data={userRoleStats}
+            backgroundColor="#f9f0ff"
+          />
         </Col>
         <Col xs={24} md={12}>
-          <Card title="User Age Groups" style={{ backgroundColor: '#fff0f6' }}>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={userAgeGroupStats}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={100}
-                  fill="#82ca9d"
-                  label
-                >
-                  {userAgeGroupStats.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
-          </Card>
+          <PieChartCard
+            title="User Age Groups"
+            data={userAgeGroupStats}
+            backgroundColor="#fff0f6"
+          />
         </Col>
       </Row>
       <Row gutter={[16, 16]} className="mt-6">
         <Col xs={24}>
-          <Card title="User Locations" style={{ backgroundColor: '#e6fffb' }}>
-            <ResponsiveContainer width="100%" height={400}>
-              <BarChart
-                data={userLocationStats}
-                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="value" fill="#3b7b7a" />
-              </BarChart>
-            </ResponsiveContainer>
-          </Card>
+          <BarChartCard
+            title="User Locations"
+            data={userLocationStats}
+            backgroundColor="#e6fffb"
+          />
         </Col>
       </Row>
       <Row gutter={[16, 16]} className="mt-6">
         <Col xs={24}>
-          <Card title="Order Details" style={{ backgroundColor: '#fff1f0' }}>
-            <ResponsiveContainer width="100%" height={400}>
-              <BarChart
-                data={orderDetailStats}
-                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="value" fill="#3b7b7a" />
-              </BarChart>
-            </ResponsiveContainer>
-          </Card>
+          <BarChartCard
+            title="Order Details"
+            data={orderDetailStats}
+            backgroundColor="#fff1f0"
+          />
         </Col>
       </Row>
       <Row gutter={[16, 16]} className="mt-6">
         <Col xs={24}>
-          <Card title="Overview Chart" style={{ backgroundColor: '#f6ffed' }}>
-            <ResponsiveContainer width="100%" height={400}>
-              <BarChart
-                data={chartData}
-                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="Total" fill="#3b7b7a" />
-              </BarChart>
-            </ResponsiveContainer>
-          </Card>
+          <BarChartCard
+            title="Overview Chart"
+            data={chartData}
+            backgroundColor="#f6ffed"
+          />
         </Col>
       </Row>
     </div>

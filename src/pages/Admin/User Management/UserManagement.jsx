@@ -20,6 +20,7 @@ import {
 } from '@ant-design/icons';
 import userService from '@/services/userService';
 import moment from 'moment';
+import { useAuth } from '@/context/AuthContext';
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -27,6 +28,7 @@ const UserManagement = () => {
   const [editingUser, setEditingUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [form] = Form.useForm();
+  const { userRole } = useAuth(); // Get userRole from AuthContext
 
   useEffect(() => {
     fetchUsers();
@@ -141,7 +143,7 @@ const UserManagement = () => {
       sorter: {
         compare: (a, b) => a.id - b.id,
       },
-      defaultSortOrder: 'decend',
+      defaultSortOrder: 'descend',
     },
     {
       title: 'Full Name',
@@ -221,14 +223,16 @@ const UserManagement = () => {
 
   return (
     <div>
-      <Button
-        type="primary"
-        icon={<PlusOutlined />}
-        onClick={handleAddUser}
-        style={{ marginBottom: 16 }}
-      >
-        Add User
-      </Button>
+      {userRole === 'Admin' && (
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          onClick={handleAddUser}
+          style={{ marginBottom: 16 }}
+        >
+          Add User
+        </Button>
+      )}
       <Table
         columns={columns}
         dataSource={users}

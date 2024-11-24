@@ -1,9 +1,19 @@
 import React from 'react';
-import { Row, Col, Card, Typography, Button, Tag, Pagination } from 'antd';
+import {
+  Row,
+  Col,
+  Card,
+  Typography,
+  Button,
+  Tag,
+  Pagination,
+  message,
+} from 'antd';
 import { HeartOutlined } from '@ant-design/icons';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 import ConfigAntdButton from '../Button/ConfigAntdButton';
+import { useAuth } from '@/context/AuthContext';
 
 const { Title, Paragraph } = Typography;
 
@@ -13,14 +23,18 @@ const VideoList = ({
   currentPage = 1,
   onPageChange,
 }) => {
-  const navigate = useNavigate(); // Hook for navigation
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedVideos = videos.slice(startIndex, startIndex + itemsPerPage);
 
-  // Function to handle navigation
   const handleVideoClick = (video) => {
-    navigate('/video-player', { state: { video } });
+    if (isAuthenticated) {
+      navigate('/video-player', { state: { video } });
+    } else {
+      message.warning('Please log in to access this feature.');
+    }
   };
 
   return (
@@ -35,7 +49,7 @@ const VideoList = ({
             <motion.div
               whileHover={{ scale: 1.05 }}
               transition={{ type: 'tween', stiffness: 300 }}
-              onClick={() => handleVideoClick(video)} // Navigate on click
+              onClick={() => handleVideoClick(video)}
             >
               <Card
                 hoverable
@@ -101,6 +115,7 @@ const VideoList = ({
                       backgroundColor: '#3b7b7a',
                       borderColor: '#3b7b7a',
                     }}
+                    onClick={() => handleVideoClick(video)}
                   >
                     Watch now
                   </Button>

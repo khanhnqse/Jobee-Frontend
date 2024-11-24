@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { Row, Col, Card, Pagination, Button } from 'antd';
+import { Row, Col, Card, Pagination, Button, message } from 'antd';
 import ConfigAntdButton from '../Button/ConfigAntdButton';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/context/AuthContext';
 
 const CvList = ({ data }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 8; // Number of items per page
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   const paginatedData = data.slice(
     (currentPage - 1) * pageSize,
@@ -14,6 +17,14 @@ const CvList = ({ data }) => {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
+  };
+
+  const handleButtonClick = (path) => {
+    if (isAuthenticated) {
+      navigate(path);
+    } else {
+      message.warning('Please log in to access this feature.');
+    }
   };
 
   return (
@@ -27,37 +38,36 @@ const CvList = ({ data }) => {
             md={8} // Three cards per row on medium screens
             lg={6} // Four cards per row on large screens
           >
-            <Link to={`/cv-maker`}>
-              <Card
-                hoverable
-                cover={
-                  <img
-                    alt={`cv-${index + 1}`}
-                    src={cv.img}
+            <Card
+              hoverable
+              cover={
+                <img
+                  alt={`cv-${index + 1}`}
+                  src={cv.img}
+                  style={{
+                    width: '100%',
+                    height: '330px', // Set a flexible height for responsiveness
+                    objectFit: 'cover', // Keep image aspect ratio
+                  }}
+                />
+              }
+              className="w-full h-auto rounded-[8px] shadow-lg"
+            >
+              <Card.Meta title={cv.title} description={cv.description} />
+              <ConfigAntdButton>
+                <div className="flex justify-center mt-8">
+                  <Button
+                    type="primary"
                     style={{
-                      width: '100%',
-                      height: '330px', // Set a flexible height for responsiveness
-                      objectFit: 'cover', // Keep image aspect ratio
+                      width: '100px', // Fixed width to prevent shifting
                     }}
-                  />
-                }
-                className="w-full h-auto rounded-[8px] shadow-lg"
-              >
-                <Card.Meta title={cv.title} description={cv.description} />
-                <ConfigAntdButton>
-                  <div className="flex justify-center mt-8">
-                    <Button
-                      type="primary"
-                      style={{
-                        width: '100px', // Fixed width to prevent shifting
-                      }}
-                    >
-                      Try this
-                    </Button>
-                  </div>
-                </ConfigAntdButton>
-              </Card>
-            </Link>
+                    onClick={() => handleButtonClick('/cv-maker')}
+                  >
+                    Try this
+                  </Button>
+                </div>
+              </ConfigAntdButton>
+            </Card>
           </Col>
         ))}
       </Row>

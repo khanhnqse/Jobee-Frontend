@@ -1,10 +1,23 @@
 import React from 'react';
-import { Card, Button } from 'antd';
+import { Card, Button, message } from 'antd';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/context/AuthContext';
 
 const CvSample = ({ samples }) => {
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  const handleButtonClick = (path) => {
+    if (isAuthenticated) {
+      navigate(path);
+    } else {
+      message.warning('Please log in to access this feature.');
+    }
+  };
+
   const settings = {
     dots: true,
     infinite: true,
@@ -16,6 +29,7 @@ const CvSample = ({ samples }) => {
     autoplaySpeed: 2000,
     pauseOnHover: true,
   };
+
   return (
     <div className="px-[16px] md:px-[173px] mt-10 pb-10">
       <p className="font-poppins font-semibold text-black text-[28px] text-center mb-8">
@@ -43,9 +57,13 @@ const CvSample = ({ samples }) => {
                   </span>
                 }
                 description={
-                  <span className="text-center text-sm text-gray-600">
+                  <Button
+                    type="link"
+                    onClick={() => handleButtonClick('/cv-maker')}
+                    style={{ padding: 0 }}
+                  >
                     Create now
-                  </span>
+                  </Button>
                 }
               />
             </Card>

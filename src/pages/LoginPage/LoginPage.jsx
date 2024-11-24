@@ -35,7 +35,7 @@ const LoginPage = () => {
         localStorage.setItem('plan', JSON.stringify(subscriptionData.plan));
       }
 
-      if (role === 'Admin' || role === 'Employer') {
+      if (role === 'Admin') {
         navigate('/dashboard/overview');
       } else {
         navigate('/landing-page');

@@ -69,17 +69,19 @@ const JobPage = () => {
     setLocationFilter(value);
   };
 
-  const filteredJobs = jobs.filter((job) => {
-    return (
-      job.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (jobTypeFilter === '' ||
-        jobTypeFilter === 'All' ||
-        job.jobType === jobTypeFilter) &&
-      (locationFilter === '' ||
-        locationFilter === 'All' ||
-        job.location === locationFilter)
-    );
-  });
+  const filteredJobs = jobs
+    .filter((job) => {
+      return (
+        job.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+        (jobTypeFilter === '' ||
+          jobTypeFilter === 'All' ||
+          job.jobType === jobTypeFilter) &&
+        (locationFilter === '' ||
+          locationFilter === 'All' ||
+          job.location === locationFilter)
+      );
+    })
+    .sort((a, b) => b.jobId - a.jobId); // Sort jobs by jobId in descending order
 
   if (loading) {
     return (

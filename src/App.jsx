@@ -42,46 +42,17 @@ function App() {
         <Route path={PATHS.HOME} element={<MainLayout />}>
           <Route index element={<Home />} />
           <Route path={PATHS.LANDING.INDEX} element={<LandingPage />} />
-          <Route
-            path={PATHS.CV.INDEX}
-            element={
-              <PrivateRoute>
-                <Cv />
-              </PrivateRoute>
-            }
-          />
+          <Route path={PATHS.CV.INDEX} element={<Cv />} />
           <Route
             path={PATHS.SIMULATED_INTERVIEW.INDEX}
-            element={
-              <PrivateRoute>
-                <Simulated />
-              </PrivateRoute>
-            }
+            element={<Simulated />}
           />
           <Route path={PATHS.CONTACT.INDEX} element={<ContactUs />} />
-          <Route
-            path={PATHS.PRICING.INDEX}
-            element={
-              <PrivateRoute>
-                <Pricing />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path={PATHS.LEARNING.INDEX}
-            element={
-              <PrivateRoute>
-                <CourseraVideo />
-              </PrivateRoute>
-            }
-          />
+          <Route path={PATHS.PRICING.INDEX} element={<Pricing />} />
+          <Route path={PATHS.LEARNING.INDEX} element={<CourseraVideo />} />
           <Route
             path={PATHS.VIDEO_PLAYER.INDEX}
-            element={
-              <PrivateRoute>
-                <VideoPlayerPage />
-              </PrivateRoute>
-            }
+            element={<VideoPlayerPage />}
           />
           <Route
             path={PATHS.CHECKOUT.INDEX}

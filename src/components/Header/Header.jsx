@@ -151,7 +151,7 @@ const Header = () => {
             </Button>
           )}
         </Col>
-        {userRole === 'Admin' && (
+        {(userRole === 'Admin' || userRole === 'Employer') && (
           <Col>
             <Button
               type="primary"
