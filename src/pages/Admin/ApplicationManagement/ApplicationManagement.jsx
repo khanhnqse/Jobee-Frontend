@@ -255,7 +255,7 @@ const ApplicationManagement = () => {
         icon={<UploadOutlined />}
         onClick={() => handleGradeCv(record)}
       >
-        Grade CV
+        Analysis CV
       </Menu.Item>
     </Menu>
   );
@@ -512,7 +512,7 @@ const ApplicationManagement = () => {
             <div style={{ marginTop: '30px' }}>
               <Card title="Jobee AI" bordered={false}>
                 <Typography>
-                  <Title level={4}>This is the suggestion for you</Title>
+                  <Title level={4}>This is the result for you</Title>
 
                   {isHtmlResponse ? (
                     <div
