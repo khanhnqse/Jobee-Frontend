@@ -34,6 +34,7 @@ import ApplicationPage from './pages/ApplicationPage/ApplicationPage';
 import ApplicationManagement from './pages/Admin/ApplicationManagement/ApplicationManagement';
 import OrderManagement from './pages/Admin/OrderManagement/OderManagement';
 import MyOrder from './pages/My Oder/MyOrder';
+import FeedbackPage from './pages/Feedback Page/Feedback';
 
 function App() {
   return (
@@ -94,6 +95,14 @@ function App() {
             element={
               <PrivateRoute>
                 <GradeResume />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={PATHS.FEEDBACK.INDEX}
+            element={
+              <PrivateRoute>
+                <FeedbackPage />
               </PrivateRoute>
             }
           />

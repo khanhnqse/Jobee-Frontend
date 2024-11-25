@@ -72,6 +72,9 @@ export const PATHS = {
   MY_ORDERS:{
     INDEX: '/my-orders',
   },
+  FEEDBACK:{
+    INDEX: '/feedback',
+  },
 
 
 
