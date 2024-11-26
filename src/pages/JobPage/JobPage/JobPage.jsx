@@ -159,7 +159,7 @@ const JobPage = () => {
                   title={<span className="font-bold">{job.title}</span>}
                   description={
                     <div>
-                      <p>
+                      <p className="truncate">
                         <strong>Location:</strong> {job.location}
                       </p>
                       <p>
@@ -254,7 +254,7 @@ const JobPage = () => {
                 title={<span className="font-bold">{job.title}</span>}
                 description={
                   <div>
-                    <p>
+                    <p className="truncate">
                       <strong>Location:</strong> {job.location}
                     </p>
                     <p>

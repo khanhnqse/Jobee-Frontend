@@ -35,6 +35,7 @@ import ApplicationManagement from './pages/Admin/ApplicationManagement/Applicati
 import OrderManagement from './pages/Admin/OrderManagement/OderManagement';
 import MyOrder from './pages/My Oder/MyOrder';
 import FeedbackPage from './pages/Feedback Page/Feedback';
+import FeedbackManagement from './pages/Admin/Feedback Management/FeedbackManagement';
 
 function App() {
   return (
@@ -137,6 +138,10 @@ function App() {
             <Route
               path={PATHS.DASHBOARD.CHILDREN.ORDER}
               element={<OrderManagement />}
+            />
+            <Route
+              path={PATHS.DASHBOARD.CHILDREN.FEEDBACK}
+              element={<FeedbackManagement />}
             />
           </Route>
           <Route path={PATHS.INTERVIEW} element={<InterviewAI />} />

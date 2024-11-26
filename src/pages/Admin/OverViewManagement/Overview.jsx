@@ -8,6 +8,7 @@ import {
   CalendarOutlined,
   IdcardOutlined,
   AppstoreAddOutlined,
+  StarOutlined,
 } from '@ant-design/icons';
 import userService from '@/services/userService';
 import jobService from '@/services/jobService';
@@ -39,6 +40,8 @@ const OverviewManagement = () => {
   const [acceptedPercentage, setAcceptedPercentage] = useState(0);
   const [rejectedPercentage, setRejectedPercentage] = useState(0);
   const [mostAppliedJob, setMostAppliedJob] = useState('');
+  const [totalRating, setTotalRating] = useState(0);
+  const [averageRating, setAverageRating] = useState(0);
 
   useEffect(() => {
     fetchData();
@@ -53,6 +56,9 @@ const OverviewManagement = () => {
       const applicationsList = await applicationService.getApplications();
       const ordersList = await axios.get(
         'https://jobeeapi.azurewebsites.net/api/order'
+      );
+      const feedbacksList = await axios.get(
+        'https://67271c49302d03037e6f6a3b.mockapi.io/feedback'
       );
 
       setUserStats({
@@ -182,7 +188,6 @@ const OverviewManagement = () => {
         },
       ]);
 
-      // Compute most common address, age, and job title
       const addressCount = {};
       const ageCount = {};
       const jobTitleCount = {};
@@ -237,6 +242,15 @@ const OverviewManagement = () => {
           value: locationCount[key],
         }))
       );
+
+      const totalRating = feedbacksList.data.length;
+      const averageRating = (
+        feedbacksList.data.reduce((acc, feedback) => acc + feedback.rating, 0) /
+        feedbacksList.data.length
+      ).toFixed(2);
+
+      setTotalRating(totalRating);
+      setAverageRating(averageRating);
     } catch (error) {
       console.error('Failed to fetch data:', error);
       message.error('Failed to fetch data. Please try again.');
@@ -330,6 +344,22 @@ const OverviewManagement = () => {
             value={`${orderStats.totalAmount.toLocaleString('vi-VN')} VND`}
             prefix={<DollarOutlined />}
             backgroundColor="#f6ffed"
+          />
+        </Col>
+        <Col xs={24} sm={12} md={8}>
+          <StatisticsCard
+            title="Total Rating"
+            value={totalRating}
+            prefix={<StarOutlined />}
+            backgroundColor="#fff7e6"
+          />
+        </Col>
+        <Col xs={24} sm={12} md={8}>
+          <StatisticsCard
+            title="Average Rating"
+            value={averageRating}
+            prefix={<StarOutlined />}
+            backgroundColor="#fff7e6"
           />
         </Col>
       </Row>

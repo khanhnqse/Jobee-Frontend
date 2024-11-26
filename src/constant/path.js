@@ -33,6 +33,7 @@ export const PATHS = {
       APPLICATION: '/dashboard/application',
       OVERVIEW: '/dashboard/overview',
       ORDER: '/dashboard/order',
+      FEEDBACK: '/dashboard/feedback',
      
     },
   },

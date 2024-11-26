@@ -78,6 +78,9 @@ const Header = () => {
       <Menu.Item key="order" onClick={() => navigate('/my-orders')}>
         Your order
       </Menu.Item>
+      <Menu.Item key="feedback" onClick={() => navigate('/feedback')}>
+        Rate and review
+      </Menu.Item>
       <Menu.Item key="logout" onClick={handleLogoutClick}>
         Logout
       </Menu.Item>

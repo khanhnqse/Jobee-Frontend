@@ -1,19 +1,42 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { Spin, message, Button, Modal, Form, Input } from 'antd';
+import { useParams, useNavigate } from 'react-router-dom';
+import {
+  Spin,
+  message,
+  Button,
+  Modal,
+  Form,
+  Input,
+  Tag,
+  Card,
+  Row,
+  Col,
+} from 'antd';
+import {
+  EnvironmentOutlined,
+  DollarOutlined,
+  CalendarOutlined,
+  FileTextOutlined,
+  PhoneOutlined,
+  MailOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import axios from 'axios';
-import { useAuth } from '@/context/AuthContext'; // Import the useAuth hook
+import { useAuth } from '@/context/AuthContext';
+
+const { Meta } = Card;
 
 const JobDetailPage = () => {
-  const { jobId } = useParams(); // Retrieve jobId from URL parameters
+  const { jobId } = useParams();
   const [job, setJob] = useState(null);
+  const [relatedJobs, setRelatedJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isContactModalVisible, setIsContactModalVisible] = useState(false);
   const [isApplyModalVisible, setIsApplyModalVisible] = useState(false);
   const [form] = Form.useForm();
-  const { userId, isAuthenticated } = useAuth(); // Get userId and isAuthenticated from AuthContext
+  const { userId, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
-  // Constants for email and phone
   const name = 'Cong Ty TNHH ABC';
   const email = 'contact@example.com';
   const phone = '+1234567890';
@@ -21,6 +44,12 @@ const JobDetailPage = () => {
   useEffect(() => {
     fetchJobDetails();
   }, [jobId]);
+
+  useEffect(() => {
+    if (job) {
+      fetchRelatedJobs();
+    }
+  }, [job]);
 
   const fetchJobDetails = async () => {
     setLoading(true);
@@ -38,6 +67,26 @@ const JobDetailPage = () => {
       message.error('Failed to fetch job details. Please try again.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchRelatedJobs = async () => {
+    try {
+      const response = await axios.get(
+        `https://jobeeapi.azurewebsites.net/api/jobs?jobType=${job.jobType}&location=${job.location}`
+      );
+      if (response.data.isSuccess) {
+        setRelatedJobs(
+          response.data.results.filter(
+            (relatedJob) => relatedJob.jobId !== job.jobId
+          )
+        );
+      } else {
+        message.error(response.data.message || 'Failed to fetch related jobs.');
+      }
+    } catch (error) {
+      console.error('Failed to fetch related jobs:', error);
+      message.error('Failed to fetch related jobs. Please try again.');
     }
   };
 
@@ -75,7 +124,7 @@ const JobDetailPage = () => {
 
   const handleFormSubmit = async (values) => {
     const applicationData = {
-      jobId: jobId, // Ensure jobId is accessible here
+      jobId: jobId,
       jobSeekerId: userId,
       resume: values.resume,
       status: 'Pending',
@@ -101,6 +150,34 @@ const JobDetailPage = () => {
     }
   };
 
+  const getStatusTag = (status) => {
+    switch (status) {
+      case 'Pending':
+        return <Tag color="orange">Pending</Tag>;
+      case 'Active':
+        return <Tag color="green">Active</Tag>;
+      case 'Closed':
+        return <Tag color="red">Closed</Tag>;
+      default:
+        return <Tag>{status}</Tag>;
+    }
+  };
+
+  const getJobTypeTag = (jobType) => {
+    switch (jobType) {
+      case 'Full-time':
+        return <Tag color="blue">Full-time</Tag>;
+      case 'Part-time':
+        return <Tag color="purple">Part-time</Tag>;
+      case 'Contract':
+        return <Tag color="gold">Contract</Tag>;
+      case 'Internship':
+        return <Tag color="cyan">Internship</Tag>;
+      default:
+        return <Tag>{jobType}</Tag>;
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -119,13 +196,14 @@ const JobDetailPage = () => {
       <div className="border-b pb-4 mb-6">
         <h1 className="text-4xl font-semibold mb-2">{job.title}</h1>
         <p className="text-lg text-gray-500 mb-2">
-          Employer ID: {job.employerId} • {job.location}
+          <UserOutlined /> Employer ID: {job.employerId} • {job.location}
         </p>
         <p className="text-gray-600">
-          {job.jobType} • {job.salaryRange}
+          <FileTextOutlined /> {getJobTypeTag(job.jobType)} • {job.salaryRange}
         </p>
         <p className="text-gray-600">
-          Created At: {new Date(job.createAt).toLocaleString()}
+          <CalendarOutlined /> Created At:{' '}
+          {new Date(job.createAt).toLocaleString()}
         </p>
       </div>
 
@@ -141,20 +219,28 @@ const JobDetailPage = () => {
       {/* Job Details */}
       <div className="grid grid-cols-2 gap-4 mb-6">
         <div>
-          <h3 className="text-md font-medium">Job Type</h3>
-          <p className="text-gray-600">{job.jobType}</p>
+          <h3 className="text-md font-medium">
+            <FileTextOutlined /> Job Type
+          </h3>
+          <p className="text-gray-600">{getJobTypeTag(job.jobType)}</p>
         </div>
         <div>
-          <h3 className="text-md font-medium">Salary</h3>
+          <h3 className="text-md font-medium">
+            <DollarOutlined /> Salary
+          </h3>
           <p className="text-gray-600">{job.salaryRange}</p>
         </div>
         <div>
-          <h3 className="text-md font-medium">Location</h3>
+          <h3 className="text-md font-medium">
+            <EnvironmentOutlined /> Location
+          </h3>
           <p className="text-gray-600">{job.location}</p>
         </div>
         <div>
-          <h3 className="text-md font-medium">Status</h3>
-          <p className="text-gray-600">{job.status}</p>
+          <h3 className="text-md font-medium">
+            <FileTextOutlined /> Status
+          </h3>
+          <p className="text-gray-600">{getStatusTag(job.status)}</p>
         </div>
       </div>
 
@@ -198,9 +284,15 @@ const JobDetailPage = () => {
           </Button>,
         ]}
       >
-        <p>Email: {email}</p>
-        <p>Phone: {phone}</p>
-        <p>Company: {name}</p>
+        <p>
+          <MailOutlined /> Email: {email}
+        </p>
+        <p>
+          <PhoneOutlined /> Phone: {phone}
+        </p>
+        <p>
+          <UserOutlined /> Company: {name}
+        </p>
       </Modal>
 
       {/* Apply Modal */}
@@ -238,6 +330,54 @@ const JobDetailPage = () => {
           </Form.Item>
         </Form>
       </Modal>
+
+      {/* Related Jobs Section */}
+      <div className="mt-10">
+        <h2 className="text-2xl font-medium mb-4">Related Jobs</h2>
+        <Row gutter={[16, 16]}>
+          {relatedJobs.slice(0, 3).map((relatedJob) => (
+            <Col key={relatedJob.jobId} xs={24} sm={12} md={8}>
+              <Card
+                hoverable
+                onClick={() => navigate(`/job/${relatedJob.jobId}`)}
+                cover={
+                  <img
+                    alt="job"
+                    src={
+                      relatedJob.image ||
+                      'https://i.postimg.cc/59BPgYhX/JOBEE-2.png'
+                    }
+                    style={{ height: '150px', objectFit: 'cover' }}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src =
+                        'https://i.postimg.cc/59BPgYhX/JOBEE-2.png';
+                    }}
+                  />
+                }
+                className="rounded-lg overflow-hidden job-card"
+              >
+                <Meta
+                  title={<span className="font-bold">{relatedJob.title}</span>}
+                  description={
+                    <div>
+                      <p className="truncate">
+                        <strong>Location:</strong> {relatedJob.location}
+                      </p>
+                      <p>
+                        <strong>Job Type:</strong> {relatedJob.jobType}
+                      </p>
+                      <p>
+                        <strong>Salary:</strong> {relatedJob.salaryRange}
+                      </p>
+                    </div>
+                  }
+                />
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      </div>
     </div>
   );
 };

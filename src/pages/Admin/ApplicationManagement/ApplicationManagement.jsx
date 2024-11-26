@@ -36,6 +36,7 @@ import applicationService from '@/services/applicationService';
 import axios from 'axios';
 import { useAuth } from '@/context/AuthContext';
 import Title from 'antd/es/typography/Title';
+import Paragraph from 'antd/es/typography/Paragraph';
 
 const { Option } = Select;
 const { Step } = Steps;
@@ -278,6 +279,10 @@ const ApplicationManagement = () => {
       title: 'Application ID',
       dataIndex: 'applicationId',
       key: 'applicationId',
+      sorter: {
+        compare: (a, b) => a.applicationId - b.applicationId,
+      },
+      defaultSortOrder: 'descend',
     },
     {
       title: 'Job ID',

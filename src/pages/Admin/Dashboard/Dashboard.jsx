@@ -32,6 +32,7 @@ const allItems = [
     <IoPaperPlaneOutline />
   ),
   getItem('Order Management', '/dashboard/order', <DesktopOutlined />),
+  getItem('Feedback Management', '/dashboard/feedback', <UserOutlined />),
 ];
 
 const Dashboard = () => {
