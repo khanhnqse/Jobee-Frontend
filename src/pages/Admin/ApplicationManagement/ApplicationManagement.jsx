@@ -53,6 +53,7 @@ const ApplicationManagement = () => {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [profileLoading, setProfileLoading] = useState(false);
   const [jobSeekerProfile, setJobSeekerProfile] = useState(null);
+  const [jobTitle, setJobTitle] = useState('');
   const [form] = Form.useForm();
   const [statusFilter, setStatusFilter] = useState('All');
   const [file, setFile] = useState(null);
@@ -140,18 +141,23 @@ const ApplicationManagement = () => {
     }
   };
 
-  const handleViewProfile = async (jobSeekerId) => {
+  const handleViewProfile = async (jobSeekerId, jobId) => {
     setProfileLoading(true);
     try {
-      const response = await axios.get(
-        `https://jobeeapi.azurewebsites.net/api/Account/${jobSeekerId}`
-      );
-      if (response.data.isSuccess) {
-        setJobSeekerProfile(response.data.result);
+      const [profileResponse, jobResponse] = await Promise.all([
+        axios.get(
+          `https://jobeeapi.azurewebsites.net/api/Account/${jobSeekerId}`
+        ),
+        axios.get(`https://jobeeapi.azurewebsites.net/api/jobs/${jobId}`),
+      ]);
+
+      if (profileResponse.data.isSuccess && jobResponse.data.isSuccess) {
+        setJobSeekerProfile(profileResponse.data.result);
+        setJobTitle(jobResponse.data.result.title);
         setIsProfileModalVisible(true);
       } else {
         message.error(
-          response.data.message || 'Failed to fetch job seeker profile.'
+          profileResponse.data.message || 'Failed to fetch job seeker profile.'
         );
       }
     } catch (error) {
@@ -230,7 +236,7 @@ const ApplicationManagement = () => {
       <Menu.Item
         key="view"
         icon={<EyeOutlined />}
-        onClick={() => handleViewProfile(record.jobSeekerId)}
+        onClick={() => handleViewProfile(record.jobSeekerId, record.jobId)}
       >
         View Profile
       </Menu.Item>
@@ -424,6 +430,9 @@ const ApplicationManagement = () => {
               description={jobSeekerProfile.jobTitle}
             />
             <Divider />
+            <p>
+              <strong>Job Title:</strong> {jobTitle}
+            </p>
             <p>
               <strong>Email:</strong> {jobSeekerProfile.email}
             </p>
