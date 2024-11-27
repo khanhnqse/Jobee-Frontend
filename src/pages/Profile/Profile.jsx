@@ -307,7 +307,9 @@ const Profile = () => {
             borderRadius: '8px',
             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
             background:
-              'linear-gradient(to right, rgba(59, 123, 122, 0.8), rgba(234, 227, 195, 0.8))', // Transparent gradient background
+              subscription.plan.planName === 'Professional'
+                ? 'linear-gradient(to right, rgba(59, 123, 122, 0.8), rgba(252, 91, 115, 0.8))'
+                : 'linear-gradient(to right, rgba(59, 123, 122, 0.8), rgba(234, 227, 195, 0.8))', // Transparent gradient background
           }}
         >
           <Descriptions column={1}>

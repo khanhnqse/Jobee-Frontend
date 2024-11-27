@@ -60,7 +60,7 @@
 .feedback-card {
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  height: 230px; /* Fixed height for all cards */
+  height: 200px; /* Fixed height for all cards */
   width: 100%; /* Ensure cards take full width of column */
   display: flex;
   flex-direction: column;

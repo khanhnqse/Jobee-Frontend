@@ -195,6 +195,12 @@ const FeedbackManagement = () => {
 
   return (
     <div>
+      <h1
+        className="text-center text-2xl font-bold mb-6"
+        style={{ color: '#3b7b7a' }}
+      >
+        Feedback Management
+      </h1>
       <Button
         type="primary"
         onClick={() => setIsModalVisible(true)}

@@ -37,9 +37,9 @@ const JobDetailPage = () => {
   const { userId, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  const name = 'Cong Ty TNHH ABC';
-  const email = 'contact@example.com';
-  const phone = '+1234567890';
+  const name = 'Jobee Job';
+  const email = ' jobee.officialvn@gmail.com';
+  const phone = '+84334363339';
 
   useEffect(() => {
     fetchJobDetails();

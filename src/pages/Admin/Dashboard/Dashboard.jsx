@@ -5,7 +5,7 @@ import {
   DesktopOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Layout, Menu, theme } from 'antd';
+import { Layout, Menu, Switch, theme } from 'antd';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { IoPaperPlaneOutline } from 'react-icons/io5';
 import { useAuth } from '@/context/AuthContext'; // Import the useAuth hook
@@ -37,6 +37,7 @@ const allItems = [
 
 const Dashboard = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -50,7 +51,6 @@ const Dashboard = () => {
           [
             'User Management',
             'Job Management',
-            ,
             'Application Management',
           ].includes(item.label)
         )
@@ -60,26 +60,39 @@ const Dashboard = () => {
     navigate(key);
   };
 
+  const toggleDarkMode = (checked) => {
+    setDarkMode(checked);
+  };
+
   return (
     <Layout
       style={{
         minHeight: '100vh',
+        background: darkMode ? '#1f1f1f' : colorBgContainer,
       }}
     >
       <Sider
         collapsible
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
-        style={{ background: colorBgContainer }}
+        style={{ background: darkMode ? '#141414' : colorBgContainer }}
       >
         <div className="demo-logo-vertical" />
         <Menu
-          theme="light"
+          theme={darkMode ? 'dark' : 'light'}
           defaultSelectedKeys={['/dashboard/overview']}
           mode="inline"
           items={items}
           onClick={handleMenuClick}
         />
+        <div style={{ padding: '10px', textAlign: 'center' }}>
+          <span style={{ color: darkMode ? '#fff' : '#000' }}>Dark Mode</span>
+          <Switch
+            checked={darkMode}
+            onChange={toggleDarkMode}
+            style={{ marginLeft: '10px' }}
+          />
+        </div>
       </Sider>
       <Layout>
         <Content
@@ -91,7 +104,8 @@ const Dashboard = () => {
             style={{
               padding: 24,
               minHeight: 360,
-              background: colorBgContainer,
+              background: darkMode ? '#1f1f1f' : colorBgContainer,
+              color: darkMode ? '#fff' : '#000',
               borderRadius: borderRadiusLG,
             }}
           >

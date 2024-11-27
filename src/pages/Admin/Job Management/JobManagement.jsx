@@ -164,11 +164,11 @@ const JobManagement = () => {
     }
   };
 
-  const truncateDescription = (description, maxLength = 100) => {
-    if (description.length <= maxLength) {
-      return description;
+  const truncateText = (text, maxLength = 100) => {
+    if (text.length <= maxLength) {
+      return text;
     }
-    return `${description.slice(0, maxLength)}...`;
+    return `${text.slice(0, maxLength)}...`;
   };
 
   const columns = [
@@ -197,7 +197,7 @@ const JobManagement = () => {
         <Tooltip placement="topLeft" title={description}>
           <div
             dangerouslySetInnerHTML={{
-              __html: truncateDescription(description),
+              __html: truncateText(description),
             }}
           />
         </Tooltip>
@@ -207,6 +207,14 @@ const JobManagement = () => {
       title: 'Location',
       dataIndex: 'location',
       key: 'location',
+      ellipsis: {
+        showTitle: false,
+      },
+      render: (location) => (
+        <Tooltip placement="topLeft" title={location}>
+          <span className="truncate">{location}</span>
+        </Tooltip>
+      ),
     },
     {
       title: 'Job Type',
@@ -238,6 +246,12 @@ const JobManagement = () => {
 
   return (
     <div>
+      <h1
+        className="text-center text-2xl font-bold mb-6"
+        style={{ color: '#3b7b7a' }}
+      >
+        Job Management
+      </h1>
       <Button
         type="primary"
         icon={<PlusOutlined />}

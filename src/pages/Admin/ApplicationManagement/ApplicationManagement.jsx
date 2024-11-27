@@ -306,7 +306,7 @@ const ApplicationManagement = () => {
       key: 'resume',
       render: (text) => (
         <a href={text} target="_blank" rel="noopener noreferrer">
-          View Resume
+          View Resume <EyeOutlined />
         </a>
       ),
     },
@@ -335,6 +335,12 @@ const ApplicationManagement = () => {
 
   return (
     <div>
+      <h1
+        className="text-center text-2xl font-bold mb-6"
+        style={{ color: '#3b7b7a' }}
+      >
+        Application Management
+      </h1>
       <Space style={{ marginBottom: 16 }}>
         <Select
           defaultValue="All"
@@ -453,6 +459,7 @@ const ApplicationManagement = () => {
       </Modal>
 
       <Modal
+        width={800}
         title="Grade CV"
         visible={isGradeModalVisible}
         onCancel={() => setIsGradeModalVisible(false)}

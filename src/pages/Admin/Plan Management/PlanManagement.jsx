@@ -148,6 +148,12 @@ const PlanManagement = () => {
 
   return (
     <div>
+      <h1
+        className="text-center text-2xl font-bold mb-6"
+        style={{ color: '#3b7b7a' }}
+      >
+        Plan Management
+      </h1>
       <Button
         type="primary"
         icon={<PlusOutlined />}

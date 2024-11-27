@@ -13,6 +13,8 @@ import {
   Divider,
   Typography,
   Carousel,
+  Pagination,
+  Tag,
 } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -29,6 +31,8 @@ const JobPage = () => {
   const [jobTypeFilter, setJobTypeFilter] = useState('');
   const [locationFilter, setLocationFilter] = useState('');
   const [suggestions, setSuggestions] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize] = useState(6); // Set the number of jobs per page
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -69,6 +73,10 @@ const JobPage = () => {
     setLocationFilter(value);
   };
 
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
   const filteredJobs = jobs
     .filter((job) => {
       return (
@@ -82,6 +90,11 @@ const JobPage = () => {
       );
     })
     .sort((a, b) => b.jobId - a.jobId); // Sort jobs by jobId in descending order
+
+  const paginatedJobs = filteredJobs.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
 
   if (loading) {
     return (
@@ -166,7 +179,8 @@ const JobPage = () => {
                         <strong>Job Type:</strong> {job.jobType}
                       </p>
                       <p>
-                        <strong>Salary:</strong> {job.salaryRange}
+                        <strong>Salary:</strong>{' '}
+                        <Tag color="orange">{job.salaryRange}</Tag>
                       </p>
                     </div>
                   }
@@ -180,111 +194,135 @@ const JobPage = () => {
       <Divider />
 
       {/* Job Filter Section */}
-      <Title level={4} style={{ color: '#3b7b7a' }}>
-        Find Jobs
-      </Title>
-      <Space direction="vertical" style={{ width: '100%' }} className="mb-8">
-        <Row gutter={[16, 16]} justify="center">
-          <Col xs={24} sm={8} md={6}>
-            <AutoComplete
-              options={suggestions}
-              onSearch={handleSearch}
-              onSelect={handleSearch}
-              style={{ width: '100%' }}
-            >
-              <Input.Search placeholder="Search by job title" enterButton />
-            </AutoComplete>
-          </Col>
-          <Col xs={24} sm={8} md={6}>
-            <Select
-              placeholder="Filter by job type"
-              onChange={handleJobTypeChange}
-              style={{ width: '100%' }}
-              allowClear
-            >
-              <Option value="All">All</Option>
-              <Option value="Full-time">Full-time</Option>
-              <Option value="Part-time">Part-time</Option>
-              <Option value="Contract">Contract</Option>
-              <Option value="Internship">Internship</Option>
-            </Select>
-          </Col>
-          <Col xs={24} sm={8} md={6}>
-            <Select
-              placeholder="Filter by location"
-              onChange={handleLocationChange}
-              style={{ width: '100%' }}
-              allowClear
-            >
-              <Option value="All">All</Option>
-              {uniqueLocations.map((location) => (
-                <Option key={location} value={location}>
-                  {location}
-                </Option>
-              ))}
-            </Select>
-          </Col>
-        </Row>
-      </Space>
+      <div className="job-filter-section">
+        <Title level={4} style={{ color: 'white' }}>
+          FIND A JOB NOW
+        </Title>
+        <Space direction="vertical" style={{ width: '100%' }} className="mb-8">
+          <Row gutter={[16, 16]} justify="center">
+            <Col xs={24} sm={8} md={6}>
+              <AutoComplete
+                options={suggestions}
+                onSearch={handleSearch}
+                onSelect={handleSearch}
+                style={{ width: '100%' }}
+              >
+                <Input.Search placeholder="Search by job title" enterButton />
+              </AutoComplete>
+            </Col>
+            <Col xs={24} sm={8} md={6}>
+              <Select
+                placeholder="Filter by job type"
+                onChange={handleJobTypeChange}
+                style={{ width: '100%' }}
+                allowClear
+              >
+                <Option value="All">All</Option>
+                <Option value="Full-time">Full-time</Option>
+                <Option value="Part-time">Part-time</Option>
+                <Option value="Contract">Contract</Option>
+                <Option value="Internship">Internship</Option>
+              </Select>
+            </Col>
+            <Col xs={24} sm={8} md={6}>
+              <Select
+                placeholder="Filter by location"
+                onChange={handleLocationChange}
+                style={{ width: '100%' }}
+                allowClear
+              >
+                <Option value="All">All</Option>
+                {uniqueLocations.map((location) => (
+                  <Option key={location} value={location}>
+                    {location}
+                  </Option>
+                ))}
+              </Select>
+            </Col>
+          </Row>
+        </Space>
+      </div>
 
       {/* Job Listings Section */}
       <Title level={4} className="mt-10" style={{ color: '#3b7b7a' }}>
         All Job Listings
       </Title>
       <Row gutter={[16, 16]}>
-        {filteredJobs.map((job) => (
-          <Col key={job.jobId} xs={24} sm={12} md={8} lg={6}>
+        {paginatedJobs.map((job) => (
+          <Col key={job.jobId} xs={24} sm={24} md={12} lg={8}>
             <Card
               hoverable
               onClick={() => navigate(`/job/${job.jobId}`)}
-              cover={
-                <img
-                  alt="job"
-                  src={job.image || 'https://i.postimg.cc/59BPgYhX/JOBEE-2.png'}
-                  style={{ height: '150px', objectFit: 'cover' }}
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = 'https://i.postimg.cc/59BPgYhX/JOBEE-2.png';
-                  }}
-                />
-              }
-              className="rounded-lg overflow-hidden job-card"
+              className="job-listing-card"
             >
-              <Meta
-                title={<span className="font-bold">{job.title}</span>}
-                description={
-                  <div>
-                    <p className="truncate">
-                      <strong>Location:</strong> {job.location}
-                    </p>
-                    <p>
-                      <strong>Job Type:</strong> {job.jobType}
-                    </p>
-                    <p>
-                      <strong>Salary:</strong> {job.salaryRange}
-                    </p>
-                    <Button
-                      type="primary"
-                      block
-                      style={{
-                        marginTop: '10px',
-                        backgroundColor: '#3b7b7a',
-                        borderColor: '#3b7b7a',
-                      }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/job/${job.jobId}`);
-                      }}
-                    >
-                      View Job
-                    </Button>
-                  </div>
-                }
-              />
+              <Row>
+                <Col span={8}>
+                  <img
+                    alt="job"
+                    src={
+                      job.image || 'https://i.postimg.cc/59BPgYhX/JOBEE-2.png'
+                    }
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'contain',
+                    }}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src =
+                        'https://i.postimg.cc/59BPgYhX/JOBEE-2.png';
+                    }}
+                  />
+                </Col>
+                <Col span={16}>
+                  <Meta
+                    className="p-3"
+                    title={<span className="font-bold">{job.title}</span>}
+                    description={
+                      <div>
+                        <p className="truncate">
+                          <strong>Location:</strong> {job.location}
+                        </p>
+                        <p>
+                          <strong>Job Type:</strong> {job.jobType}
+                        </p>
+                        <p>
+                          <strong>Salary:</strong>{' '}
+                          <Tag color="orange">{job.salaryRange}</Tag>
+                        </p>
+                        <Button
+                          type="primary"
+                          block
+                          style={{
+                            marginTop: '10px',
+                            backgroundColor: '#3b7b7a',
+                            borderColor: '#3b7b7a',
+                          }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/job/${job.jobId}`);
+                          }}
+                        >
+                          View Job
+                        </Button>
+                      </div>
+                    }
+                  />
+                </Col>
+              </Row>
             </Card>
           </Col>
         ))}
       </Row>
+
+      {/* Pagination */}
+      <Pagination
+        current={currentPage}
+        pageSize={pageSize}
+        total={filteredJobs.length}
+        onChange={handlePageChange}
+        style={{ marginTop: '16px', textAlign: 'center' }}
+      />
     </div>
   );
 };

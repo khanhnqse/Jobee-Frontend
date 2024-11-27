@@ -120,9 +120,12 @@ const OrderManagement = () => {
 
   return (
     <div>
-      <Title level={2} style={{ textAlign: 'center', marginBottom: '20px' }}>
+      <h1
+        className="text-center text-2xl font-bold mb-6"
+        style={{ color: '#3b7b7a' }}
+      >
         Order Management
-      </Title>
+      </h1>
       {loading ? (
         <div className="flex justify-center items-center my-10">
           <Spin size="large" />
