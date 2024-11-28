@@ -112,7 +112,7 @@ const GradeResume = () => {
             padding: '30px',
             maxWidth: '850px',
             margin: '0 auto',
-            backgroundColor: 'rgba(255, 255, 255, 0.9)', // Semi-transparent background
+            backgroundColor: 'rgba(255, 255, 255, 0.9)',
             borderRadius: '8px',
             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
           }}

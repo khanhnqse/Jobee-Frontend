@@ -33,8 +33,8 @@ const FeedbackPage = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editingFeedback, setEditingFeedback] = useState(null);
   const [form] = Form.useForm();
-  const { userId, jwtToken } = useAuth(); // Get userId and jwtToken from AuthContext
-  const [fullName, setFullName] = useState(''); // State to store fullName
+  const { userId, jwtToken } = useAuth();
+  const [fullName, setFullName] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const [selectedRating, setSelectedRating] = useState(null);
@@ -112,9 +112,9 @@ const FeedbackPage = () => {
   const handleFormSubmit = async (values) => {
     const feedbackData = {
       ...values,
-      userId, // Add userId from AuthContext
-      fullName, // Add fullName from user profile
-      createdAt: new Date().toISOString(), // Add current timestamp
+      userId,
+      fullName,
+      createdAt: new Date().toISOString(),
     };
 
     try {
@@ -153,7 +153,7 @@ const FeedbackPage = () => {
 
   const handleRatingChange = (value) => {
     setSelectedRating(value);
-    setCurrentPage(1); // Reset to first page when filter changes
+    setCurrentPage(1);
   };
 
   const handlePageChange = (page, pageSize) => {

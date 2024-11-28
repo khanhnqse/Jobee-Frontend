@@ -168,7 +168,6 @@ const Home = () => {
               position: 'relative',
             }}
           >
-            {/* Overlay với hiệu ứng gradient */}
             <div
               style={{
                 position: 'absolute',
@@ -176,7 +175,7 @@ const Home = () => {
                 left: 0,
                 width: '100%',
                 height: '100%',
-                background: 'rgba(0, 0, 0, 0.3)', // Tạo lớp phủ tối
+                background: 'rgba(0, 0, 0, 0.3)',
               }}
             />
             <Col
@@ -310,11 +309,7 @@ const Home = () => {
               width: '450px',
             }}
           />
-          {/* <div style={{ textAlign: 'center', marginBottom: 20 }}>
-            <Checkbox style={{ color: '#d9886a' }}>
-              Agree with our policies
-            </Checkbox>
-          </div> */}
+
           <br />
           <Link to="/login">
             <Button

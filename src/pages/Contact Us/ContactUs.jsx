@@ -228,13 +228,13 @@ const ContactUs = () => {
               <a
                 href="/dashboard"
                 style={{
-                  color: '#3B7B7A', // Custom color
+                  color: '#3B7B7A',
                   fontWeight: 'bold',
                   cursor: 'pointer',
-                  transition: 'color 0.3s', // Smooth transition for color
+                  transition: 'color 0.3s',
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = '#c94c4b')} // Change color on hover
-                onMouseLeave={(e) => (e.currentTarget.style.color = '#3B7B7A')} // Revert color on leave
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#c94c4b')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = '#3B7B7A')}
               >
                 Click here
               </a>
@@ -245,18 +245,16 @@ const ContactUs = () => {
           </Col>
         </Row>
 
-        {/* Bottom section with background image */}
         <Row
           style={{
             marginTop: '50px',
             backgroundColor: '#0f1110cc',
             padding: '50px 0',
             borderRadius: '10px',
-            position: 'relative', // for absolute positioning of the image
+            position: 'relative',
             color: 'white',
           }}
         >
-          {/* Add the background image here */}
           <img
             src={contact}
             alt="Background"
@@ -268,7 +266,7 @@ const ContactUs = () => {
               height: '100%',
               objectFit: 'cover',
               borderRadius: '10px',
-              zIndex: -1, // Ensures the image stays behind the content
+              zIndex: -1,
             }}
           />
 

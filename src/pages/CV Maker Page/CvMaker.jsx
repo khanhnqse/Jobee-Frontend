@@ -1,23 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Form,
-  Typography,
-  Divider,
-  Button,
-  Row,
-  Col,
-  Card,
-  Steps,
-  Pagination,
-  message,
-} from 'antd';
+import { Form, Typography, Button, Row, Col, Steps, message } from 'antd';
 import PersonalInfoForm from '@/components/CV Component/PersonalInfoForm';
 import EducationForm from '@/components/CV Component/EducationForm';
 import ExperienceForm from '@/components/CV Component/ExperienceForm';
 import SkillsForm from '@/components/CV Component/SkillsForm';
 import ProjectsForm from '@/components/CV Component/ProjectsForm';
 import CertificationsForm from '@/components/CV Component/CertificationsForm';
-import LanguagesForm from '@/components/CV Component/LanguagesForm'; // Import LanguagesForm
+import LanguagesForm from '@/components/CV Component/LanguagesForm';
 import Layout1 from '@/components/LayoutTemplate/Layout1';
 import Layout2 from '@/components/LayoutTemplate/Layout2';
 import Layout3 from '@/components/LayoutTemplate/Layout3';
@@ -26,8 +15,6 @@ import Layout5 from '@/components/LayoutTemplate/Layout5';
 import { Link } from 'react-router-dom';
 import CvTemplates from '@/components/CV Form/TemplateSelection';
 import SaveButton from '@/components/CV Form/SaveButton';
-import ResumePreview from '@/components/CV Form/ResumePreview'; // Import ResumePreview
-import html2pdf from 'html2pdf.js'; // Import html2pdf.js
 import SaveButton2 from '@/components/CV Form/SaveButton2';
 import Layout6 from '@/components/LayoutTemplate/Layout6';
 import Layout7 from '@/components/LayoutTemplate/Layout7';
@@ -167,7 +154,6 @@ const CvMaker = () => {
       setResumeData((prevData) => ({ ...prevData, ...values }));
     }
 
-    // Display success message
     message.success('Resume generated successfully!');
   };
 
@@ -207,7 +193,7 @@ const CvMaker = () => {
   const steps = [
     {
       title: 'Personal Info',
-      content: <PersonalInfoForm form={form} setResumeData={setResumeData} />, // Pass form and setResumeData to child components
+      content: <PersonalInfoForm form={form} setResumeData={setResumeData} />,
     },
     {
       title: 'Education',
@@ -255,7 +241,7 @@ const CvMaker = () => {
         </Title>
 
         <Row gutter={16}>
-          {/* Form Section (1/3 of the width) */}
+          {/* Form Section */}
           <Col span={8}>
             <Form
               form={form}
@@ -310,7 +296,7 @@ const CvMaker = () => {
             </Form>
           </Col>
 
-          {/* Resume Preview and Template Selection Section (2/3 of the width) */}
+          {/* Resume Preview and Template Selection  */}
           <Col span={16}>
             <Row gutter={16}>
               <Col span={19}>

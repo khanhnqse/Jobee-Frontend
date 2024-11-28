@@ -19,20 +19,20 @@ const { Search } = Input;
 const CourseraVideo = () => {
   const apiVideo = 'https://66ee8e6d3ed5bb4d0bf14a30.mockapi.io/video';
   const [videos, setVideos] = useState([]);
-  const [loading, setLoading] = useState(true); // Loading state
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
   const itemsPerPage = 6;
 
   const fetchVideos = async () => {
     try {
-      setLoading(true); // Set loading to true before fetching
+      setLoading(true);
       const response = await axios.get(apiVideo);
       setVideos(response.data);
     } catch (error) {
       console.error('Failed to fetch videos:', error);
     } finally {
-      setLoading(false); // Set loading to false after fetching is complete
+      setLoading(false);
     }
   };
 
@@ -116,14 +116,14 @@ const CourseraVideo = () => {
         </div>
       </div>
       {/* Top video */}
-      {/* Loading spinner */}
+
       <div
         style={{
           padding: '16px',
           paddingTop: '32px',
           marginTop: '32px',
           background:
-            'linear-gradient(to right, rgba(59, 123, 122, 0.8), rgba(234, 227, 195, 0.8))', // Transparent gradient background
+            'linear-gradient(to right, rgba(59, 123, 122, 0.8), rgba(234, 227, 195, 0.8))',
         }}
       >
         {loading ? (

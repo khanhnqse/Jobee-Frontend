@@ -1,16 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-  Row,
-  Col,
-  Button,
-  Select,
-  Card,
-  Spin,
-  Input,
-  AutoComplete,
-  message,
-} from 'antd';
-import SearchBar from '@/components/Search bar/Search-bar';
+import { Button, Select, Spin, Input, AutoComplete, message } from 'antd';
 import ConfigAntdButton from '@/components/Button/ConfigAntdButton';
 import CvList from '@/components/CV List/CvList';
 import axios from 'axios';
@@ -172,7 +161,7 @@ const Cv = () => {
           className="mt-10 py-10"
           style={{
             background:
-              'linear-gradient(to right, rgba(59, 123, 122, 0.8), rgba(234, 227, 195, 0.8))', // Transparent gradient background
+              'linear-gradient(to right, rgba(59, 123, 122, 0.8), rgba(234, 227, 195, 0.8))',
           }}
         >
           {loadingCv ? (

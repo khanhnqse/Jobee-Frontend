@@ -32,7 +32,6 @@ const InterviewAI = () => {
   const [progress, setProgress] = useState(0);
   const { jwtToken } = useAuth();
 
-  // Handles file upload
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile && selectedFile.type === 'application/pdf') {
@@ -49,25 +48,25 @@ const InterviewAI = () => {
     }
 
     setLoading(true);
-    setProgress(0); // Reset progress
+    setProgress(0);
 
     const formData = new FormData();
-    formData.append('pdfFile', file); // Append the PDF file to the FormData object
+    formData.append('pdfFile', file);
 
     try {
       const response = await axios.post(
-        'https://jobeeapi.azurewebsites.net/api/Account/interview-with-ai', // Update the API endpoint if necessary
+        'https://jobeeapi.azurewebsites.net/api/Account/interview-with-ai',
         formData,
         {
           headers: {
-            Authorization: `Bearer ${jwtToken}`, // Add token for authentication
-            'Content-Type': 'multipart/form-data', // Specify content type for file upload
+            Authorization: `Bearer ${jwtToken}`,
+            'Content-Type': 'multipart/form-data',
           },
           onUploadProgress: (progressEvent) => {
             const percentCompleted = Math.round(
               (progressEvent.loaded * 100) / progressEvent.total
             );
-            setProgress(percentCompleted); // Update progress
+            setProgress(percentCompleted);
           },
         }
       );
@@ -75,8 +74,7 @@ const InterviewAI = () => {
       message.success('PDF file uploaded successfully!');
       setResponseBody(response.data);
 
-      // Check if response is HTML or plain text
-      setIsHtmlResponse(/<\/?[a-z][\s\S]*>/i.test(response.data)); // Simple check for HTML tags
+      setIsHtmlResponse(/<\/?[a-z][\s\S]*>/i.test(response.data));
     } catch (error) {
       message.error('Failed to upload PDF file. Please try again.');
     } finally {
@@ -84,12 +82,10 @@ const InterviewAI = () => {
     }
   };
 
-  // Function to format responseBody to display properly
   const formatResponseBody = (text) => {
-    // Replace new lines and format markdown-like bold with HTML
     const formattedText = text
-      .replace(/\n\n/g, '<br/><br/>') // Replace double newlines with paragraph breaks
-      .replace(/\* \*\*(.*?)\*\*/g, '<strong>$1</strong>'); // Replace * **text** with <strong>text</strong>
+      .replace(/\n\n/g, '<br/><br/>')
+      .replace(/\* \*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
     return formattedText;
   };
@@ -98,7 +94,7 @@ const InterviewAI = () => {
     <>
       <div
         style={{
-          backgroundImage: `url(${backgroundImage})`, // Use background image
+          backgroundImage: `url(${backgroundImage})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           minHeight: '100vh',
@@ -118,7 +114,7 @@ const InterviewAI = () => {
             padding: '30px',
             maxWidth: '850px',
             margin: '0 auto',
-            backgroundColor: 'rgba(255, 255, 255, 0.9)', // Semi-transparent background
+            backgroundColor: 'rgba(255, 255, 255, 0.9)',
             borderRadius: '8px',
             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
           }}
@@ -173,7 +169,7 @@ const InterviewAI = () => {
               }}
               type="primary"
               onClick={handlePostFile}
-              disabled={!file || loading} // Disable button when loading
+              disabled={!file || loading}
             >
               {loading
                 ? 'Please wait, Jobee is analyzing your CV'
@@ -191,7 +187,7 @@ const InterviewAI = () => {
               <Card title="Jobee AI" bordered={false}>
                 <Typography>
                   <Title level={4}>This is the questions for you</Title>
-                  {/* Render based on whether the response is HTML or plain text */}
+
                   {isHtmlResponse ? (
                     <div
                       dangerouslySetInnerHTML={{
@@ -199,7 +195,7 @@ const InterviewAI = () => {
                       }}
                     />
                   ) : (
-                    <Paragraph>{responseBody}</Paragraph> // Regular text rendering
+                    <Paragraph>{responseBody}</Paragraph>
                   )}
                 </Typography>
               </Card>
