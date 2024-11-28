@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col, Button, message } from 'antd';
 import ConfigAntdButton from '@/components/Button/ConfigAntdButton';
-import simulateImage from '../../assets/untitled-design-10-1-1.png';
+import simulateImage from '../../assets/Banner4.png';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 
@@ -47,7 +47,6 @@ const Simulated = () => {
                 width: '100%',
                 height: '100%',
                 objectFit: 'cover',
-                filter: 'brightness(0.7)',
               }}
               alt="Untitled design"
               src={simulateImage}
@@ -59,7 +58,6 @@ const Simulated = () => {
                 left: 0,
                 right: 0,
                 bottom: 0,
-                backgroundColor: 'rgba(15, 17, 16, 0.8)',
               }}
             />
           </Col>

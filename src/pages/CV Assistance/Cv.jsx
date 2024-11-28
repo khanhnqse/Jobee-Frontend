@@ -15,7 +15,8 @@ import ConfigAntdButton from '@/components/Button/ConfigAntdButton';
 import CvList from '@/components/CV List/CvList';
 import axios from 'axios';
 import CvSample from '@/components/CV Sample/CvSample';
-import hero from '../../assets/brown-minimalist-work-planning-presentation-1-1.png';
+import hero from '../../assets/banner1.png';
+import advertisingImage from '../../assets/Banner.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { SearchOutlined } from '@ant-design/icons';
 import { useAuth } from '@/context/AuthContext';
@@ -137,25 +138,33 @@ const Cv = () => {
         </div>
 
         <div className="px-[216px] mt-10">
-          <AutoComplete
-            options={suggestions.map((suggestion) => ({ value: suggestion }))}
-            onSearch={handleSearch}
-            onSelect={handleSelect}
-            style={{ width: '100%' }}
+          <div
+            className="p-4 rounded-lg"
+            style={{ backgroundColor: '#f0f2f5' }}
           >
-            <Input.Search
-              placeholder="Search your CV"
-              enterButton={
-                <Button
-                  type="primary"
-                  style={{ backgroundColor: '#3b7b7a', borderColor: '#3b7b7b' }}
-                >
-                  <SearchOutlined />
-                </Button>
-              }
-              size="large"
-            />
-          </AutoComplete>
+            <AutoComplete
+              options={suggestions.map((suggestion) => ({ value: suggestion }))}
+              onSearch={handleSearch}
+              onSelect={handleSelect}
+              style={{ width: '100%' }}
+            >
+              <Input.Search
+                placeholder="Search your CV"
+                enterButton={
+                  <Button
+                    type="primary"
+                    style={{
+                      backgroundColor: '#3b7b7a',
+                      borderColor: '#3b7b7b',
+                    }}
+                  >
+                    <SearchOutlined />
+                  </Button>
+                }
+                size="large"
+              />
+            </AutoComplete>
+          </div>
         </div>
 
         {/* CV List Section */}
@@ -176,10 +185,12 @@ const Cv = () => {
         </div>
 
         {/* Advertising Section */}
-        <div className="mt-20 bg-[#0f1110cc] py-10">
-          <div className="text-center text-white font-poppins font-medium text-[56px]">
-            Advertising
-          </div>
+        <div className="mt-20 py-10">
+          <img
+            src={advertisingImage}
+            alt="Advertising"
+            className="w-full h-auto"
+          />
         </div>
 
         {/* CV Samples Section */}

@@ -33,7 +33,7 @@ const CvSample = ({ samples }) => {
   return (
     <div className="px-[16px] md:px-[173px] mt-10 pb-10">
       <p className="font-poppins font-semibold text-black text-[28px] text-center mb-8">
-        CV Samples for Popular Positions
+        Find your job now
       </p>
 
       <Slider {...settings}>
@@ -45,7 +45,7 @@ const CvSample = ({ samples }) => {
                 <img
                   alt={`cv-sample-${index + 1}`}
                   src={sample.img}
-                  className="object-cover h-[200px] w-full rounded-t-[8px] transition-transform duration-300"
+                  className="object-cover h-[280px] w-full rounded-t-[8px] transition-transform duration-300"
                 />
               }
               style={{ backgroundColor: '#ffffff' }}
@@ -59,7 +59,7 @@ const CvSample = ({ samples }) => {
                 description={
                   <Button
                     type="link"
-                    onClick={() => handleButtonClick('/cv-maker')}
+                    onClick={() => handleButtonClick('/job')}
                     style={{ padding: 0 }}
                   >
                     Create now

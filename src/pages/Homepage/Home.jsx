@@ -1,9 +1,9 @@
 import { Button, Row, Col, Typography, Input, Checkbox, Card } from 'antd';
 import resumeImage from '../../assets/resume.png';
-import heroSectionImage from '../../assets/untitled-design-5-1.png';
+import heroSectionImage from '../../assets/Banner2.png';
 import onlineImage from '../../assets/online.png';
 import videoImage from '../../assets/video.png';
-import image61 from '../../assets/untitled-design-6-1.png';
+import image61 from '../../assets/Banner3.png';
 import video4 from '../../assets/untitled-design-10-1-1.png';
 import { GoogleOutlined } from '@ant-design/icons';
 
@@ -44,7 +44,6 @@ const Home = () => {
             left: 0,
             width: '100%',
             height: '100%',
-            backgroundColor: '#0f1110cc',
           }}
         >
           <Row justify="center" align="middle" style={{ height: '100%' }}>
@@ -148,7 +147,7 @@ const Home = () => {
         <img
           src={image61}
           alt="Untitled design"
-          style={{ width: '100%', height: '744px', objectFit: 'cover' }}
+          style={{ width: '100%', height: '728px', objectFit: 'cover' }}
         />
         <div
           style={{
@@ -157,7 +156,6 @@ const Home = () => {
             left: 0,
             width: '100%',
             height: '100%',
-            backgroundColor: '#0f1110cc',
           }}
         >
           <Row

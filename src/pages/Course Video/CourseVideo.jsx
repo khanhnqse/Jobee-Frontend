@@ -10,6 +10,7 @@ import featuredImage from '../../assets/untitled-design-9-1.png';
 import courseImage1 from '../../assets/image 23.png';
 import courseImage2 from '../../assets/image 22.png';
 import TopVideos from '@/components/Video List/VideoList';
+import { Link } from 'react-router-dom';
 
 const { Meta } = Card;
 const { Panel } = Collapse;
@@ -304,14 +305,16 @@ const CourseraVideo = () => {
                 Explore our groundbreaking AI technology and unlock new
                 possibilities with Simulated Interview.
               </Paragraph>
-              <Button
-                className="text-white bg-red-700"
-                type="primary"
-                size="large"
-                style={{ width: '160px', background: '#C94C4B' }}
-              >
-                Get premium
-              </Button>
+              <Link to="/pricing">
+                <Button
+                  className="text-white bg-red-700"
+                  type="primary"
+                  size="large"
+                  style={{ width: '160px', background: '#C94C4B' }}
+                >
+                  Get premium
+                </Button>
+              </Link>
             </Col>
           </Row>
         </div>

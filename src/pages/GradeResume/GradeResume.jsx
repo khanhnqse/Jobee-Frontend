@@ -18,6 +18,7 @@ import {
 } from '@ant-design/icons';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext'; // Assuming you are using AuthContext for user info
+import backgroundImage from '../../assets/Banner6.png'; // Replace with your background image path
 
 const { Title, Paragraph } = Typography;
 const { Step } = Steps;
@@ -27,9 +28,9 @@ const GradeResume = () => {
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
   const [responseBody, setResponseBody] = useState(null);
-  const [isHtmlResponse, setIsHtmlResponse] = useState(false); // For checking if the response is HTML
-  const [progress, setProgress] = useState(0); // Progress state
-  const { jwtToken } = useAuth(); // Assuming you have JWT token from context
+  const [isHtmlResponse, setIsHtmlResponse] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const { jwtToken } = useAuth();
 
   // Handles file upload
   const handleFileChange = (e) => {
@@ -94,10 +95,9 @@ const GradeResume = () => {
     <>
       <div
         style={{
-          background:
-            'linear-gradient(to right, rgba(59, 123, 122, 0.8), rgba(234, 227, 195, 0.8))', // Transparent gradient background
+          backgroundImage: `url(${backgroundImage})`,
           backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
           minHeight: '100vh',
           padding: '30px',
         }}
